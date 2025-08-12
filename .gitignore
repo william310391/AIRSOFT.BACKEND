@@ -1,0 +1,59 @@
+## Archivos y carpetas de compilación
+bin/
+obj/
+out/
+
+## Archivos temporales de usuario
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Configuración local de Visual Studio
+.vs/
+
+## Logs
+*.log
+
+## Archivos de respaldo
+*.bak
+*.tmp
+*.temp
+*.old
+
+## Archivos generados por compilación
+*.dll
+*.exe
+*.pdb
+*.cache
+*.dbmdl
+
+## Archivos de configuración local
+appsettings.Development.json
+appsettings.Local.json
+
+## Archivos de dependencias
+node_modules/
+
+## Archivos de paquetes NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+
+## Cobertura de código
+coverage/
+*.coverage
+*.coveragexml
+
+## Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+## Configuración de Rider/JetBrains (opcional)
+.idea/
+
+## Archivos de contenedor/Docker
+docker-compose.override.yml

@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36401.2
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airsoft.Api", "Airsoft.Api\Airsoft.Api.csproj", "{29EC5E64-2A38-4A62-AB95-87F9623E7CEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airsoft.Application", "Airsoft.Application\Airsoft.Application.csproj", "{1F58B60B-6AD9-4221-8E03-E39740DEDFB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airsoft.Domain", "Airsoft.Domain\Airsoft.Domain.csproj", "{98894BF8-513A-4742-A267-A84CAA70B6A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Downloads\2710267-430af16108d1924fefa2e4b55ae1297f9ef474b8\2710267-430af16108d1924fefa2e4b55ae1297f9ef474b8\.gitignore = ..\..\..\Downloads\2710267-430af16108d1924fefa2e4b55ae1297f9ef474b8\2710267-430af16108d1924fefa2e4b55ae1297f9ef474b8\.gitignore
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airsoft.Infrastructure", "Airsoft.Infrastructure\Airsoft.Infrastructure.csproj", "{F753ECB7-45E9-478F-9D29-8A33D4E2C319}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{29EC5E64-2A38-4A62-AB95-87F9623E7CEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29EC5E64-2A38-4A62-AB95-87F9623E7CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29EC5E64-2A38-4A62-AB95-87F9623E7CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29EC5E64-2A38-4A62-AB95-87F9623E7CEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F58B60B-6AD9-4221-8E03-E39740DEDFB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F58B60B-6AD9-4221-8E03-E39740DEDFB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F58B60B-6AD9-4221-8E03-E39740DEDFB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F58B60B-6AD9-4221-8E03-E39740DEDFB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98894BF8-513A-4742-A267-A84CAA70B6A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98894BF8-513A-4742-A267-A84CAA70B6A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98894BF8-513A-4742-A267-A84CAA70B6A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98894BF8-513A-4742-A267-A84CAA70B6A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F753ECB7-45E9-478F-9D29-8A33D4E2C319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F753ECB7-45E9-478F-9D29-8A33D4E2C319}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F753ECB7-45E9-478F-9D29-8A33D4E2C319}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F753ECB7-45E9-478F-9D29-8A33D4E2C319}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{29EC5E64-2A38-4A62-AB95-87F9623E7CEA} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1F58B60B-6AD9-4221-8E03-E39740DEDFB6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{98894BF8-513A-4742-A267-A84CAA70B6A3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{F753ECB7-45E9-478F-9D29-8A33D4E2C319} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A7FAC16-12E7-4B05-A22C-122E02336CF3}
+	EndGlobalSection
+EndGlobal
