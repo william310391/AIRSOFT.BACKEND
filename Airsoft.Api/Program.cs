@@ -1,9 +1,6 @@
-using Airsoft.Api.Configurations;
+﻿using Airsoft.Api.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
-
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -14,6 +11,8 @@ builder.Services.AddAppServices(builder.Configuration);
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -23,8 +22,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 

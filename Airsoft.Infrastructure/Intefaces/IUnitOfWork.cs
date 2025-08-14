@@ -3,5 +3,6 @@
     public interface IUnitOfWork
     {
         IPersonaRepository PersonaRepository { get; }
+        IUsuarioRepository UsuarioRepository { get; }
     }
 }

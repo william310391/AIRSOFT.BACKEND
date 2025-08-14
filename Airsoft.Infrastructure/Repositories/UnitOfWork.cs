@@ -9,11 +9,15 @@ namespace Airsoft.Infrastructure.Repositories
         private readonly DapperContext _context;
 
         public IPersonaRepository PersonaRepository { get; }
+        public IUsuarioRepository UsuarioRepository { get; }
 
-        public UnitOfWork(DapperContext context, IPersonaRepository personaRepository)
+        public UnitOfWork(DapperContext context
+            , IPersonaRepository personaRepository
+            , IUsuarioRepository usuarioRepository)
         {
             _context = context;
             PersonaRepository = personaRepository;
+            UsuarioRepository = usuarioRepository;
         }
     }
 }

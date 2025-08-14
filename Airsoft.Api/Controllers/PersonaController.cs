@@ -1,6 +1,6 @@
 ﻿using Airsoft.Application.DTOs.Response;
 using Airsoft.Application.Interfaces;
-using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Airsoft.Api.Controllers
@@ -16,6 +16,7 @@ namespace Airsoft.Api.Controllers
         /// Obtiene la lista de personas.
         /// </summary>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(typeof(IEnumerable<PersonaResponse>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<PersonaResponse>>> GetPersonas()
         {
