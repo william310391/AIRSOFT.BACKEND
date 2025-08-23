@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
 using System.Data.Common;
 
 namespace Airsoft.Infrastructure.Persistence
@@ -33,6 +34,14 @@ namespace Airsoft.Infrastructure.Persistence
             using var connection = CrearConexion();
             await connection.OpenAsync();
             return await accion(connection);
+        }
+        public async Task<bool> EjecutarQueryAsync(string sql, object? parametros = null)
+        {
+            await using var connection = CrearConexion();
+            await connection.OpenAsync();
+
+            var filasAfectadas = await connection.ExecuteAsync(sql, parametros);
+            return filasAfectadas > 0;
         }
     }
 }

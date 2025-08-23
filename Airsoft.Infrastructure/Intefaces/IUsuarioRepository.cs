@@ -5,5 +5,7 @@ namespace Airsoft.Infrastructure.Intefaces
     public interface IUsuarioRepository
     {
         Task<Usuario> GetUsuariosByUsuarioNombre(string usuarioNombre);
+        Task<bool> ExistsUsuario(string usuarioNombre);
+        Task<bool> SaveUsuario(Usuario usuario);
     }
 }

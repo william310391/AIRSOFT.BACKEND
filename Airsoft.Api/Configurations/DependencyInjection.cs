@@ -37,6 +37,7 @@ namespace Airsoft.Api.Configurations
             // Services
             services.AddScoped<IPersonaService, PersonaService>();
             services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             // JWT
             var jwtSettings = config.GetSection("Jwt");

@@ -3,9 +3,10 @@
     public class Usuario
     {
         public int UsuarioID { get; set; }
-        public string? UsuarioNombre { get; set; }
-        public string? Contrasena { get; set; }
+        public required string UsuarioNombre { get; set; }
+        public required string Contrasena { get; set; }
         public DateTime FechaCreacion { get; set; }
         public int RolID { get; set; }
+        public string? RolNombre { get; set; }
     }
 }

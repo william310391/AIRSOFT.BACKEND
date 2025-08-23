@@ -1,8 +1,9 @@
-﻿
-namespace Airsoft.Infrastructure.Queries
+﻿namespace Airsoft.Infrastructure.Queries
 {
     public enum UsuarioQueries
     {
         GetUsuariosByUsuarioNombre,
+        ExistsUasuario,
+        SaveUsuario
     }
 }
