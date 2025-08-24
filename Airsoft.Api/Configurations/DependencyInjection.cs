@@ -26,6 +26,7 @@ namespace Airsoft.Api.Configurations
                 return new DapperContext(connectionString);
             });
 
+
             // Repositories
             services.AddScoped<IPersonaRepository, PersonaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
@@ -38,10 +39,15 @@ namespace Airsoft.Api.Configurations
                 cfg.AddProfile<MappingProfile>();
             });
 
+            services.AddHttpContextAccessor();
+
             // Services
             services.AddScoped<IPersonaService, PersonaService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserContextService, UserContextService>();
+
+          
 
             // JWT
             var jwtSettings = config.GetSection("Jwt");

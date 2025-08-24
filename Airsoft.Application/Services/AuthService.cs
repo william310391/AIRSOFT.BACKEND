@@ -13,12 +13,14 @@ namespace Airsoft.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
+        private readonly IUserContextService _userContextService;
 
-        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, IJwtService jwtService)
+        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, IJwtService jwtService, IUserContextService userContextService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _jwtService = jwtService;
+            _userContextService = userContextService;
         }        
         public async Task<ApiResponse<LoginResponse>> Login(LoginRequest request)
         {
@@ -55,6 +57,9 @@ namespace Airsoft.Application.Services
 
         public async Task<ApiResponse<UsuarioResponse>> Registrar(UsuarioRequest request)
         {
+            // para obtener los valores del token
+            var aaaa = _userContextService.GetAttribute<int>("UsuarioID");
+
             var valid = await _unitOfWork.UsuarioRepository.ExistsUsuario(request.UsuarioNombre);
 
             if (valid)
@@ -63,7 +68,7 @@ namespace Airsoft.Application.Services
             var response = new ApiResponse<LoginResponse>();
             request.Contrasena = BCrypt.Net.BCrypt.HashPassword(request.Contrasena, workFactor: 12);
 
-            var usuario = _mapper.Map<Usuario>(request);
+            var usuario = _mapper.Map<Usuario>(request);            
             var Roles = await _unitOfWork.RolRepository.GetAllRol();
 
             if (string.IsNullOrEmpty(request.RolNombre) || !Roles.Any(x => x.RolNombre.ToUpper() == request.RolNombre.ToUpper()))     
