@@ -1,8 +1,9 @@
-﻿namespace Airsoft.Application.Interfaces
+﻿using Airsoft.Domain.Entities;
+
+namespace Airsoft.Application.Interfaces
 {
     public interface IJwtService
-    {
-        string GenerarToken(string usuarioId, string rol);
-        string GenerarToken(string usuario);
+    {   
+        string GenerarToken(Usuario usuario);
     }
 }

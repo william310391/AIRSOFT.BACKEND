@@ -4,5 +4,6 @@
     {
         IPersonaRepository PersonaRepository { get; }
         IUsuarioRepository UsuarioRepository { get; }
+        IRolRepository RolRepository { get; }
     }
 }

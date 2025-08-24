@@ -39,5 +39,13 @@ namespace Airsoft.Api.Controllers
 
             return StatusCode(response.StatusCode, response);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("prueba")]
+        public string prueba() {
+
+            var usuarioID = User.FindFirst("UsuarioID")?.Value;
+            return "es una prueba "+ usuarioID;
+        }
     }
 }

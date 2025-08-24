@@ -27,27 +27,13 @@ namespace Airsoft.Api.Controllers
         }
 
         [HttpPost("register")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(UsuarioResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UsuarioResponse>> Registrar([FromBody] UsuarioRequest request) 
-        {
+        {           
             var response = await _authService.Registrar(request);
             return StatusCode(response.StatusCode, response);
         }
-
-
-
-        //[HttpPost("login")]
-        //public IActionResult Login([FromBody] LoginRequest request)
-        //{
-        //    // Aquí validarías usuario/contraseña en base de datos
-        //    if (request.UsuarioNombre == "admin" && request.Password == "1234")
-        //    {
-        //        var token = _jwtService.GenerarToken(request.UsuarioNombre);
-        //        return Ok(new { token });
-        //    }
-        //    return Unauthorized();
-        //}
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 using Airsoft.Application.Interfaces;
+using Airsoft.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,58 +17,25 @@ namespace Airsoft.Application.Services
         {
             _config = config;
         }
-
-        public string GenerarToken(string usuarioId, string rol)
-        {
-            var jwtSettings = _config.GetSection("Jwt");
-
-            var keyString = jwtSettings["Key"];
-            if (string.IsNullOrEmpty(keyString))
-                throw new InvalidOperationException("La clave JWT no está configurada.");
-
-            var expiresStr = jwtSettings["ExpiresInMinutes"];
-            if (string.IsNullOrWhiteSpace(expiresStr))
-                throw new InvalidOperationException("La configuración 'ExpiresInMinutes' no está definida.");
-
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
-
-            var claims = new[]
-            {
-            new Claim(JwtRegisteredClaimNames.Sub, usuarioId),
-            new Claim(ClaimTypes.Role, rol),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
-
-            var credenciales = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: jwtSettings["Issuer"],
-                audience: jwtSettings["Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(double.Parse(expiresStr)),
-                signingCredentials: credenciales
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-
-        public string GenerarToken(string usuario)
+        public string GenerarToken(Usuario usuario)
         {
             var jwtSettings = _config.GetSection("Jwt");
             var keyString = jwtSettings["Key"];
-            if (string.IsNullOrEmpty(keyString))
-            {
-                throw new InvalidOperationException("La clave JWT no está configurada correctamente en la configuración.");
-            }
+            if (string.IsNullOrEmpty(keyString))            
+                throw new InvalidOperationException("La clave JWT no está configurada correctamente en la configuración.");            
+
+            if(usuario==null || string.IsNullOrEmpty(usuario.RolNombre))
+                throw new InvalidOperationException("rol no valido");
+
             var key = Encoding.UTF8.GetBytes(keyString.Trim());
 
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, usuario),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+            new Claim(JwtRegisteredClaimNames.Sub, usuario.UsuarioNombre),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Role, usuario.RolNombre),
+            new Claim("UsuarioID",usuario.UsuarioID.ToString())
+            };
 
             var credenciales = new SigningCredentials(
                 new SymmetricSecurityKey(key),

@@ -11,13 +11,17 @@ namespace Airsoft.Infrastructure.Repositories
         public IPersonaRepository PersonaRepository { get; }
         public IUsuarioRepository UsuarioRepository { get; }
 
+        public IRolRepository RolRepository { get; }
+
         public UnitOfWork(DapperContext context
             , IPersonaRepository personaRepository
-            , IUsuarioRepository usuarioRepository)
+            , IUsuarioRepository usuarioRepository
+            , IRolRepository rolRepository)
         {
             _context = context;
             PersonaRepository = personaRepository;
             UsuarioRepository = usuarioRepository;
+            RolRepository = rolRepository;
         }
     }
 }

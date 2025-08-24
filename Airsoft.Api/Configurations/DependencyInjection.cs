@@ -1,4 +1,5 @@
-﻿using Airsoft.Application.Interfaces;
+﻿using Airsoft.Application.DTOs.Response;
+using Airsoft.Application.Interfaces;
 using Airsoft.Application.Mappings;
 using Airsoft.Application.Services;
 using Airsoft.Infrastructure.Intefaces;
@@ -6,7 +7,9 @@ using Airsoft.Infrastructure.Persistence;
 using Airsoft.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 using System.Text;
+using System.Text.Json;
 
 
 namespace Airsoft.Api.Configurations
@@ -26,7 +29,8 @@ namespace Airsoft.Api.Configurations
             // Repositories
             services.AddScoped<IPersonaRepository, PersonaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IRolRepository, RolRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();            
 
             // Automapper
             services.AddAutoMapper(cfg =>
@@ -88,6 +92,37 @@ namespace Airsoft.Api.Configurations
                     //    Console.WriteLine($"TOKEN RECIBIDO: {context.Token}");
                     //    return Task.CompletedTask;
                     //},
+
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse();
+
+                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        context.Response.ContentType = "application/json";
+
+                        var response = new ApiResponse<string>
+                        {
+                            Success = false,
+                            Message = "Token inválido o no proporcionado"
+                        };
+
+                        var result = JsonSerializer.Serialize(response);
+                        await context.Response.WriteAsync(result);
+                    },
+                    OnForbidden = async context =>
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                        context.Response.ContentType = "application/json";
+
+                        var response = new ApiResponse<string>
+                        {
+                            Success = false,
+                            Message = "Acceso denegado: Rol insuficiente"
+                        };
+
+                        var result = JsonSerializer.Serialize(response);
+                        await context.Response.WriteAsync(result);
+                    },
 
 
                     OnMessageReceived = context =>

@@ -36,14 +36,14 @@ namespace Airsoft.Application.Services
        
             // Verificar contraseña sin volver a hashear
             if (!BCrypt.Net.BCrypt.Verify(request.Password, entidad.Contrasena))
-                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Contraseña incorrecta");       
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Contraseña incorrecta");    
 
             // Si todo OK, generar token
             var loginResponse = new LoginResponse
             {
                 UsuarioId = entidad.UsuarioID,
                 NombreUsuario = entidad.UsuarioNombre,
-                Token = _jwtService.GenerarToken(entidad.UsuarioNombre)
+                Token = _jwtService.GenerarToken(entidad)
             };
 
             return new ApiResponse<LoginResponse>() { 
@@ -64,7 +64,15 @@ namespace Airsoft.Application.Services
             request.Contrasena = BCrypt.Net.BCrypt.HashPassword(request.Contrasena, workFactor: 12);
 
             var usuario = _mapper.Map<Usuario>(request);
-            usuario.RolID = 1;
+            var Roles = await _unitOfWork.RolRepository.GetAllRol();
+
+            if (string.IsNullOrEmpty(request.RolNombre) || !Roles.Any(x => x.RolNombre.ToUpper() == request.RolNombre.ToUpper()))     
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Rol no válido");
+      
+            usuario.RolID = Roles
+                .First(x => x.RolNombre.ToUpper() == request.RolNombre.ToUpper())
+                .RolID;
+
             var res = await _unitOfWork.UsuarioRepository.SaveUsuario(usuario);
 
             if (!res)

@@ -2,6 +2,7 @@
 {
     public class UsuarioRequest
     {
+        public int UsuarioID { get; set; }
         public required string UsuarioNombre { get; set; }
         public required string Contrasena { get; set; }
         public required string RolNombre { get; set; }        

@@ -33,8 +33,14 @@ namespace Airsoft.Infrastructure.Queries
 
                 { UsuarioQueries.SaveUsuario, @"
                                     INSERT INTO Usuario(UsuarioNombre,Contrasena,FechaCreacion,RolID) 
-                                    values(@UsuarioNombre,@Contrasena,GETDATE(),@RolID)" }
-                #endregion
+                                    values(@UsuarioNombre,@Contrasena,GETDATE(),@RolID)" },
+            #endregion
+
+            #region Rol
+                { RolQueries.GetAllRol, @"
+                        SELECT RolID, RolNombre FROM Rol " }
+
+            #endregion
         };
 
     public static string Get<T>(T type) where T : Enum
