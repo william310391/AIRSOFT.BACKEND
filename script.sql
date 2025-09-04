@@ -7,6 +7,7 @@ select * from Usuario
 
 insert into Persona(Nombre,Apellido)values('William Teofilo','Astucuri Inca')
 insert into rol(rolNombre) values('Admin')
+insert into rol(rolNombre) values('Usuario')
 insert into Usuario(UsuarioNombre,Contrasena,FechaCreacion,RolID) values('zerox','123456',GETDATE(),1)
 
 
