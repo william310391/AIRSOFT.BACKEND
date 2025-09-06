@@ -27,6 +27,17 @@ namespace Airsoft.Api.Configurations
             });
 
 
+            services.AddCors(options =>
+             {
+                 options.AddPolicy("AllowAll", policy =>
+                 {
+                     policy.AllowAnyOrigin()   // Permite cualquier origen
+                           .AllowAnyMethod()   // Permite cualquier método (GET, POST, etc.)
+                           .AllowAnyHeader();  // Permite cualquier header
+                 });
+             });
+
+
             // Repositories
             services.AddScoped<IPersonaRepository, PersonaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();

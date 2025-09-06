@@ -12,6 +12,8 @@ builder.Services.AddAppServices(builder.Configuration);
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+// Usar la política de CORS antes de los endpoints
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 

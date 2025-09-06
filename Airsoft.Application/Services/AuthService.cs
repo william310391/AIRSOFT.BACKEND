@@ -5,6 +5,7 @@ using Airsoft.Application.Interfaces;
 using Airsoft.Domain.Entities;
 using Airsoft.Infrastructure.Intefaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using System.Net;
 namespace Airsoft.Application.Services
 {
@@ -14,13 +15,15 @@ namespace Airsoft.Application.Services
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
         private readonly IUserContextService _userContextService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, IJwtService jwtService, IUserContextService userContextService)
+        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, IJwtService jwtService, IUserContextService userContextService, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _jwtService = jwtService;
             _userContextService = userContextService;
+            _httpContextAccessor = httpContextAccessor;
         }        
         public async Task<ApiResponse<LoginResponse>> Login(LoginRequest request)
         {
@@ -89,6 +92,33 @@ namespace Airsoft.Application.Services
                 Message = "Login exitoso",
                 Data= _mapper.Map<UsuarioResponse>(usuario),                
             };
+        }
+
+
+        public async Task<ApiResponse<ValidarTokenResponse>> ValidarToken()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+
+            if (httpContext == null || httpContext.User?.Identity == null || !httpContext.User.Identity.IsAuthenticated)
+            {
+                throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró un usuario autenticado.");     
+            }
+
+            //var claims = httpContext.User.Claims
+            //.Select(c => new ClaimDto { Type = c.Type, Value = c.Value })
+            //.ToList();
+
+            var response = new ApiResponse<ValidarTokenResponse>
+            {
+                Success = true,
+                Message = "Token válido",
+                Data = new ValidarTokenResponse
+                {
+                    isTokenValido = true
+                }             
+            };
+
+           return await Task.FromResult(response);
         }
 
     }

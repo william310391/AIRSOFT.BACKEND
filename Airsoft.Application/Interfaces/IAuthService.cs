@@ -7,5 +7,6 @@ namespace Airsoft.Application.Interfaces
     {
         Task<ApiResponse<LoginResponse>> Login(LoginRequest request);
         Task<ApiResponse<UsuarioResponse>> Registrar(UsuarioRequest request);
+        Task<ApiResponse<ValidarTokenResponse>> ValidarToken();
     }
 }

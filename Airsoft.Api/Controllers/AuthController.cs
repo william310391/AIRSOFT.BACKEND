@@ -35,5 +35,17 @@ namespace Airsoft.Api.Controllers
             var response = await _authService.Registrar(request);
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpPost("validateToken")]
+        [Authorize()]
+        [ProducesResponseType(typeof(ValidarTokenResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ValidarTokenResponse>> validateToken()
+        {
+            var response = await _authService.ValidarToken();
+            return StatusCode(response.StatusCode, response);
+        }
+
+
     }
 }

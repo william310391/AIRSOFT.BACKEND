@@ -21,10 +21,10 @@ namespace Airsoft.Application.Services
         {
             var jwtSettings = _config.GetSection("Jwt");
             var keyString = jwtSettings["Key"];
-            if (string.IsNullOrEmpty(keyString))            
-                throw new InvalidOperationException("La clave JWT no está configurada correctamente en la configuración.");            
+            if (string.IsNullOrEmpty(keyString))
+                throw new InvalidOperationException("La clave JWT no está configurada correctamente en la configuración.");
 
-            if(usuario==null || string.IsNullOrEmpty(usuario.RolNombre))
+            if (usuario == null || string.IsNullOrEmpty(usuario.RolNombre))
                 throw new InvalidOperationException("rol no valido");
 
             var key = Encoding.UTF8.GetBytes(keyString.Trim());
@@ -60,6 +60,43 @@ namespace Airsoft.Application.Services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task<JwtSecurityToken> ValidateTokenManualAsync(string token)
+        {
+            return await Task.Run(() =>
+            {
+                return ValidateTokenManual(token);
+            });
+        }
+        public JwtSecurityToken ValidateTokenManual(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtSettings = _config.GetSection("Jwt");
+            var keyString = jwtSettings["Key"];
+
+            if (string.IsNullOrEmpty(keyString))
+                throw new InvalidOperationException("La clave JWT no está configurada correctamente en la configuración.");
+
+            var key = Encoding.UTF8.GetBytes(keyString.Trim());
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _config["Jwt:Issuer"],
+                ValidAudience = _config["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(key)
+            }, out SecurityToken validatedToken);
+
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            return jwtToken;
+        }
+
+        public IEnumerable<Claim> ObtenerClaims(JwtSecurityToken jwtSecurityToken)
+        {
+            return jwtSecurityToken.Claims;
         }
     }
 }
