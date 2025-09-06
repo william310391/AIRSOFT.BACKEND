@@ -2,6 +2,7 @@
 using Airsoft.Application.Interfaces;
 using Airsoft.Application.Mappings;
 using Airsoft.Application.Services;
+using Airsoft.Domain.Enum;
 using Airsoft.Infrastructure.Intefaces;
 using Airsoft.Infrastructure.Persistence;
 using Airsoft.Infrastructure.Repositories;
@@ -68,7 +69,6 @@ namespace Airsoft.Api.Configurations
                 throw new InvalidOperationException("La clave JWT no está configurada correctamente en la configuración.");
             }
             var key = Encoding.UTF8.GetBytes(keyString.Trim());
-
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -85,6 +85,8 @@ namespace Airsoft.Api.Configurations
                     ValidIssuer = jwtSettings["Issuer"],
                     ValidAudience = jwtSettings["Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(key),
+
+                    RoleClaimType = EnumClaims.UsuarioRol // 👈 ahora sí [Authorize(Roles="Admin")] funciona
 
                 };
 

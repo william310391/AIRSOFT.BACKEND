@@ -3,6 +3,7 @@ using Airsoft.Application.DTOs.Response;
 using Airsoft.Application.Exceptions;
 using Airsoft.Application.Interfaces;
 using Airsoft.Domain.Entities;
+using Airsoft.Domain.Enum;
 using Airsoft.Infrastructure.Intefaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -61,7 +62,7 @@ namespace Airsoft.Application.Services
         public async Task<ApiResponse<UsuarioResponse>> Registrar(UsuarioRequest request)
         {
             // para obtener los valores del token
-            var aaaa = _userContextService.GetAttribute<int>("UsuarioID");
+            var aaaa = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
 
             var valid = await _unitOfWork.UsuarioRepository.ExistsUsuario(request.UsuarioNombre);
 

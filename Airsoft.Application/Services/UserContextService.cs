@@ -1,4 +1,5 @@
 ﻿using Airsoft.Application.Interfaces;
+using Airsoft.Domain.Enum;
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,9 +18,9 @@ namespace Airsoft.Application.Services
 
         private ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
 
-        public string? GetUsuarioID() => User?.FindFirst("UsuarioID")?.Value;
-        public string? GetUsuarioNombre() => User?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        public string? GetRol() => User?.FindFirst(ClaimTypes.Role)?.Value;
+        public string? GetUsuarioID() => User?.FindFirst(EnumClaims.UsuarioID)?.Value;
+        public string? GetUsuarioNombre() => User?.FindFirst(EnumClaims.UsuarioNombre)?.Value;
+        public string? GetRol() => User?.FindFirst(EnumClaims.UsuarioRol)?.Value;
         //public string? GetAttribute(string attribute) => User?.FindFirst(attribute)?.Value;
         public T? GetAttribute<T>(string attribute)
         {

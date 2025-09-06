@@ -1,6 +1,7 @@
 ﻿
 using Airsoft.Application.Interfaces;
 using Airsoft.Domain.Entities;
+using Airsoft.Domain.Enum;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -29,12 +30,12 @@ namespace Airsoft.Application.Services
 
             var key = Encoding.UTF8.GetBytes(keyString.Trim());
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
-            new Claim(JwtRegisteredClaimNames.Sub, usuario.UsuarioNombre),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Role, usuario.RolNombre),
-            new Claim("UsuarioID",usuario.UsuarioID.ToString())
+                new Claim(EnumClaims.UsuarioNombre, usuario.UsuarioNombre),
+                new Claim(EnumClaims.UsuarioID,usuario.UsuarioID.ToString()),
+                new Claim(EnumClaims.UsuarioRol,usuario.RolNombre),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
             var credenciales = new SigningCredentials(
