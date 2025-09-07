@@ -32,6 +32,7 @@ namespace Airsoft.Application.Services
 
             var claims = new List<Claim>
             {
+                new Claim(EnumClaims.UsuarioUrlImagen,"https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png"),
                 new Claim(EnumClaims.UsuarioNombre, usuario.UsuarioNombre),
                 new Claim(EnumClaims.UsuarioID,usuario.UsuarioID.ToString()),
                 new Claim(EnumClaims.UsuarioRol,usuario.RolNombre),
