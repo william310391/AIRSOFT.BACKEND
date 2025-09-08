@@ -12,10 +12,12 @@ namespace Airsoft.Application.Mappings
             // Entity → DTO
             CreateMap<Persona, PersonaResponse>();
             CreateMap<Usuario, UsuarioResponse>(); 
+            CreateMap<MenuPagina, MenuPaginaResponse>();
 
             // DTO → Entity
             CreateMap<PersonaRequest, Persona>();
             CreateMap<UsuarioRequest, Usuario>();
+            CreateMap<MenuPaginaRequest, MenuPagina>();
 
             // Si los nombres de propiedades no coinciden:
             // CreateMap<Persona, PersonaResponse>()

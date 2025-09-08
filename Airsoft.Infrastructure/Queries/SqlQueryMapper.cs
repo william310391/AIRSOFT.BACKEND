@@ -5,14 +5,14 @@ namespace Airsoft.Infrastructure.Queries
     {
         private static readonly Dictionary<object, string> queries = new()
         {
-                #region Persona
-                { PersonaQueries.GetPersonasById, @"SELECT * FROM Persona WHERE PersonaID = @PersonaID" },
-                { PersonaQueries.GetPersonas, @"SELECT * FROM Persona"},
-                #endregion
+            #region Persona
+            { PersonaQueries.GetPersonasById, @"SELECT * FROM Persona WHERE PersonaID = @PersonaID" },
+            { PersonaQueries.GetPersonas, @"SELECT * FROM Persona"},
+            #endregion
 
-                #region Usuario
-                { UsuarioQueries.GetUsuariosByUsuarioNombre, @"
-                                    SELECT 
+            #region Usuario
+            { UsuarioQueries.GetUsuariosByUsuarioNombre, @"
+                                SELECT 
                                      U.UsuarioID
                                     ,U.UsuarioNombre
                                     ,U.Contrasena
@@ -20,30 +20,60 @@ namespace Airsoft.Infrastructure.Queries
                                     ,U.RolID
                                     ,R.RolNombre
 
-                                    FROM Usuario U
-                                    INNER JOIN Rol R ON R.RolID=U.RolID
-                                    WHERE U.UsuarioNombre = @UsuarioNombre" },
+                                FROM Usuario U
+                                INNER JOIN Rol R ON R.RolID=U.RolID
+                                WHERE U.UsuarioNombre = @UsuarioNombre" },
+            { UsuarioQueries.GetUsuariosByUsuarioID, @"
+                                SELECT 
+                                     U.UsuarioID
+                                    ,U.UsuarioNombre
+                                    ,U.Contrasena
+                                    ,U.FechaCreacion
+                                    ,U.RolID
+                                    ,R.RolNombre
 
-                { UsuarioQueries.ExistsUasuario, @"
-                                    SELECT CASE 
-                                             WHEN EXISTS (SELECT 1 FROM Usuario WHERE UsuarioNombre = @UsuarioNombre) 
-                                             THEN 1 
-                                             ELSE 0 
-                                           END AS ExisteUsuario;" },
+                                FROM Usuario U
+                                INNER JOIN Rol R ON R.RolID=U.RolID
+                                WHERE U.UsuarioID = @UsuarioID" },
 
-                { UsuarioQueries.SaveUsuario, @"
-                                    INSERT INTO Usuario(UsuarioNombre,Contrasena,FechaCreacion,RolID) 
-                                    values(@UsuarioNombre,@Contrasena,GETDATE(),@RolID)" },
+            { UsuarioQueries.ExistsUasuario, @"
+                                SELECT CASE 
+                                            WHEN EXISTS (SELECT 1 FROM Usuario WHERE UsuarioNombre = @UsuarioNombre) 
+                                            THEN 1 
+                                            ELSE 0 
+                                        END AS ExisteUsuario;" },
+
+            { UsuarioQueries.SaveUsuario, @"
+                                INSERT INTO Usuario(UsuarioNombre,Contrasena,FechaCreacion,RolID) 
+                                values(@UsuarioNombre,@Contrasena,GETDATE(),@RolID)" },
             #endregion
 
             #region Rol
-                { RolQueries.GetAllRol, @"
-                        SELECT RolID, RolNombre FROM Rol " }
+            { RolQueries.GetAllRol, @"SELECT RolID, RolNombre FROM Rol " },
 
+            #endregion
+
+
+            #region Menu Pagina
+            { MenuPaginaQueries.GetMenuPaginasByPersonaID, @"                      
+                                SELECT 
+	                                M.MenuID,
+	                                P.PaginaID,
+	                                M.MenuNombre,
+	                                M.MenuIcono,
+	                                M.MenuUrlLink,
+	                                P.PaginaNombre,
+	                                P.PaginaIcono,
+	                                P.PaginaUrlLink
+                                FROM Usuario U
+                                INNER JOIN Pagina_Rol PR ON PR.RolID=U.RolID AND PR.Activo=1
+                                INNER JOIN Pagina P ON P.PaginaID=PR.PaginaID AND P.Activo=1
+                                INNER JOIN Menu M ON M.MenuID=P.MenuID AND M.Activo=1
+                                WHERE U.UsuarioID = CASE WHEN @RolID=1 THEN U.UsuarioID ELSE @UsuarioID END" }
             #endregion
         };
 
-    public static string Get<T>(T type) where T : Enum
+        public static string Get<T>(T type) where T : Enum
         {
             return queries[type];
         }

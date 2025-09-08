@@ -1,4 +1,5 @@
-﻿using Airsoft.Domain.Entities;
+﻿using Airsoft.Application.DTOs.Response;
+using Airsoft.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 

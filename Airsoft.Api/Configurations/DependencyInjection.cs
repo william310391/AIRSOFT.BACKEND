@@ -43,6 +43,7 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IPersonaRepository, PersonaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IRolRepository, RolRepository>();
+            services.AddScoped<IMenuPaginaRepository, MenuPaginaRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();            
 
             // Automapper
@@ -58,6 +59,7 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserContextService, UserContextService>();
+            services.AddScoped<IMenuPaginaService, MenuPaginaService>();
 
           
 
@@ -93,24 +95,24 @@ namespace Airsoft.Api.Configurations
                 // Para depurar errores de JWT
                 opt.Events = new JwtBearerEvents
                 {
-                    //OnMessageReceived = context =>
-                    //{
-                    //    // Intentar leer del header estándar
-                    //    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+                    OnMessageReceived = context =>
+                    {
+                        // Intentar leer del header estándar
+                        var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
 
-                    //    if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
-                    //    {
-                    //        context.Token = authHeader.Substring("Bearer ".Length).Trim();
-                    //    }
-                    //    else
-                    //    {
-                    //        // Si viene en un header personalizado
-                    //        context.Token = context.Request.Headers["X-Token"].FirstOrDefault();
-                    //    }
+                        if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                        {
+                            context.Token = authHeader.Substring("Bearer ".Length).Trim();
+                        }
+                        else
+                        {
+                            // Si viene en un header personalizado
+                            context.Token = context.Request.Headers["X-Token"].FirstOrDefault();
+                        }
 
-                    //    Console.WriteLine($"TOKEN RECIBIDO: {context.Token}");
-                    //    return Task.CompletedTask;
-                    //},
+                        Console.WriteLine($"TOKEN RECIBIDO: {context.Token}");
+                        return Task.CompletedTask;
+                    },
 
                     OnChallenge = async context =>
                     {
@@ -144,11 +146,11 @@ namespace Airsoft.Api.Configurations
                     },
 
 
-                    OnMessageReceived = context =>
-                    {
-                        Console.WriteLine($"TOKEN RECIBIDO: {context.Token}");
-                        return Task.CompletedTask;
-                    },
+                    //OnMessageReceived = context =>
+                    //{
+                    //    Console.WriteLine($"TOKEN RECIBIDO: {context.Token}");
+                    //    return Task.CompletedTask;
+                    //},
                     OnAuthenticationFailed = context =>
                     {
                         Console.WriteLine($"JWT error: {context.Exception}");

@@ -27,6 +27,21 @@ namespace Airsoft.Infrastructure.Repositories
 
             return entidad!; // "!" para indicar al compilador que sabes que podría ser null
         }
+        public async Task<Usuario> GetUsuariosByUsuarioID(int usuarioID)
+        {
+            var sql = SqlQueryMapper.Get(UsuarioQueries.GetUsuariosByUsuarioID);
+
+            var entidad = await _context.EjecutarAsync(async conn =>
+            {
+                return await conn.QueryFirstOrDefaultAsync<Usuario>(
+                    sql,
+                    new { UsuarioID = usuarioID }
+                );
+            });
+
+            return entidad!; // "!" para indicar al compilador que sabes que podría ser null
+        }
+
         public async Task<bool> ExistsUsuario(string usuarioNombre)
         {
             var sql = SqlQueryMapper.Get(UsuarioQueries.ExistsUasuario);

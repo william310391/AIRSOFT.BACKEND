@@ -42,7 +42,11 @@ namespace Airsoft.Application.Services
        
             // Verificar contraseña sin volver a hashear
             if (!BCrypt.Net.BCrypt.Verify(request.Password, entidad.Contrasena))
-                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Contraseña incorrecta");    
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Contraseña incorrecta");
+
+            var lista = await _unitOfWork.MenuPaginaRepository.GetMenuPaginasByPersonaID(entidad.UsuarioID,entidad.RolID);
+            var listaDTO = _mapper.Map<List<MenuPaginaResponse>>(lista);
+
 
             // Si todo OK, generar token
             var loginResponse = new LoginResponse
@@ -105,22 +109,42 @@ namespace Airsoft.Application.Services
                 throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró un usuario autenticado.");     
             }
 
-            //var claims = httpContext.User.Claims
-            //.Select(c => new ClaimDto { Type = c.Type, Value = c.Value })
-            //.ToList();
-
             var response = new ApiResponse<ValidarTokenResponse>
             {
                 Success = true,
                 Message = "Token válido",
                 Data = new ValidarTokenResponse
                 {
-                    isTokenValido = true
+                    isTokenValido = true,
                 }             
             };
 
            return await Task.FromResult(response);
         }
+
+        //public async Task<ApiResponse<ObtenerAccesosResponse>> ObtenerAccesos(ObtenerAccesosRequest request)
+        //{
+        //    var usuario = await _unitOfWork.UsuarioRepository.GetUsuariosByUsuarioID(request.usuarioID);
+
+        //    if (usuario == null)
+        //        throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El usuario ingresado existe");
+
+        //    var listaAccesos = await _unitOfWork.MenuPaginaRepository.GetMenuPaginasByPersonaID(usuario.UsuarioID, usuario.RolID);
+
+        //    ObtenerAccesosResponse res = new ObtenerAccesosResponse()
+        //    {
+        //        nombreRol = usuario.RolNombre,
+        //        nombreUsuario = usuario.UsuarioNombre,
+        //        listaPagina = _mapper.Map<List<MenuPaginaResponse>>(listaAccesos),
+        //    };
+
+        //    return new ApiResponse<ObtenerAccesosResponse>
+        //    {
+        //        Success = true,
+        //        Message = "Persona obtenida correctamente",
+        //        Data = res,
+        //    };
+        //}
 
     }
 }

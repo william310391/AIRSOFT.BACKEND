@@ -3,6 +3,7 @@
     public enum UsuarioQueries
     {
         GetUsuariosByUsuarioNombre,
+        GetUsuariosByUsuarioID,
         ExistsUasuario,
         SaveUsuario
     }
