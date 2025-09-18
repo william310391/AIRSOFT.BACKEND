@@ -10,5 +10,6 @@
         public required string PaginaNombre { get; set; }
         public string? PaginaIcono { get; set; }
         public string? PaginaUrlLink { get; set; }
+        public required string RutaComponente { get; set; }
     }
 }

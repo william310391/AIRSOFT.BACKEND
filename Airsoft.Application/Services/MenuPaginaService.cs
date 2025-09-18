@@ -2,6 +2,7 @@
 using Airsoft.Application.DTOs.Response;
 using Airsoft.Application.Exceptions;
 using Airsoft.Application.Interfaces;
+using Airsoft.Domain.Entities;
 using Airsoft.Infrastructure.Intefaces;
 using AutoMapper;
 using System.Net;
@@ -38,10 +39,10 @@ namespace Airsoft.Application.Services
             if (usuario == null)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El usuario ingresado existe");
 
-            var listaAccesos = await _unitOfWork.MenuPaginaRepository.GetMenuPaginasByPersonaID(usuario.UsuarioID, usuario.RolID);
-
+            List<MenuPagina> listaAccesos = await _unitOfWork.MenuPaginaRepository.GetMenuPaginasByPersonaID(usuario.UsuarioID, usuario.RolID);
             ObtenerAccesosResponse res = new ObtenerAccesosResponse()
             {
+                usuarioID= usuario.UsuarioID,
                 nombreRol = usuario.RolNombre,
                 nombreUsuario = usuario.UsuarioNombre,
                 listaPagina = _mapper.Map<List<MenuPaginaResponse>>(listaAccesos),
