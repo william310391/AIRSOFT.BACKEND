@@ -56,6 +56,7 @@ namespace Airsoft.Api.Configurations
 
             // Services
             services.AddScoped<IPersonaService, PersonaService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserContextService, UserContextService>();

@@ -4,6 +4,8 @@
     {
         GetUsuariosByUsuarioNombre,
         GetUsuariosByUsuarioID,
+        GetUsuariosAll,
+        GetUsuariosFind,
         ExistsUasuario,
         SaveUsuario
     }

@@ -11,9 +11,12 @@ namespace Airsoft.Api.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IMenuPaginaService _menuPaginaService;
+        private readonly IUsuarioService _usuarioService;
 
-        public UsuarioController(IMenuPaginaService menuPaginaService) {
+        public UsuarioController(IMenuPaginaService menuPaginaService, IUsuarioService usuarioService)
+        {
             _menuPaginaService = menuPaginaService;
+            _usuarioService = usuarioService;
         }
 
         [HttpPost("obtenerAccesos")]
@@ -24,6 +27,16 @@ namespace Airsoft.Api.Controllers
         {
             var response = await _menuPaginaService.ObtenerAccesos(request);
             return StatusCode(response.StatusCode, response);
+        }
+        [HttpPost("getUsuarioAll")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(UsuarioResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<UsuarioResponse>> GetUsuarioAll()
+        {
+            var response = await _usuarioService.GetUsuarioAll();
+            return StatusCode(response.StatusCode, response);
+
         }
 
     }

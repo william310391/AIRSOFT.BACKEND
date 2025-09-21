@@ -35,6 +35,37 @@ namespace Airsoft.Infrastructure.Queries
                                 FROM Usuario U
                                 INNER JOIN Rol R ON R.RolID=U.RolID
                                 WHERE U.UsuarioID = @UsuarioID" },
+            { UsuarioQueries.GetUsuariosAll,@"
+                                SELECT 
+                                     U.UsuarioID
+                                    ,U.UsuarioNombre
+                                    ,U.Contrasena
+                                    ,U.FechaCreacion
+                                    ,U.RolID
+                                    ,R.RolNombre
+
+                                FROM Usuario U
+                                INNER JOIN Rol R ON R.RolID=U.RolID" },
+
+            {
+                UsuarioQueries.GetUsuariosFind, @"
+                                SELECT 
+                                     U.UsuarioID
+                                    ,U.UsuarioNombre
+                                    ,U.Contrasena
+                                    ,U.FechaCreacion
+                                    ,U.RolID
+                                    ,R.RolNombre
+                                FROM Usuario U
+                                INNER JOIN Rol R ON R.RolID = U.RolID
+                                WHERE (@UsuarioNombre IS NULL OR U.UsuarioNombre LIKE '%' + @UsuarioNombre + '%')
+                                ORDER BY U.UsuarioID
+                                OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
+
+                                SELECT COUNT(*)
+                                FROM Usuario U
+                                WHERE (@UsuarioNombre IS NULL OR U.UsuarioNombre LIKE '%' + @UsuarioNombre + '%');"
+            },
 
             { UsuarioQueries.ExistsUasuario, @"
                                 SELECT CASE 
