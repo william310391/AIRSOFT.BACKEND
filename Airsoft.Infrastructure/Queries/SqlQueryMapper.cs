@@ -58,13 +58,13 @@ namespace Airsoft.Infrastructure.Queries
                                     ,R.RolNombre
                                 FROM Usuario U
                                 INNER JOIN Rol R ON R.RolID = U.RolID
-                                WHERE (@UsuarioNombre IS NULL OR U.UsuarioNombre LIKE '%' + @UsuarioNombre + '%')
+                                WHERE (@Buscar IS NULL OR U.UsuarioNombre LIKE '%' + @Buscar + '%')
                                 ORDER BY U.UsuarioID
                                 OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
 
                                 SELECT COUNT(*)
                                 FROM Usuario U
-                                WHERE (@UsuarioNombre IS NULL OR U.UsuarioNombre LIKE '%' + @UsuarioNombre + '%');"
+                                WHERE (@Buscar IS NULL OR U.UsuarioNombre LIKE '%' + @Buscar + '%');"
             },
 
             { UsuarioQueries.ExistsUasuario, @"

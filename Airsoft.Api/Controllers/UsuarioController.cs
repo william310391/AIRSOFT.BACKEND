@@ -39,5 +39,16 @@ namespace Airsoft.Api.Controllers
 
         }
 
+        [HttpPost("getUsuarioFind")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(FindResponse<UsuarioResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<FindResponse<UsuarioResponse>>> GetUsuarioFind([FromBody] FindRequest request)
+        {
+            var response = await _usuarioService.GetUsuarioFind(request);
+            return StatusCode(response.StatusCode, response);
+
+        }
+
     }
 }

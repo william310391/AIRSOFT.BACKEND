@@ -1,4 +1,5 @@
-﻿using Airsoft.Application.DTOs.Response;
+﻿using Airsoft.Application.DTOs.Request;
+using Airsoft.Application.DTOs.Response;
 using Airsoft.Application.Interfaces;
 using Airsoft.Infrastructure.Intefaces;
 using AutoMapper;
@@ -22,6 +23,23 @@ namespace Airsoft.Application.Services
                 Success = true,
                 Message = "Datos Obtenidos",
                 Data = _mapper.Map<List<UsuarioResponse>>(lista),
+            };
+        }
+        public async Task<ApiResponse<FindResponse<UsuarioResponse>>> GetUsuarioFind(FindRequest request)
+        {
+            var (usuarios, totalRegistros) = await _unitOfWork.UsuarioRepository.GetUsuarioFind(request.buscar,request.pagina, request.tamanoPagina);
+            var paginacionResponse = new FindResponse<UsuarioResponse>
+            {
+                datos = _mapper.Map<List<UsuarioResponse>>(usuarios),
+                pagina = request.pagina,
+                tamanoPagina = request.tamanoPagina,
+                totalRegistros = totalRegistros
+            };
+            return new ApiResponse<FindResponse<UsuarioResponse>>
+            {
+                Success = true,
+                Message = "Datos Obtenidos",
+                Data = paginacionResponse
             };
         }
 

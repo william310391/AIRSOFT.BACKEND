@@ -39,12 +39,25 @@ namespace Airsoft.Infrastructure.Repositories
             });
         }
 
-        //public async Task<(List<Usuario> Usuarios, int TotalRegistros)> GetUsuarioFind(string buscar,int pagina, int tamañoPagina) {
-        //    var sql = SqlQueryMapper.Get(UsuarioQueries.GetUsuariosFind);
+        public async Task<(List<Usuario> Usuarios, int TotalRegistros)> GetUsuarioFind(string? buscar, int pagina, int tamañoPagina)
+        {
+            var sql = SqlQueryMapper.Get(UsuarioQueries.GetUsuariosFind);
 
-      
+            return await _context.EjecutarAsync(async conn =>
+            {
+                using var multi = await conn.QueryMultipleAsync(sql, new
+                {
+                    Skip = (pagina - 1) * tamañoPagina,
+                    Take = tamañoPagina,
+                    Buscar = buscar
+                });
 
-        //}
+                var usuarios = (await multi.ReadAsync<Usuario>()).ToList();
+                var total = await multi.ReadFirstAsync<int>();
+
+                return (usuarios, total);
+            });
+        }
 
 
         public async Task<Usuario> GetUsuariosByUsuarioID(int usuarioID)
