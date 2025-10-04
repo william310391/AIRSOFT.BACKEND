@@ -31,13 +31,13 @@ namespace Airsoft.Application.Services
             //var response = new ApiResponse<LoginResponse>();
 
             // Validar campos obligatorios
-            if (string.IsNullOrWhiteSpace(request.UsuarioNombre) || string.IsNullOrWhiteSpace(request.Password))
+            if (string.IsNullOrWhiteSpace(request.UsuarioCuenta) || string.IsNullOrWhiteSpace(request.Password))
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Debe ingresar usuario y contraseña");
 
             // Buscar usuario
-            var entidad = await _unitOfWork.UsuarioRepository.GetUsuariosByUsuarioNombre(request.UsuarioNombre!);
+            var entidad = await _unitOfWork.UsuarioRepository.GetUsuarioByUsuarioCuenta(request.UsuarioCuenta!);
 
-            if (entidad == null || string.IsNullOrEmpty(entidad.UsuarioNombre) || string.IsNullOrEmpty(entidad.Contrasena))
+            if (entidad == null || string.IsNullOrEmpty(entidad.UsuarioCuenta) || string.IsNullOrEmpty(entidad.Contrasena))
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El usuario invalido");             
        
             // Verificar contraseña sin volver a hashear
@@ -52,7 +52,7 @@ namespace Airsoft.Application.Services
             var loginResponse = new LoginResponse
             {
                 UsuarioId = entidad.UsuarioID,
-                NombreUsuario = entidad.UsuarioNombre,
+                UsuarioCuenta = entidad.UsuarioCuenta,
                 Token = _jwtService.GenerarToken(entidad)
             };
 
@@ -68,7 +68,7 @@ namespace Airsoft.Application.Services
             // para obtener los valores del token
             var aaaa = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
 
-            var valid = await _unitOfWork.UsuarioRepository.ExistsUsuario(request.UsuarioNombre);
+            var valid = await _unitOfWork.UsuarioRepository.ExistsUsuario(request.UsuarioCuenta);
 
             if (valid)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El usuario ingresado existe");
@@ -121,30 +121,6 @@ namespace Airsoft.Application.Services
 
            return await Task.FromResult(response);
         }
-
-        //public async Task<ApiResponse<ObtenerAccesosResponse>> ObtenerAccesos(ObtenerAccesosRequest request)
-        //{
-        //    var usuario = await _unitOfWork.UsuarioRepository.GetUsuariosByUsuarioID(request.usuarioID);
-
-        //    if (usuario == null)
-        //        throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El usuario ingresado existe");
-
-        //    var listaAccesos = await _unitOfWork.MenuPaginaRepository.GetMenuPaginasByPersonaID(usuario.UsuarioID, usuario.RolID);
-
-        //    ObtenerAccesosResponse res = new ObtenerAccesosResponse()
-        //    {
-        //        nombreRol = usuario.RolNombre,
-        //        nombreUsuario = usuario.UsuarioNombre,
-        //        listaPagina = _mapper.Map<List<MenuPaginaResponse>>(listaAccesos),
-        //    };
-
-        //    return new ApiResponse<ObtenerAccesosResponse>
-        //    {
-        //        Success = true,
-        //        Message = "Persona obtenida correctamente",
-        //        Data = res,
-        //    };
-        //}
 
     }
 }

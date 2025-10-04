@@ -44,7 +44,8 @@ namespace Airsoft.Application.Services
             {
                 usuarioID= usuario.UsuarioID,
                 nombreRol = usuario.RolNombre,
-                nombreUsuario = usuario.UsuarioNombre,
+                usuarioCuenta = usuario.UsuarioCuenta,
+                usuarioNombre = usuario.UsuarioNombre,
                 listaPagina = _mapper.Map<List<MenuPaginaResponse>>(listaAccesos),
             };
 

@@ -14,23 +14,27 @@ namespace Airsoft.Infrastructure.Queries
             { UsuarioQueries.GetUsuariosByUsuarioNombre, @"
                                 SELECT 
                                      U.UsuarioID
+                                    ,U.UsuarioCuenta
                                     ,U.UsuarioNombre
                                     ,U.Contrasena
                                     ,U.FechaCreacion
                                     ,U.RolID
                                     ,R.RolNombre
+                                    ,U.Activo
 
                                 FROM Usuario U
                                 INNER JOIN Rol R ON R.RolID=U.RolID
-                                WHERE U.UsuarioNombre = @UsuarioNombre" },
+                                WHERE U.UsuarioCuenta = @UsuarioCuenta" },
             { UsuarioQueries.GetUsuariosByUsuarioID, @"
                                 SELECT 
                                      U.UsuarioID
+                                    ,U.UsuarioCuenta
                                     ,U.UsuarioNombre
                                     ,U.Contrasena
                                     ,U.FechaCreacion
                                     ,U.RolID
                                     ,R.RolNombre
+                                    ,U.Activo
 
                                 FROM Usuario U
                                 INNER JOIN Rol R ON R.RolID=U.RolID
@@ -38,11 +42,13 @@ namespace Airsoft.Infrastructure.Queries
             { UsuarioQueries.GetUsuariosAll,@"
                                 SELECT 
                                      U.UsuarioID
+                                    ,U.UsuarioCuenta
                                     ,U.UsuarioNombre
                                     ,U.Contrasena
                                     ,U.FechaCreacion
                                     ,U.RolID
                                     ,R.RolNombre
+                                    ,U.Activo
 
                                 FROM Usuario U
                                 INNER JOIN Rol R ON R.RolID=U.RolID" },
@@ -51,32 +57,34 @@ namespace Airsoft.Infrastructure.Queries
                 UsuarioQueries.GetUsuariosFind, @"
                                 SELECT 
                                      U.UsuarioID
+                                    ,U.UsuarioCuenta
                                     ,U.UsuarioNombre
                                     ,U.Contrasena
                                     ,U.FechaCreacion
                                     ,U.RolID
                                     ,R.RolNombre
+                                    ,U.Activo
                                 FROM Usuario U
                                 INNER JOIN Rol R ON R.RolID = U.RolID
-                                WHERE (@Buscar IS NULL OR U.UsuarioNombre LIKE '%' + @Buscar + '%')
+                                WHERE (@Buscar IS NULL OR U.UsuarioCuenta LIKE '%' + @Buscar + '%')
                                 ORDER BY U.UsuarioID
                                 OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
 
                                 SELECT COUNT(*)
                                 FROM Usuario U
-                                WHERE (@Buscar IS NULL OR U.UsuarioNombre LIKE '%' + @Buscar + '%');"
+                                WHERE (@Buscar IS NULL OR U.UsuarioCuenta LIKE '%' + @Buscar + '%');"
             },
 
             { UsuarioQueries.ExistsUasuario, @"
                                 SELECT CASE 
-                                            WHEN EXISTS (SELECT 1 FROM Usuario WHERE UsuarioNombre = @UsuarioNombre) 
+                                            WHEN EXISTS (SELECT 1 FROM Usuario WHERE UsuarioCuenta = @UsuarioCuenta) 
                                             THEN 1 
                                             ELSE 0 
                                         END AS ExisteUsuario;" },
 
             { UsuarioQueries.SaveUsuario, @"
-                                INSERT INTO Usuario(UsuarioNombre,Contrasena,FechaCreacion,RolID) 
-                                values(@UsuarioNombre,@Contrasena,GETDATE(),@RolID)" },
+                                INSERT INTO Usuario(UsuarioCuenta,UsuarioNombre,Contrasena,FechaCreacion,RolID) 
+                                values(@UsuarioCuenta,@UsuarioNombre,@Contrasena,GETDATE(),@RolID)" },
             #endregion
 
             #region Rol

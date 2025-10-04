@@ -13,7 +13,7 @@ namespace Airsoft.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Usuario> GetUsuariosByUsuarioNombre(string usuarioNombre)
+        public async Task<Usuario> GetUsuarioByUsuarioCuenta(string usuarioCuenta)
         {
             var sql = SqlQueryMapper.Get(UsuarioQueries.GetUsuariosByUsuarioNombre);
 
@@ -21,7 +21,7 @@ namespace Airsoft.Infrastructure.Repositories
             {
                 return await conn.QueryFirstOrDefaultAsync<Usuario>(
                     sql,
-                    new { UsuarioNombre = usuarioNombre }
+                    new { UsuarioCuenta = usuarioCuenta }
                 );
             });
 
@@ -75,14 +75,14 @@ namespace Airsoft.Infrastructure.Repositories
             return entidad!; // "!" para indicar al compilador que sabes que podría ser null
         }
 
-        public async Task<bool> ExistsUsuario(string usuarioNombre)
+        public async Task<bool> ExistsUsuario(string usuarioCuenta)
         {
             var sql = SqlQueryMapper.Get(UsuarioQueries.ExistsUasuario);
             return await _context.EjecutarAsync(async conn =>
             {
                 return await conn.QueryFirstOrDefaultAsync<bool>(
                     sql,
-                    new { UsuarioNombre = usuarioNombre }
+                    new { UsuarioCuenta = usuarioCuenta }
                 );
             });
         }

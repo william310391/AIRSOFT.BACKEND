@@ -16,7 +16,7 @@ SELECT * FROM Pagina_Rol
 insert into Persona(Nombre,Apellido)values('William Teofilo','Astucuri Inca')
 insert into rol(rolNombre) values('Admin')
 insert into rol(rolNombre) values('Usuario')
-insert into Usuario(UsuarioNombre,Contrasena,FechaCreacion,RolID) values('zerox','123456',GETDATE(),1)
+insert into Usuario(,UsuarioCuenta,UsuarioNombre,Contrasena,FechaCreacion,RolID) values('zerox','usaurio de prueba','123456',GETDATE(),1)
 
 
 CREATE TABLE Persona(
@@ -34,10 +34,12 @@ CREATE TABLE Rol(
 
 create table Usuario(
  UsuarioID INT IDENTITY(1,1) PRIMARY KEY
+,UsuarioCuenta VARCHAR(250) NOT NULL
 ,UsuarioNombre VARCHAR(100) NOT NULL
 ,Contrasena VARCHAR(255) NOT NULL
 ,FechaCreacion DATETIME DEFAULT GETDATE()
 ,RolID INT
+,Activo bit DEFAULT 1
 
 ,CONSTRAINT FK_Usuario_Rol FOREIGN KEY (RolID) REFERENCES Rol(RolID)
 )

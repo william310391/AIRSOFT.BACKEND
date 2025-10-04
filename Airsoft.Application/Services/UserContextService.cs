@@ -19,7 +19,7 @@ namespace Airsoft.Application.Services
         private ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
 
         public string? GetUsuarioID() => User?.FindFirst(EnumClaims.UsuarioID)?.Value;
-        public string? GetUsuarioNombre() => User?.FindFirst(EnumClaims.UsuarioNombre)?.Value;
+        public string? GetUsuarioCuenta() => User?.FindFirst(EnumClaims.UsuarioCuenta)?.Value;
         public string? GetRol() => User?.FindFirst(EnumClaims.UsuarioRol)?.Value;
         //public string? GetAttribute(string attribute) => User?.FindFirst(attribute)?.Value;
         public T? GetAttribute<T>(string attribute)
