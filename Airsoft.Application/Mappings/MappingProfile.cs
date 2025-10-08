@@ -13,6 +13,7 @@ namespace Airsoft.Application.Mappings
             CreateMap<Persona, PersonaResponse>();
             CreateMap<Usuario, UsuarioResponse>(); 
             CreateMap<MenuPagina, MenuPaginaResponse>();
+            CreateMap<Rol, RolResponse>();
 
             // DTO → Entity
             CreateMap<PersonaRequest, Persona>();

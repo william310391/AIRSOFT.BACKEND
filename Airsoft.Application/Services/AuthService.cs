@@ -15,15 +15,13 @@ namespace Airsoft.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
-        private readonly IUserContextService _userContextService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, IJwtService jwtService, IUserContextService userContextService, IHttpContextAccessor httpContextAccessor)
+        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, IJwtService jwtService, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _jwtService = jwtService;
-            _userContextService = userContextService;
             _httpContextAccessor = httpContextAccessor;
         }        
         public async Task<ApiResponse<LoginResponse>> Login(LoginRequest request)
@@ -62,44 +60,6 @@ namespace Airsoft.Application.Services
                 Data = loginResponse
             };
         }
-
-        public async Task<ApiResponse<UsuarioResponse>> Registrar(UsuarioRequest request)
-        {
-            // para obtener los valores del token
-            var aaaa = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
-
-            var valid = await _unitOfWork.UsuarioRepository.ExistsUsuario(request.UsuarioCuenta);
-
-            if (valid)
-                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El usuario ingresado existe");
-
-            var response = new ApiResponse<LoginResponse>();
-            request.Contrasena = BCrypt.Net.BCrypt.HashPassword(request.Contrasena, workFactor: 12);
-
-            var usuario = _mapper.Map<Usuario>(request);            
-            var Roles = await _unitOfWork.RolRepository.GetAllRol();
-
-            if (string.IsNullOrEmpty(request.RolNombre) || !Roles.Any(x => x.RolNombre.ToUpper() == request.RolNombre.ToUpper()))     
-                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Rol no válido");
-      
-            usuario.RolID = Roles
-                .First(x => x.RolNombre.ToUpper() == request.RolNombre.ToUpper())
-                .RolID;
-
-            var res = await _unitOfWork.UsuarioRepository.SaveUsuario(usuario);
-
-            if (!res)
-                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Existe un problema para registrar el usuario");
-
-            return new ApiResponse<UsuarioResponse>()
-            {
-                Success = true,
-                Message = "Login exitoso",
-                Data= _mapper.Map<UsuarioResponse>(usuario),                
-            };
-        }
-
-
         public async Task<ApiResponse<ValidarTokenResponse>> ValidarToken()
         {
             var httpContext = _httpContextAccessor.HttpContext;

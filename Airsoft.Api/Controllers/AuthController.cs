@@ -26,16 +26,6 @@ namespace Airsoft.Api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        [HttpPost("register")]
-        [Authorize(Roles = "Admin")]
-        [ProducesResponseType(typeof(UsuarioResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<UsuarioResponse>> Registrar([FromBody] UsuarioRequest request) 
-        {           
-            var response = await _authService.Registrar(request);
-            return StatusCode(response.StatusCode, response);
-        }
-
         [HttpPost("validateToken")]
         [Authorize()]
         [ProducesResponseType(typeof(ValidarTokenResponse), StatusCodes.Status200OK)]

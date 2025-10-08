@@ -7,5 +7,7 @@ namespace Airsoft.Application.Interfaces
     {
         Task<ApiResponse<List<UsuarioResponse>>> GetUsuarioAll();
         Task<ApiResponse<FindResponse<UsuarioResponse>>> GetUsuarioFind(FindRequest request);
+        Task<ApiResponse<UsuarioResponse>> Create(UsuarioRequest request);
+        Task<ApiResponse<List<RolResponse>>> GetRol();
     }
 }
