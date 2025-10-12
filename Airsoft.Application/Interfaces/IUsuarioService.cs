@@ -10,5 +10,8 @@ namespace Airsoft.Application.Interfaces
         Task<ApiResponse<UsuarioResponse>> Create(UsuarioRequest request);
         Task<ApiResponse<List<RolResponse>>> GetRol();
         Task<ApiResponse<bool>> Update(UsuarioRequest request);
+        Task<ApiResponse<bool>> Delete(UsuarioDeleteRequest request);
+        Task<ApiResponse<bool>> ChangeState(UsuarioChangeStateRequest request);
+
     }
 }

@@ -125,13 +125,66 @@ namespace Airsoft.Application.Services
 
             var res = await _unitOfWork.UsuarioRepository.UpdateUsuario(usuario);
 
+            if (!res)
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Ocurrio un problema al actualizar el usuario");
+
+
             return new ApiResponse<bool>()
             {
-                Success = true,
+                Success = res,
                 Message = "Se actualizo Correctamente el usuario",
                 Data = res,
             };            
 
+        }
+
+        public async Task<ApiResponse<bool>> Delete(UsuarioDeleteRequest request) {
+            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
+            var existUsuario = await _unitOfWork.UsuarioRepository.GetUsuariosByUsuarioID(request.usuarioID);
+
+            if (existUsuario == null)
+                throw new ApiResponseExceptions(HttpStatusCode.Conflict, "El usuario ingresado existe");
+
+            if (usuarioID == request.usuarioID)
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El mismo usuario no puede eliminarse");
+
+            var usuario = _mapper.Map<Usuario>(request);
+            var res = await _unitOfWork.UsuarioRepository.DeleteUsuario(request.usuarioID);
+
+            if (!res)
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Ocurrio un problema al eliminar el usuario");
+
+            return new ApiResponse<bool>()
+            {
+                Success = res,
+                Message = "Se elimino Correctamente el usuario",
+                Data = res,
+            };
+        }
+
+        public async Task<ApiResponse<bool>> ChangeState(UsuarioChangeStateRequest request)
+        {
+            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
+            var existUsuario = await _unitOfWork.UsuarioRepository.GetUsuariosByUsuarioID(request.usuarioID);
+
+            if (existUsuario == null)
+                throw new ApiResponseExceptions(HttpStatusCode.Conflict, "El usuario ingresado existe");
+
+            if (usuarioID == request.usuarioID)
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El mismo usuario no puede cambiar de estado");
+
+            var usuario = _mapper.Map<Usuario>(request);
+            var res = await _unitOfWork.UsuarioRepository.ChangeState(request.usuarioID, !existUsuario.Estado);
+
+            if (!res)
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Ocurrio un problema al cambiar de estado el usuario");
+
+            return new ApiResponse<bool>()
+            {
+                Success = res,
+                Message = "Se cambio de estado Correctamente el usuario",
+                Data = res,
+            };
         }
     }
 }

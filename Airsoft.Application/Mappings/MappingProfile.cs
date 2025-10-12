@@ -18,6 +18,8 @@ namespace Airsoft.Application.Mappings
             // DTO → Entity
             CreateMap<PersonaRequest, Persona>();
             CreateMap<UsuarioRequest, Usuario>();
+            CreateMap<UsuarioDeleteRequest, Usuario>();
+            CreateMap<UsuarioChangeStateRequest, Usuario>();
             CreateMap<MenuPaginaRequest, MenuPagina>();
 
             // Si los nombres de propiedades no coinciden:

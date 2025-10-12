@@ -1,7 +1,6 @@
 ﻿using Airsoft.Application.DTOs.Request;
 using Airsoft.Application.DTOs.Response;
 using Airsoft.Application.Interfaces;
-using Airsoft.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,6 +69,27 @@ namespace Airsoft.Api.Controllers
             var response = await _usuarioService.Update(request);
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpPost("delete")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ApiResponse<bool>>> Delete([FromBody] UsuarioDeleteRequest request)
+        {
+            var response = await _usuarioService.Delete(request);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPost("changeState")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ApiResponse<bool>>> ChangeState([FromBody] UsuarioChangeStateRequest request)
+        {
+            var response = await _usuarioService.ChangeState(request);
+            return StatusCode(response.StatusCode, response);
+        }
+
 
         [HttpGet("getRol")]
         [Authorize(Roles = "Admin")]
