@@ -100,5 +100,38 @@ namespace Airsoft.Application.Services
                 Data = _mapper.Map<List<RolResponse>>(Roles),
             };
         }
+
+        public async Task<ApiResponse<bool>> Update(UsuarioRequest request)
+        {
+            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
+            var roles = await _unitOfWork.RolRepository.GetAllRol();
+            var valid = await _unitOfWork.UsuarioRepository.GetUsuariosByUsuarioID(request.UsuarioID);
+            var existUsuario = await _unitOfWork.UsuarioRepository.ExistsUsuario(request.UsuarioCuenta);
+            
+            if(usuarioID==request.UsuarioID)
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El mismo usuario no puede actualizar sus datos");
+
+            if (!valid.UsuarioCuenta.Equals(request.UsuarioCuenta) && existUsuario)
+                throw new ApiResponseExceptions(HttpStatusCode.Conflict, "El usuario ingresado existe");
+
+            if (!roles.FindAll(x => x.RolID == request.RolID).Any())
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "Rol no válido");
+
+            //if (!request.Contrasena.Equals(request.ContrasenaConfirmar))
+            //    throw new ApiResponseExceptions(HttpStatusCode.UnprocessableEntity, "Las contraseñas no son iguales");
+            //request.Contrasena = BCrypt.Net.BCrypt.HashPassword(request.Contrasena, workFactor: 12);
+
+            var usuario = _mapper.Map<Usuario>(request);
+
+            var res = await _unitOfWork.UsuarioRepository.UpdateUsuario(usuario);
+
+            return new ApiResponse<bool>()
+            {
+                Success = true,
+                Message = "Se actualizo Correctamente el usuario",
+                Data = res,
+            };            
+
+        }
     }
 }

@@ -7,6 +7,10 @@
         GetUsuariosAll,
         GetUsuariosFind,
         ExistsUasuario,
-        SaveUsuario
+        SaveUsuario,
+        UpdateUsuario,
+        DeleteUsuario,
+        ChangeState,
+
     }
 }

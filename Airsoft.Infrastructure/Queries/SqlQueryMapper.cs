@@ -20,11 +20,12 @@ namespace Airsoft.Infrastructure.Queries
                                     ,U.FechaCreacion
                                     ,U.RolID
                                     ,R.RolNombre
-                                    ,U.Activo
+                                    ,U.Estado
 
                                 FROM Usuario U
                                 INNER JOIN Rol R ON R.RolID=U.RolID
-                                WHERE U.UsuarioCuenta = @UsuarioCuenta" },
+                                WHERE U.UsuarioCuenta = @UsuarioCuenta
+                                  AND U.Activo= 1"},
             { UsuarioQueries.GetUsuariosByUsuarioID, @"
                                 SELECT 
                                      U.UsuarioID
@@ -34,11 +35,12 @@ namespace Airsoft.Infrastructure.Queries
                                     ,U.FechaCreacion
                                     ,U.RolID
                                     ,R.RolNombre
-                                    ,U.Activo
+                                    ,U.Estado
 
                                 FROM Usuario U
                                 INNER JOIN Rol R ON R.RolID=U.RolID
-                                WHERE U.UsuarioID = @UsuarioID" },
+                                WHERE U.UsuarioID = @UsuarioID
+                                  AND U.Activo= 1" },
             { UsuarioQueries.GetUsuariosAll,@"
                                 SELECT 
                                      U.UsuarioID
@@ -48,10 +50,11 @@ namespace Airsoft.Infrastructure.Queries
                                     ,U.FechaCreacion
                                     ,U.RolID
                                     ,R.RolNombre
-                                    ,U.Activo
+                                    ,U.Estado
 
                                 FROM Usuario U
-                                INNER JOIN Rol R ON R.RolID=U.RolID" },
+                                INNER JOIN Rol R ON R.RolID=U.RolID
+                                WHERE U.Activo= 1" },
 
             {
                 UsuarioQueries.GetUsuariosFind, @"
@@ -63,16 +66,18 @@ namespace Airsoft.Infrastructure.Queries
                                     ,U.FechaCreacion
                                     ,U.RolID
                                     ,R.RolNombre
-                                    ,U.Activo
+                                    ,U.Estado
                                 FROM Usuario U
                                 INNER JOIN Rol R ON R.RolID = U.RolID
                                 WHERE (@Buscar IS NULL OR U.UsuarioCuenta LIKE '%' + @Buscar + '%')
+                                  AND U.Activo= 1
                                 ORDER BY U.UsuarioID
                                 OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
 
                                 SELECT COUNT(*)
                                 FROM Usuario U
-                                WHERE (@Buscar IS NULL OR U.UsuarioCuenta LIKE '%' + @Buscar + '%');"
+                                WHERE (@Buscar IS NULL OR U.UsuarioCuenta LIKE '%' + @Buscar + '%')
+                                 AND U.Activo= 1;"
             },
 
             { UsuarioQueries.ExistsUasuario, @"
@@ -85,6 +90,17 @@ namespace Airsoft.Infrastructure.Queries
             { UsuarioQueries.SaveUsuario, @"
                                 INSERT INTO Usuario(UsuarioCuenta,UsuarioNombre,Contrasena,FechaCreacion,RolID) 
                                 values(@UsuarioCuenta,@UsuarioNombre,@Contrasena,GETDATE(),@RolID)" },
+            { UsuarioQueries.UpdateUsuario,@"
+                                UPDATE Usuario 
+                                       SET UsuarioCuenta= @UsuarioCuenta,
+                                           UsuarioNombre= @UsuarioNombre,                                   
+                                           RolID        = @RolID
+                                WHERE UsuarioID= @UsuarioID"},
+            { UsuarioQueries.DeleteUsuario,@"
+                                UPDATE USUARIO SET Activo=0 WHERE UsuarioID=@UsuarioID"},
+            { UsuarioQueries.ChangeState, @"
+                                UPDATE USUARIO SET Estado=@Estado WHERE UsuarioID=@UsuarioID"},
+         
             #endregion
 
             #region Rol
@@ -95,7 +111,7 @@ namespace Airsoft.Infrastructure.Queries
             #region Menu Pagina
             { MenuPaginaQueries.GetMenuPaginasByPersonaID, @"
                                 DECLARE @RolAdministrador INT = 1
-                                IF EXISTS (SELECT 1 FROM Usuario WHERE UsuarioID = @UsuarioID AND RolID = @RolAdministrador)
+                                IF EXISTS (SELECT 1 FROM Usuario WHERE UsuarioID = @UsuarioID AND RolID = @RolAdministrador AND Activo= 1)
                                 BEGIN
                                     SELECT DISTINCT
                                         M.MenuID,
@@ -127,6 +143,7 @@ namespace Airsoft.Infrastructure.Queries
                                     INNER JOIN Pagina P ON P.PaginaID = PR.PaginaID AND P.Activo = 1
                                     INNER JOIN Menu M ON M.MenuID = P.MenuID AND M.Activo = 1
                                     WHERE U.UsuarioID = @UsuarioID
+                                      AND U.Activo= 1
                                     ORDER BY M.MenuNombre, P.PaginaNombre
                                 END" }
             #endregion

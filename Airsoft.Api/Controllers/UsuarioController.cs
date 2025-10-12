@@ -61,6 +61,16 @@ namespace Airsoft.Api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [HttpPost("update")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ApiResponse<bool>>> Update([FromBody] UsuarioRequest request)
+        {
+            var response = await _usuarioService.Update(request);
+            return StatusCode(response.StatusCode, response);
+        }
+
         [HttpGet("getRol")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(RolResponse), StatusCodes.Status200OK)]
@@ -70,6 +80,8 @@ namespace Airsoft.Api.Controllers
             var response = await _usuarioService.GetRol();
             return StatusCode(response.StatusCode, response);
         }
+
+
 
     }
 }

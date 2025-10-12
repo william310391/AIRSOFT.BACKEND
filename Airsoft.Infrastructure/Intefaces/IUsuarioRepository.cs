@@ -10,5 +10,8 @@ namespace Airsoft.Infrastructure.Intefaces
         Task<(List<Usuario> Usuarios, int TotalRegistros)> GetUsuarioFind(string? buscar, int pagina, int tamañoPagina);
         Task<bool> ExistsUsuario(string usuarioCuenta);
         Task<bool> SaveUsuario(Usuario usuario);
+        Task<bool> UpdateUsuario(Usuario usuario);
+        Task<bool> DeleteUsuario(int usuarioID);
+        Task<bool> ChangeState(int usuarioID, bool estado);
     }
 }

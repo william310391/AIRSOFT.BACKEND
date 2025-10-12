@@ -5,15 +5,17 @@ namespace Airsoft.Application.DTOs.Response
 {
     public class ApiResponse<T>
     {
-        public ApiResponse() {
+        public ApiResponse()
+        {
             Success = false;
             Message = "Ocurrio un error";
             Data = default(T);
-
         }
         public bool Success { get; set; }
         public string Message { get; set; } = string.Empty;
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+
+        // ✅ Cambiar a T? (nullable)
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public T? Data { get; set; }
 
         [JsonIgnore]

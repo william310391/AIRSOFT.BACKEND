@@ -9,6 +9,6 @@
         public DateTime FechaCreacion { get; set; }
         public int RolID { get; set; }
         public string? RolNombre { get; set; }
-        public bool Activo { get; set; }
+        public bool Estado { get; set; }
     }
 }

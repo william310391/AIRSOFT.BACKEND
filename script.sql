@@ -39,7 +39,8 @@ create table Usuario(
 ,Contrasena VARCHAR(255) NOT NULL
 ,FechaCreacion DATETIME DEFAULT GETDATE()
 ,RolID INT
-,Activo bit DEFAULT 1
+,Estado BIT DEFAULT 1
+,Activo BIT DEFAULT 1
 
 ,CONSTRAINT FK_Usuario_Rol FOREIGN KEY (RolID) REFERENCES Rol(RolID)
 )

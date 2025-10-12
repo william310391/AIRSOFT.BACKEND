@@ -92,5 +92,23 @@ namespace Airsoft.Infrastructure.Repositories
             return await _context.EjecutarQueryAsync(sql, usuario);
         }
 
+        public async Task<bool> UpdateUsuario(Usuario usuario)
+        {
+            var sql = SqlQueryMapper.Get(UsuarioQueries.UpdateUsuario);
+            return await _context.EjecutarQueryAsync(sql, usuario);
+        }
+
+        public async Task<bool> DeleteUsuario(int usuarioID)
+        {
+            var sql = SqlQueryMapper.Get(UsuarioQueries.DeleteUsuario);
+            return await _context.EjecutarQueryAsync(sql,new { UsuarioID= usuarioID});
+        }
+
+        public async Task<bool> ChangeState(int usuarioID, bool estado)
+        {
+            var sql = SqlQueryMapper.Get(UsuarioQueries.ChangeState);
+            return await _context.EjecutarQueryAsync(sql, new { Estado = estado, UsuarioID = usuarioID });
+        }
+
     }
 }

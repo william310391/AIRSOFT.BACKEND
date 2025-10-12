@@ -9,5 +9,6 @@ namespace Airsoft.Application.Interfaces
         Task<ApiResponse<FindResponse<UsuarioResponse>>> GetUsuarioFind(FindRequest request);
         Task<ApiResponse<UsuarioResponse>> Create(UsuarioRequest request);
         Task<ApiResponse<List<RolResponse>>> GetRol();
+        Task<ApiResponse<bool>> Update(UsuarioRequest request);
     }
 }
