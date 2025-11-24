@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Airsoft.Application/Airsoft.Application.csproj" Id="d92caea0-a90f-463b-8ada-43c132645320" />
+  <Project Path="Airsoft.Domain/Airsoft.Domain.csproj" />
+  <Project Path="Airsoft.Infrastructure/Airsoft.Infrastructure.csproj" Id="f18a2b9a-beeb-4db2-b544-0a3f3b7047eb" />
+  <Project Path="Airsoft.Api/Airsoft.Api.csproj" />
+</Solution>

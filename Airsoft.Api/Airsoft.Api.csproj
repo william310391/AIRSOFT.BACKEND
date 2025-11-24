@@ -1,27 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>4ceee5ae-704f-473e-ad20-aa672005ca7e</UserSecretsId>
+    <UserSecretsId>d5c9c582-e09a-4ca1-a341-63a29ac58c9f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.19" />
-    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.13.1" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.13.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.15.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.15.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.11.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Airsoft.Application\Airsoft.Application.csproj" />
+	  <ProjectReference Include="..\Airsoft.Application\Airsoft.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Filters\" />
+	  <Folder Include="Filters\" />
   </ItemGroup>
 
 </Project>

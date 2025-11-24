@@ -1,18 +1,21 @@
-﻿using Airsoft.Api.Configurations;
-using Airsoft.Api.Middlewares;
-
+using Airsoft.Api.Configurations;
+using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddOpenApi();
 builder.Services.AddAppServices(builder.Configuration);
 
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
-// Usar la política de CORS antes de los endpoints
+app.MapScalarApiReference(option =>
+{
+    option.Title = "Airsoft API Reference";
+    option.DarkMode= true;
+});
+
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
@@ -20,13 +23,12 @@ app.UseAuthorization();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
 }
 
-app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseHttpsRedirection();
+
+app.UseAuthorization();
 
 app.MapControllers();
 

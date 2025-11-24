@@ -1,6 +1,6 @@
-@Airsoft.Api_HostAddress = http://localhost:5056
+@Airsoft_v2_HostAddress = http://localhost:5103
 
-GET {{Airsoft.Api_HostAddress}}/weatherforecast/
+GET {{Airsoft_v2_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
