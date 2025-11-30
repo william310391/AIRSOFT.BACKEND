@@ -51,6 +51,7 @@ namespace Airsoft.Application.Services
             {
                 UsuarioId = entidad.UsuarioID,
                 UsuarioCuenta = entidad.UsuarioCuenta,
+                UsuarioNombre = entidad.UsuarioNombre,
                 Token = _jwtService.GenerarToken(entidad)
             };
 
