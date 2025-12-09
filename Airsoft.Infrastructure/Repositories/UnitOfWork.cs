@@ -15,17 +15,21 @@ namespace Airsoft.Infrastructure.Repositories
 
         public IMenuPaginaRepository MenuPaginaRepository { get; }
 
+        public IDatosRepository DatosRepository { get; }
+
         public UnitOfWork(DapperContext context
             , IPersonaRepository personaRepository
             , IUsuarioRepository usuarioRepository
             , IRolRepository rolRepository
-            , IMenuPaginaRepository menuPaginaRepository)
+            , IMenuPaginaRepository menuPaginaRepository
+            , IDatosRepository datosRepository)
         {
             _context = context;
             PersonaRepository = personaRepository;
             UsuarioRepository = usuarioRepository;
             RolRepository = rolRepository;
             MenuPaginaRepository = menuPaginaRepository;
+            DatosRepository = datosRepository;
         }
     }
 }

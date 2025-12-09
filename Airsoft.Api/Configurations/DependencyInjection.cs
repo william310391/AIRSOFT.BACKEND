@@ -44,7 +44,8 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IRolRepository, RolRepository>();
             services.AddScoped<IMenuPaginaRepository, MenuPaginaRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();            
+            services.AddScoped<IDatosRepository, DatosRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();    
 
             // Automapper
             services.AddAutoMapper(cfg =>
@@ -61,8 +62,9 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserContextService, UserContextService>();
             services.AddScoped<IMenuPaginaService, MenuPaginaService>();
+            services.AddScoped<IDatosService, DatosService>();
 
-          
+
 
             // JWT
             var jwtSettings = config.GetSection("Jwt");

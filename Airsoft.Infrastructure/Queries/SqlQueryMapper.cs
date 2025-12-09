@@ -56,8 +56,7 @@ namespace Airsoft.Infrastructure.Queries
                                 INNER JOIN Rol R ON R.RolID=U.RolID
                                 WHERE U.Activo= 1" },
 
-            {
-                UsuarioQueries.GetUsuariosFind, @"
+            { UsuarioQueries.GetUsuariosFind, @"
                                 SELECT 
                                      U.UsuarioID
                                     ,U.UsuarioCuenta
@@ -145,7 +144,58 @@ namespace Airsoft.Infrastructure.Queries
                                     WHERE U.UsuarioID = @UsuarioID
                                       AND U.Activo= 1
                                     ORDER BY M.MenuNombre, P.PaginaNombre
-                                END" }
+                                END" },
+            #endregion
+
+            #region Datos                        
+            { DatosQueries.FindAll, @"
+                                SELECT 
+                                     D.TipoDato
+                                    ,D.TipoDatoID
+                                    ,D.Dato
+                                    ,D.Activo
+                                    ,D.UsuarioRegistro
+                                    ,D.FechaRegistro
+                                    ,D.UsuarioModificacion
+                                    ,D.FechaModificion
+                                FROM Datos D" },
+
+            { DatosQueries.FindByTipoDato, @"
+                                SELECT 
+                                        D.TipoDato
+                                    ,D.TipoDatoID
+                                    ,D.Dato
+                                    ,D.Activo
+                                    ,D.UsuarioRegistroID
+                                    ,D.FechaRegistro
+                                    ,D.UsuarioModificacionID
+                                    ,D.FechaModificacion
+                                FROM Datos D
+                                WHERE TipoDato=@TipoDato
+                                    AND Activo=1" },
+
+            { DatosQueries.FindBuscarDato, @"
+                                SELECT 
+                                     D.TipoDato
+                                    ,D.TipoDatoID
+                                    ,D.Dato
+                                    ,D.Activo
+                                    ,D.UsuarioRegistroID
+                                    ,D.FechaRegistro
+                                    ,D.UsuarioModificacionID
+                                    ,D.FechaModificacion
+                                FROM Datos D
+                                WHERE (@Buscar IS NULL OR D.TipoDato LIKE '%' + @Buscar + '%')
+                                  AND D.Activo= 1
+                                ORDER BY D.TipoDato
+                                OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
+
+                                SELECT COUNT(*)
+                                FROM Datos D
+                                WHERE (@Buscar IS NULL OR D.TipoDato LIKE '%' + @Buscar + '%')
+                                  AND D.Activo= 1;" },
+
+
             #endregion
         };
 
