@@ -2,10 +2,10 @@
 {
     public class DatosResponse
     {
+        public int DatoID { get; set; }
         public required string TipoDato { get; set; }
-        public required string DatoID { get; set; }
         public required string DatoNombre { get; set; }
-        public required string DatoValor { get; set; }
+        public string? DatoValor { get; set; }
         public bool Activo { get; set; }
         public string ActivoDescripcion => Activo ? "Activo" : "Inactivo";
         public int UsuarioRegistroID { get; set; }

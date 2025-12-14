@@ -8,6 +8,8 @@ namespace Airsoft.Infrastructure.Queries
         FindAll,
         FindByTipoDato,
         FindBuscarDato,
-        ExistsDato
+        findByDatoID,
+        ExistsDato,
+        ChangeState,
     }
 }

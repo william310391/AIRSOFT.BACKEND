@@ -1,5 +1,6 @@
 ﻿using Airsoft.Application.DTOs.Request;
 using Airsoft.Application.DTOs.Response;
+using Airsoft.Domain.Entities;
 
 namespace Airsoft.Application.Interfaces
 {
@@ -9,5 +10,6 @@ namespace Airsoft.Application.Interfaces
         Task<ApiResponse<List<DatosResponse>>> FindByTipoDato(string tipoDato);
         Task<ApiResponse<DatosResponse>> Create(DatosRequest request);
         Task<ApiResponse<DatosResponse>> Update(DatosRequest request);
+        Task<ApiResponse<bool>> ChangeState(DatosChangeStateRequest request);
     }
 }

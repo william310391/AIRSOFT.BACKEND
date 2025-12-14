@@ -57,18 +57,35 @@ namespace Airsoft.Infrastructure.Repositories
             var sql = SqlQueryMapper.Get(DatosQueries.Update);
             return await _context.EjecutarQueryAsync(sql, datos);
         }
-        public async Task<bool> ExistsDato(string tipoDato, string datoID)
+        public async Task<bool> ExistsDato(string tipoDato, string datoNombre)
         {
             var sql = SqlQueryMapper.Get(DatosQueries.ExistsDato);     
             return await _context.EjecutarAsync(async conn =>
             {
                 return await conn.QueryFirstOrDefaultAsync<bool>(
                     sql,
-                    new { TipoDato = tipoDato, DatoID = datoID }
+                    new { TipoDato = tipoDato, DatoNombre = datoNombre }
                 );
             });
         }
 
+        public async Task<Datos> findByDatoID(int datoID)
+        {
+            var sql = SqlQueryMapper.Get(DatosQueries.findByDatoID);
+            var entidad = await _context.EjecutarAsync(async conn =>
+            {
+                return await conn.QueryFirstOrDefaultAsync<Datos>(
+                    sql,
+                    new { DatoID = datoID }
+                );
+            });
+            return entidad!; 
+        }
 
+        public async Task<bool> ChangeState(int datoID, bool activo)
+        {
+            var sql = SqlQueryMapper.Get(DatosQueries.ChangeState);
+            return await _context.EjecutarQueryAsync(sql, new { DatoID = datoID, Activo = activo });
+        }
     }
 }

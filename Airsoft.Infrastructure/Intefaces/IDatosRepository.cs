@@ -8,6 +8,8 @@ namespace Airsoft.Infrastructure.Intefaces
         Task<List<Datos>> FindByTipoDato(string tipoDato);
         Task<bool> Save(Datos datos);
         Task<bool> Update(Datos datos);
-        Task<bool> ExistsDato(string tipoDato, string datoID);
+        Task<bool> ExistsDato(string tipoDato, string datoNombre);
+        Task<Datos> findByDatoID(int datoID);
+        Task<bool> ChangeState(int datoID, bool activo);
     }
 }

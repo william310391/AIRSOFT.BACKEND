@@ -61,7 +61,7 @@ namespace Airsoft.Application.Services
             if (usuarioID == 0)
                 throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró el usuario en el contexto");
 
-            if (await _unitOfWork.DatosRepository.ExistsDato(request.TipoDato, request.DatoID))
+            if (await _unitOfWork.DatosRepository.ExistsDato(request.TipoDato, request.DatoNombre))
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El dato ingresado ya existe");
 
             var datos = _mapper.Map<Datos>(request);
@@ -84,7 +84,7 @@ namespace Airsoft.Application.Services
             if (usuarioID == 0)
                 throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró el usuario en el contexto");
 
-            if (!await _unitOfWork.DatosRepository.ExistsDato(request.TipoDato, request.DatoID))
+            if (await _unitOfWork.DatosRepository.findByDatoID(request.DatoID) == null)
                 throw new ApiResponseExceptions(HttpStatusCode.Conflict, "El dato ingresado no existe");
 
             var datos = _mapper.Map<Datos>(request);
@@ -98,9 +98,28 @@ namespace Airsoft.Application.Services
                 Message = "Dato actualizado exitosamente",
                 Data = _mapper.Map<DatosResponse>(datos)
             };
+        }
 
+        public async Task<ApiResponse<bool>> ChangeState(DatosChangeStateRequest request)
+        {
+            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
+            if (usuarioID == 0)
+                throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró el usuario en el contexto");
 
+            var dato = await _unitOfWork.DatosRepository.findByDatoID(request.DatoID);
+            if (dato == null)
+                throw new ApiResponseExceptions(HttpStatusCode.Conflict, "El dato ingresado no existe");
 
+            var result = await _unitOfWork.DatosRepository.ChangeState(request.DatoID, !dato.Activo);
+
+            if (!result)
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No se pudo cambiar el estado del dato");
+            return new ApiResponse<bool>
+            {
+                Success = true,
+                Message = "Estado del dato cambiado exitosamente",
+                Data = result
+            };
         }
     }
 }
