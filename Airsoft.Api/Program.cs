@@ -1,4 +1,5 @@
 using Airsoft.Api.Configurations;
+using Airsoft.Application.Middlewares;
 using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,7 @@ app.MapScalarApiReference(option =>
     option.Title = "Airsoft API Reference";
     option.DarkMode= true;
 });
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();

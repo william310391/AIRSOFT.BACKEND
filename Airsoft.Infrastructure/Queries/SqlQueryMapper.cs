@@ -151,8 +151,9 @@ namespace Airsoft.Infrastructure.Queries
             { DatosQueries.FindAll, @"
                                 SELECT 
                                      D.TipoDato
-                                    ,D.TipoDatoID
-                                    ,D.Dato
+                                    ,D.DatoID
+                                    ,D.DatoNombre
+                                    ,D.DatoValor
                                     ,D.Activo
                                     ,D.UsuarioRegistro
                                     ,D.FechaRegistro
@@ -162,9 +163,10 @@ namespace Airsoft.Infrastructure.Queries
 
             { DatosQueries.FindByTipoDato, @"
                                 SELECT 
-                                        D.TipoDato
-                                    ,D.TipoDatoID
-                                    ,D.Dato
+                                     D.TipoDato
+                                    ,D.DatoID
+                                    ,D.DatoNombre
+                                    ,D.DatoValor
                                     ,D.Activo
                                     ,D.UsuarioRegistroID
                                     ,D.FechaRegistro
@@ -177,25 +179,63 @@ namespace Airsoft.Infrastructure.Queries
             { DatosQueries.FindBuscarDato, @"
                                 SELECT 
                                      D.TipoDato
-                                    ,D.TipoDatoID
-                                    ,D.Dato
+                                    ,D.DatoID
+                                    ,D.DatoNombre
+                                    ,D.DatoValor
                                     ,D.Activo
                                     ,D.UsuarioRegistroID
                                     ,D.FechaRegistro
                                     ,D.UsuarioModificacionID
                                     ,D.FechaModificacion
                                 FROM Datos D
-                                WHERE (@Buscar IS NULL OR D.TipoDato LIKE '%' + @Buscar + '%')
+                                WHERE (@Buscar IS NULL OR D.TipoDato LIKE '%' + @Buscar + '%' 
+                                                       OR D.DatoID LIKE '%' + @Buscar + '%'
+                                                       OR D.DatoNombre LIKE '%' + @Buscar + '%')
                                   AND D.Activo= 1
                                 ORDER BY D.TipoDato
                                 OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
 
                                 SELECT COUNT(*)
                                 FROM Datos D
-                                WHERE (@Buscar IS NULL OR D.TipoDato LIKE '%' + @Buscar + '%')
+                                WHERE (@Buscar IS NULL OR D.TipoDato LIKE '%' + @Buscar + '%' 
+                                                       OR D.DatoID LIKE '%' + @Buscar + '%'
+                                                       OR D.DatoNombre LIKE '%' + @Buscar + '%')
                                   AND D.Activo= 1;" },
 
+            { DatosQueries.Save, @"
+                               INSERT INTO Datos(TipoDato
+                                                ,DatoID
+                                                ,DatoNombre
+                                                ,DatoValor
+                                                ,Activo
+                                                ,UsuarioRegistroID
+                                                ,FechaModificacion)
+                               VALUES (@TipoDato
+                                      ,@DatoID
+                                      ,@DatoNombre
+                                      ,@DatoValor
+                                      ,1
+                                      ,@UsuarioRegistroID
+                                      ,GETDATE())
+                              " },
 
+            { DatosQueries.Update, @"
+                              UPDATE Datos
+                                 SET DatoNombre            = @DatoNombre
+                                    ,DatoValor             = @DatoValor
+                                    ,UsuarioModificacionID = @UsuarioModificacionID
+                                    ,FechaModificacion     = GETDATE()
+                               WHERE TipoDato = @TipoDato
+                                 AND DatoID   = @DatoID
+                              " },
+
+            { DatosQueries.ExistsDato, @"                             
+                            SELECT CASE 
+                                        WHEN EXISTS ( SELECT 1 FROM Datos WHERE TipoDato = @TipoDato AND DatoID= @DatoID) 
+                                        THEN 1 
+                                        ELSE 0 
+                                    END AS ExisteDato;
+                              " },
             #endregion
         };
 

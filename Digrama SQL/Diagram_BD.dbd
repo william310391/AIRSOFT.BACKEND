@@ -77,7 +77,7 @@
           <Model xsi:type="DDContainerModel">
             <CustomProperties>
               <OID>2</OID>
-              <BackgroundColor />
+              <BackgroundColor>0, 0, 0, 0</BackgroundColor>
               <Parent>0</Parent>
             </CustomProperties>
             <Children>
@@ -697,7 +697,7 @@
               </Port>
               <Port>
                 <Location>
-                  <X>Undefined</X>
+                  <X>0 px</X>
                   <Y>281.333333333333 px</Y>
                 </Location>
                 <Anchors>Top Bottom</Anchors>
@@ -1241,7 +1241,7 @@
           <ScaleMode>Free</ScaleMode>
           <Scale>1</Scale>
           <Location>
-            <X>-276 px</X>
+            <X>-185.333211263021 px</X>
             <Y>96 px</Y>
           </Location>
         </ViewPort>

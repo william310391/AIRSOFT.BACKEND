@@ -6,6 +6,8 @@ namespace Airsoft.Infrastructure.Intefaces
     {
         Task<(List<Datos> Datos, int TotalRegistros)> FindBuscarDato(string? buscar, int pagina, int tamañoPagina);
         Task<List<Datos>> FindByTipoDato(string tipoDato);
-        Task<Datos> FindByDatoID(int datoID);
+        Task<bool> Save(Datos datos);
+        Task<bool> Update(Datos datos);
+        Task<bool> ExistsDato(string tipoDato, string datoID);
     }
 }

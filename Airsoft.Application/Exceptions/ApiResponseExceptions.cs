@@ -6,20 +6,40 @@ namespace Airsoft.Application.Exceptions
 {
     public class ApiResponseExceptions: Exception
     {
-        public int StatusCode { get; }
-        public ApiResponse<string> Response { get; }
 
-        public ApiResponseExceptions(HttpStatusCode statusCode, string message)
+        public int StatusCode { get; }
+        public ApiResponse<object> Response { get; }
+
+        public ApiResponseExceptions(
+            HttpStatusCode statusCode,
+            string message,
+            object? errors = null)
             : base(message)
         {
             StatusCode = (int)statusCode;
 
-            Response = new ApiResponse<string>
+            Response = new ApiResponse<object>
             {
-                Success = statusCode == HttpStatusCode.OK,
+                Success = false,
                 Message = message,
-                Data = null // aquí siempre null
+                Data = errors
             };
         }
+
+        //public int StatusCode { get; }
+        //public ApiResponse<string> Response { get; }
+
+        //public ApiResponseExceptions(HttpStatusCode statusCode, string message)
+        //    : base(message)
+        //{
+        //    StatusCode = (int)statusCode;
+
+        //    Response = new ApiResponse<string>
+        //    {
+        //        Success = statusCode == HttpStatusCode.OK,
+        //        Message = message,
+        //        Data = null // aquí siempre null
+        //    };
+        //}
     }
 }

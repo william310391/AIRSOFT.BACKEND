@@ -36,5 +36,26 @@ namespace Airsoft.Api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+
+        [HttpPost("create")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(List<DatosResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<List<DatosResponse>>> Create([FromBody] DatosRequest request)
+        {
+            var response = await _datosService.Create(request);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPut("update")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(List<DatosResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<List<DatosResponse>>> Update([FromBody] DatosRequest request)
+        {
+            var response = await _datosService.Update(request);
+            return StatusCode(response.StatusCode, response);
+        }
+
     }
 }

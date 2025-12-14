@@ -22,7 +22,7 @@ namespace Airsoft.Application.Mappings
             CreateMap<UsuarioDeleteRequest, Usuario>();
             CreateMap<UsuarioChangeStateRequest, Usuario>();
             CreateMap<MenuPaginaRequest, MenuPagina>();
-            CreateMap<DatosReqquest, Datos>();
+            CreateMap<DatosRequest, Datos>();
 
             // Si los nombres de propiedades no coinciden:
             // CreateMap<Persona, PersonaResponse>()
