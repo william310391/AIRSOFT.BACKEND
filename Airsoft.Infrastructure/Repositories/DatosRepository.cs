@@ -18,7 +18,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<(List<Datos> Datos, int TotalRegistros)> FindBuscarDato(string? buscar, int pagina, int tamañoPagina)
         {
-            var sql = SqlQueryMapper.Get(DatosQueries.FindBuscarDato);
+            var sql = DatosQueries.FindBuscarDato;
 
             return await _context.EjecutarAsync(async conn =>
             {
@@ -38,7 +38,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<List<Datos>> FindByTipoDato(string tipoDato)
         {
-            var sql = SqlQueryMapper.Get(DatosQueries.FindByTipoDato);
+            var sql = DatosQueries.FindByTipoDato;
             return await _context.EjecutarAsync(async conn =>
             {
                 var result = await conn.QueryAsync<Datos>(sql, new { TipoDato = tipoDato });
@@ -48,18 +48,18 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<bool> Save(Datos datos)
         {
-            var sql = SqlQueryMapper.Get(DatosQueries.Save);
+            var sql = DatosQueries.Save;
             return await _context.EjecutarQueryAsync(sql, datos);
         }
 
         public async Task<bool> Update(Datos datos)
         {
-            var sql = SqlQueryMapper.Get(DatosQueries.Update);
+            var sql = DatosQueries.Update;
             return await _context.EjecutarQueryAsync(sql, datos);
         }
         public async Task<bool> ExistsDato(string tipoDato, string datoNombre)
         {
-            var sql = SqlQueryMapper.Get(DatosQueries.ExistsDato);     
+            var sql = DatosQueries.ExistsDato;     
             return await _context.EjecutarAsync(async conn =>
             {
                 return await conn.QueryFirstOrDefaultAsync<bool>(
@@ -71,7 +71,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<Datos> findByDatoID(int datoID)
         {
-            var sql = SqlQueryMapper.Get(DatosQueries.findByDatoID);
+            var sql = DatosQueries.findByDatoID;
             var entidad = await _context.EjecutarAsync(async conn =>
             {
                 return await conn.QueryFirstOrDefaultAsync<Datos>(
@@ -84,7 +84,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<bool> ChangeState(int datoID, bool activo)
         {
-            var sql = SqlQueryMapper.Get(DatosQueries.ChangeState);
+            var sql = DatosQueries.ChangeState;
             return await _context.EjecutarQueryAsync(sql, new { DatoID = datoID, Activo = activo });
         }
     }

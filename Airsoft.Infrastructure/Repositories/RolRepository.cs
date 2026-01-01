@@ -17,7 +17,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<List<Rol>> GetAllRol()
         {
-            var sql = SqlQueryMapper.Get(RolQueries.GetAllRol);
+            var sql = RolQueries.GetAllRol;
             var lista = await _context.EjecutarAsync(async conn =>
             {
                 return (await conn.QueryAsync<Rol>(sql, null)).ToList();

@@ -1,7 +1,7 @@
 ﻿namespace Airsoft.Infrastructure.Queries
 {
-    public enum RolQueries
+    public static class RolQueries
     {
-        GetAllRol
+        public static readonly string GetAllRol = @"SELECT RolID, RolNombre FROM Rol";
     }
 }

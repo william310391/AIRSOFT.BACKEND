@@ -17,7 +17,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<List<MenuPagina>> GetMenuPaginasByPersonaID(int usuarioID, int rolID)
         {
-            var sql = SqlQueryMapper.Get(MenuPaginaQueries.GetMenuPaginasByPersonaID);
+            var sql = MenuPaginaQueries.GetMenuPaginasByPersonaID;
             var lista = await _context.EjecutarAsync(async conn =>
             {
                 return (await conn.QueryAsync<MenuPagina>(sql, new { UsuarioID = usuarioID, RolID =rolID })).ToList();

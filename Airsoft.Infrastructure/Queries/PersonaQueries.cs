@@ -1,10 +1,13 @@
 ﻿namespace Airsoft.Infrastructure.Queries
 {
-    public enum PersonaQueries
+    public static class PersonaQueries 
     {
-        GetPersonas,
-        GetPersonasById
+        public static readonly string GetPersonas = @"
+                                SELECT * 
+                                FROM Persona 
+                                WHERE PersonaID = @PersonaID";
+        public static readonly string GetPersonasById = @"
+                                SELECT * 
+                                FROM Persona";
     }
-
-
 }

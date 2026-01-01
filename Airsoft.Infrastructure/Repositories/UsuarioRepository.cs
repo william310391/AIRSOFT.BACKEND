@@ -15,7 +15,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<Usuario> GetUsuarioByUsuarioCuenta(string usuarioCuenta)
         {
-            var sql = SqlQueryMapper.Get(UsuarioQueries.GetUsuariosByUsuarioNombre);
+            var sql = UsuarioQueries.GetUsuariosByUsuarioNombre;
 
             var entidad = await _context.EjecutarAsync(async conn =>
             {
@@ -30,7 +30,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<List<Usuario>> GetUsuariosAll()
         {
-            var sql = SqlQueryMapper.Get(UsuarioQueries.GetUsuariosAll);
+            var sql = UsuarioQueries.GetUsuariosAll;
 
             return await _context.EjecutarAsync(async conn =>
             {
@@ -41,7 +41,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<(List<Usuario> Usuarios, int TotalRegistros)> GetUsuarioFind(string? buscar, int pagina, int tamañoPagina)
         {
-            var sql = SqlQueryMapper.Get(UsuarioQueries.GetUsuariosFind);
+            var sql = UsuarioQueries.GetUsuariosFind;
 
             return await _context.EjecutarAsync(async conn =>
             {
@@ -62,7 +62,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<Usuario> GetUsuariosByUsuarioID(int usuarioID)
         {
-            var sql = SqlQueryMapper.Get(UsuarioQueries.GetUsuariosByUsuarioID);
+            var sql = UsuarioQueries.GetUsuariosByUsuarioID;
 
             var entidad = await _context.EjecutarAsync(async conn =>
             {
@@ -77,7 +77,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<bool> ExistsUsuario(string usuarioCuenta)
         {
-            var sql = SqlQueryMapper.Get(UsuarioQueries.ExistsUasuario);
+            var sql = UsuarioQueries.ExistsUasuario;
             return await _context.EjecutarAsync(async conn =>
             {
                 return await conn.QueryFirstOrDefaultAsync<bool>(
@@ -88,25 +88,25 @@ namespace Airsoft.Infrastructure.Repositories
         }
         public async Task<bool> SaveUsuario(Usuario usuario)
         {
-            var sql = SqlQueryMapper.Get(UsuarioQueries.SaveUsuario);
+            var sql = UsuarioQueries.SaveUsuario;
             return await _context.EjecutarQueryAsync(sql, usuario);
         }
 
         public async Task<bool> UpdateUsuario(Usuario usuario)
         {
-            var sql = SqlQueryMapper.Get(UsuarioQueries.UpdateUsuario);
+            var sql = UsuarioQueries.UpdateUsuario;
             return await _context.EjecutarQueryAsync(sql, usuario);
         }
 
         public async Task<bool> DeleteUsuario(int usuarioID)
         {
-            var sql = SqlQueryMapper.Get(UsuarioQueries.DeleteUsuario);
+            var sql = UsuarioQueries.DeleteUsuario;
             return await _context.EjecutarQueryAsync(sql,new { UsuarioID= usuarioID});
         }
 
         public async Task<bool> ChangeState(int usuarioID, bool estado)
         {
-            var sql = SqlQueryMapper.Get(UsuarioQueries.ChangeState);
+            var sql = UsuarioQueries.ChangeState;
             return await _context.EjecutarQueryAsync(sql, new { Estado = estado, UsuarioID = usuarioID });
         }
 

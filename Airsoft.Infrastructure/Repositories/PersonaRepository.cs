@@ -17,7 +17,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<List<Persona>> GetPersonas()
         {
-            var sql = SqlQueryMapper.Get(PersonaQueries.GetPersonas);
+            var sql = PersonaQueries.GetPersonas;
             var personas = await _context.EjecutarAsync(async conn =>
             {
                 return (await conn.QueryAsync<Persona>(sql, null)).ToList();
@@ -27,7 +27,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<Persona> GetPersonaByID(int personaID)
         {
-            var sql = SqlQueryMapper.Get(PersonaQueries.GetPersonasById);
+            var sql = PersonaQueries.GetPersonasById;
 
             var persona = await _context.EjecutarAsync(async conn =>
             {
