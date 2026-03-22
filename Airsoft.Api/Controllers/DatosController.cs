@@ -61,7 +61,7 @@ namespace Airsoft.Api.Controllers
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(List<DatosResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<DatosResponse>>> ChangeState([FromBody] DatosChangeStateRequest request)
+        public async Task<ActionResult<ApiResponse<bool>>> ChangeState([FromBody] DatosChangeStateRequest request)
         {
             var response = await _datosService.ChangeState(request);
             return StatusCode(response.StatusCode, response);

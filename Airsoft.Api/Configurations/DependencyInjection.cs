@@ -45,7 +45,8 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IRolRepository, RolRepository>();
             services.AddScoped<IMenuPaginaRepository, MenuPaginaRepository>();
             services.AddScoped<IDatosRepository, DatosRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();    
+            services.AddScoped<IPersonaCorreoRepository, PersonaCorreoRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();  
 
             // Automapper
             services.AddAutoMapper(cfg =>
@@ -62,6 +63,7 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserContextService, UserContextService>();
             services.AddScoped<IMenuPaginaService, MenuPaginaService>();
+            services.AddScoped<IPersonaCorreoServices, PersonaCorreoServices>();
             services.AddScoped<IDatosService, DatosService>();
 
 

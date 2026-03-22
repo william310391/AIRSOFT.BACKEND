@@ -552,11 +552,11 @@
             </CustomProperties>
             <Location>
               <X>830 px</X>
-              <Y>410 px</Y>
+              <Y>380 px</Y>
             </Location>
             <Size>
               <Width>300 px</Width>
-              <Height>220 px</Height>
+              <Height>241 px</Height>
             </Size>
             <DbOid>
               <Path>Prueba.dbo.Persona_Correo</Path>
@@ -582,7 +582,7 @@
               <Port>
                 <Location>
                   <X>0 px</X>
-                  <Y>110 px</Y>
+                  <Y>120.5 px</Y>
                 </Location>
                 <Anchors>Top Bottom</Anchors>
                 <Align>Left</Align>
@@ -607,7 +607,7 @@
             <BendPoints>
               <PointD>
                 <X>800 px</X>
-                <Y>520 px</Y>
+                <Y>500.5 px</Y>
               </PointD>
               <PointD>
                 <X>800 px</X>
@@ -633,7 +633,7 @@
               <Port xsi:type="LinkPort">
                 <Location>
                   <X>175 px</X>
-                  <Y>-53.5 px</Y>
+                  <Y>-73 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Left</Align>
@@ -1319,7 +1319,7 @@
           <Scale>1</Scale>
           <Location>
             <X>-185.333333333333 px</X>
-            <Y>32.0000006357829 px</Y>
+            <Y>117.333333969116 px</Y>
           </Location>
         </ViewPort>
       </Model>

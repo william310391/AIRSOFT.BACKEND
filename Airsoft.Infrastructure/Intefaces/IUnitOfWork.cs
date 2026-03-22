@@ -7,5 +7,6 @@
         IRolRepository RolRepository { get; }
         IMenuPaginaRepository MenuPaginaRepository { get; }
         IDatosRepository DatosRepository { get; }
+        IPersonaCorreoRepository PersonaCorreoRepository { get; }
     }
 }

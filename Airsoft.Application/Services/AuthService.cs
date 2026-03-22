@@ -2,8 +2,6 @@
 using Airsoft.Application.DTOs.Response;
 using Airsoft.Application.Exceptions;
 using Airsoft.Application.Interfaces;
-using Airsoft.Domain.Entities;
-using Airsoft.Domain.Enum;
 using Airsoft.Infrastructure.Intefaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
