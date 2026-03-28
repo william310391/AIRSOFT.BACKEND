@@ -1,4 +1,6 @@
-﻿namespace Airsoft.Domain.Entities
+﻿ 
+
+namespace Airsoft.Domain.Entities
 {
     public class Persona
     {

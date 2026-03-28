@@ -16,6 +16,7 @@ namespace Airsoft.Application.Mappings
             CreateMap<Rol, RolResponse>();
             CreateMap<Datos, DatosResponse>();
             CreateMap<PersonaCorreo, PersonaCorreoResponse>();
+            CreateMap<PersonaTelefono, PersonaTelefonoResponse>();
 
 
             // DTO → Entity
@@ -26,6 +27,7 @@ namespace Airsoft.Application.Mappings
             CreateMap<MenuPaginaRequest, MenuPagina>();
             CreateMap<DatosRequest, Datos>();
             CreateMap<PersonaCorreoRequest, PersonaCorreo>();
+            CreateMap<PersonaTelefonoRequest, PersonaTelefono>();
 
             // Si los nombres de propiedades no coinciden:
             // CreateMap<Persona, PersonaResponse>()

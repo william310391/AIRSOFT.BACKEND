@@ -31,22 +31,11 @@ namespace Airsoft.Application.Services
         public async Task<ApiResponse<PersonaResponse>> GetPersonaByID(int personaID)
         {
             var persona = await _unitOfWork.PersonaRepository.GetPersonaByID(personaID);
-
-            if (persona == null)
-            {
-                return new ApiResponse<PersonaResponse>
-                {
-                    Success = false,
-                    Message = $"No se encontró la persona con ID {personaID}",
-                    Data = null,
-                };
-            }
-
             return new ApiResponse<PersonaResponse>
             {
-                Success = true,
-                Message = "Persona obtenida correctamente",
-                Data = _mapper.Map<PersonaResponse>(persona),
+                Success = persona != null ? true : false,
+                Message = persona != null ? "Persona obtenida correctamente" : $"No se encontró la persona con ID {personaID}",
+                Data = persona != null ? _mapper.Map<PersonaResponse>(persona) : null,
             };
         }
 

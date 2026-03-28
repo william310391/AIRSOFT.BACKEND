@@ -8,5 +8,6 @@
         IMenuPaginaRepository MenuPaginaRepository { get; }
         IDatosRepository DatosRepository { get; }
         IPersonaCorreoRepository PersonaCorreoRepository { get; }
+        IPersonaTelefonoRepository PersonaTelefonoRepository { get; }
     }
 }

@@ -46,6 +46,7 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IMenuPaginaRepository, MenuPaginaRepository>();
             services.AddScoped<IDatosRepository, DatosRepository>();
             services.AddScoped<IPersonaCorreoRepository, PersonaCorreoRepository>();
+            services.AddScoped<IPersonaTelefonoRepository, PersonaTelefonoRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();  
 
             // Automapper
@@ -64,6 +65,7 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IUserContextService, UserContextService>();
             services.AddScoped<IMenuPaginaService, MenuPaginaService>();
             services.AddScoped<IPersonaCorreoServices, PersonaCorreoServices>();
+            services.AddScoped<IPersonaTelefonoService, PersonaTelefonoService>();
             services.AddScoped<IDatosService, DatosService>();
 
 

@@ -19,9 +19,9 @@ namespace Airsoft.Api.Controllers
 
         [HttpGet("getPersonaCorreos")]
         [Authorize()]
-        [ProducesResponseType(typeof(List<PersonaCorreo>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<PersonaCorreoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<PersonaCorreo>>> GetPersonaCorreos([FromQuery] int personaID)
+        public async Task<ActionResult<List<PersonaCorreoResponse>>> GetPersonaCorreos([FromQuery] int personaID)
         {
             var response = await _personaCorreoServices.GetByPersonaID(personaID);
             return StatusCode(response.StatusCode, response);
@@ -29,9 +29,9 @@ namespace Airsoft.Api.Controllers
 
         [HttpPost("save")]
         [Authorize()]
-        [ProducesResponseType(typeof(List<PersonaCorreo>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<PersonaCorreoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<PersonaCorreo>>> Save([FromBody] PersonaCorreoRequest request)
+        public async Task<ActionResult<List<PersonaCorreoResponse>>> Save([FromBody] PersonaCorreoRequest request)
         {
             var response = await _personaCorreoServices.Save(request);
             return StatusCode(response.StatusCode, response);
@@ -39,9 +39,9 @@ namespace Airsoft.Api.Controllers
 
         [HttpPut("update")]
         [Authorize()]
-        [ProducesResponseType(typeof(List<PersonaCorreo>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<PersonaCorreoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<PersonaCorreo>>> update([FromBody] PersonaCorreoRequest request)
+        public async Task<ActionResult<List<PersonaCorreoResponse>>> update([FromBody] PersonaCorreoRequest request)
         {
             var response = await _personaCorreoServices.Update(request);
             return StatusCode(response.StatusCode, response);
@@ -49,7 +49,7 @@ namespace Airsoft.Api.Controllers
 
         [HttpPut("changeState")]
         [Authorize()]
-        [ProducesResponseType(typeof(List<PersonaCorreo>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ApiResponse<bool>>> ChangeState([FromBody] PersonaCorreoRequest request)
         {

@@ -38,38 +38,38 @@ namespace Airsoft.Application.Services
             };
         }
 
-        public async Task<ApiResponse<PersonaResponse>> Save(PersonaCorreoRequest request)
+        public async Task<ApiResponse<PersonaCorreoResponse>> Save(PersonaCorreoRequest request)
         {
 
             var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             if (usuarioID == 0)
                 throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró el usuario en el contexto");
 
-            var existeTipoCorreo = (await _unitOfWork.DatosRepository.FindByTipoDato("")).Any(x => x.DatoID == request.TipoCorreoID);
+            var existeTipoCorreo = (await _unitOfWork.DatosRepository.FindByTipoDato("TIPO_CORREO")).Any(x => x.DatoID == request.TipoCorreoID);
             if (existeTipoCorreo)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No existe el codigo de tipo correo");
 
             request.UsuarioRegistroID = usuarioID;
-            var entidad = _mapper.Map<Domain.Entities.PersonaCorreo>(request);
+            var entidad = _mapper.Map<PersonaCorreo>(request);
             var result = await _unitOfWork.PersonaCorreoRepository.Save(entidad);
 
             if (!result)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No se pudo crear el correo");
 
-            return new ApiResponse<PersonaResponse>
+            return new ApiResponse<PersonaCorreoResponse>
             {
                 Success = result,
                 Message = result ? "Correo Guardado" : "Error al Guardar Correo",
-                Data = _mapper.Map<PersonaResponse>(entidad)
+                Data = _mapper.Map<PersonaCorreoResponse>(entidad)
             };
         }
-        public async Task<ApiResponse<PersonaResponse>> Update(PersonaCorreoRequest request)
+        public async Task<ApiResponse<PersonaCorreoResponse>> Update(PersonaCorreoRequest request)
         {
             var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             if (usuarioID == 0)
                 throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró el usuario en el contexto");
 
-            var existeTipoCorreo = (await _unitOfWork.DatosRepository.FindByTipoDato("")).Any(x => x.DatoID == request.TipoCorreoID);
+            var existeTipoCorreo = (await _unitOfWork.DatosRepository.FindByTipoDato("TIPO_CORREO")).Any(x => x.DatoID == request.TipoCorreoID);
             if (existeTipoCorreo)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No existe el codigo de tipo correo");
 
@@ -79,11 +79,11 @@ namespace Airsoft.Application.Services
             if (!result)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No se pudo actualizar el correo");
 
-            return new ApiResponse<PersonaResponse>
+            return new ApiResponse<PersonaCorreoResponse>
             {
                 Success = result,
-                Message = result ? "Correo Actualizado" : "Error al Actualizar Correo",
-                Data = _mapper.Map<PersonaResponse>(entidad)
+                Message = result ? "Correo Actualizado" : "Error al actualizar Correo",
+                Data = _mapper.Map<PersonaCorreoResponse>(entidad)
             };
         }
 
@@ -97,6 +97,7 @@ namespace Airsoft.Application.Services
             if (dato == null)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El registro no existe");
 
+            request.UsuarioRegistroID = usuarioID;
             var result = await _unitOfWork.PersonaCorreoRepository.ChangeState(request.PersonaCorreoID, request.Activo);
 
             if (!result)

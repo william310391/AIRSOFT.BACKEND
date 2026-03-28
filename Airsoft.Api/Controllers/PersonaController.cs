@@ -40,20 +40,20 @@ namespace Airsoft.Api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpGet("prueba")]
-        public string prueba() {
+        //[Authorize(Roles = "Admin")]
+        //[HttpGet("prueba")]
+        //public string prueba() {
 
-            var usuarioID = User.FindFirst("usuarioID")?.Value;
-            return "es una prueba "+ usuarioID;
-        }
+        //    var usuarioID = User.FindFirst("usuarioID")?.Value;
+        //    return "es una prueba "+ usuarioID;
+        //}
 
-        [Authorize]
-        [HttpGet("check-role")]
-        public IActionResult CheckRole()
-        {
-            var claims = User.Claims.Select(c => new { c.Type, c.Value });
-            return Ok(claims);
-        }
+        //[Authorize]
+        //[HttpGet("check-role")]
+        //public IActionResult CheckRole()
+        //{
+        //    var claims = User.Claims.Select(c => new { c.Type, c.Value });
+        //    return Ok(claims);
+        //}
     }
 }
