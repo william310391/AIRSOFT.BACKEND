@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Airsoft.Application.DTOs.Request
+﻿namespace Airsoft.Application.DTOs.Request
 {
     public class PersonaRequest
     {
+        public int PersonaID { get; set; }
+        public int TipoDocumentoID { get; set; }
+        public required string NumeroDocumento { get; set; }
+        public required string Nombre { get; set; }
+        public required string ApellidoPaterno { get; set; }
+        public required string ApellidoMaterno { get; set; }
+        public DateTime FechaNacimiento { get; set; }
+        public int SexoID { get; set; }
+        public int PaisID { get; set; }
+        public int UsuarioRegistroID { get; set; }
+        public DateTime? UsuarioRegistro { get; set; }
+        public int UsuarioModeficionID { get; set; }
+        public DateTime? FechaModificion { get; set; }
     }
 }

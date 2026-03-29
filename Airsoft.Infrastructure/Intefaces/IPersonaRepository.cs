@@ -6,5 +6,7 @@ namespace Airsoft.Infrastructure.Intefaces
     {
         Task<List<Persona>> GetPersonas();
         Task<Persona> GetPersonaByID(int personaID);
+        Task<bool> Save(Persona entidad);
+        Task<bool> Update(Persona entidad);
     }
 }

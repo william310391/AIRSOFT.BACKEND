@@ -1,4 +1,5 @@
-﻿using Airsoft.Application.DTOs.Response;
+﻿using Airsoft.Application.DTOs.Request;
+using Airsoft.Application.DTOs.Response;
 using Airsoft.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,20 +41,22 @@ namespace Airsoft.Api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        //[Authorize(Roles = "Admin")]
-        //[HttpGet("prueba")]
-        //public string prueba() {
+        [HttpPost("save")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<bool>> Save([FromBody] PersonaRequest request)
+        {
+            var response = await _personaService.Save(request);
+            return StatusCode(response.StatusCode, response);
+        }
 
-        //    var usuarioID = User.FindFirst("usuarioID")?.Value;
-        //    return "es una prueba "+ usuarioID;
-        //}
-
-        //[Authorize]
-        //[HttpGet("check-role")]
-        //public IActionResult CheckRole()
-        //{
-        //    var claims = User.Claims.Select(c => new { c.Type, c.Value });
-        //    return Ok(claims);
-        //}
+        [HttpPut("update")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<bool>> Update([FromBody] PersonaRequest request)
+        {
+            var response = await _personaService.Update(request);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

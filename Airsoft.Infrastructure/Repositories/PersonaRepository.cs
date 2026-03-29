@@ -40,5 +40,17 @@ namespace Airsoft.Infrastructure.Repositories
             return persona!; // "!" para indicar al compilador que sabes que podría ser null
         }
 
+        public async Task<bool> Save(Persona entidad)
+        {
+            var sql = PersonaQueries.Save;
+            return await _context.EjecutarQueryAsync(sql, entidad);
+        }
+
+        public async Task<bool> Update(Persona entidad)
+        {
+            var sql = PersonaQueries.Update;
+            return await _context.EjecutarQueryAsync(sql, entidad);
+        }
+
     }
 }

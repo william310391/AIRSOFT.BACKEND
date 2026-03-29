@@ -40,9 +40,6 @@ namespace Airsoft.Application.Services
         public async Task<ApiResponse<PersonaTelefonoResponse>> Save(PersonaTelefonoRequest request)
         {
             var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
-            if (usuarioID == 0)
-                throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró el usuario en el contexto");
-
             var existeTipoCorreo = (await _unitOfWork.DatosRepository.FindByTipoDato("TIPO_TELEFONO")).Any(x => x.DatoID == request.TipoTelefonoID);
             if (existeTipoCorreo)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No existe el codigo de tipo correo");

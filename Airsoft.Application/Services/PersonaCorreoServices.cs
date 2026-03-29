@@ -40,16 +40,11 @@ namespace Airsoft.Application.Services
 
         public async Task<ApiResponse<PersonaCorreoResponse>> Save(PersonaCorreoRequest request)
         {
-
-            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
-            if (usuarioID == 0)
-                throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró el usuario en el contexto");
-
             var existeTipoCorreo = (await _unitOfWork.DatosRepository.FindByTipoDato("TIPO_CORREO")).Any(x => x.DatoID == request.TipoCorreoID);
             if (existeTipoCorreo)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No existe el codigo de tipo correo");
 
-            request.UsuarioRegistroID = usuarioID;
+            request.UsuarioRegistroID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var entidad = _mapper.Map<PersonaCorreo>(request);
             var result = await _unitOfWork.PersonaCorreoRepository.Save(entidad);
 
@@ -65,16 +60,12 @@ namespace Airsoft.Application.Services
         }
         public async Task<ApiResponse<PersonaCorreoResponse>> Update(PersonaCorreoRequest request)
         {
-            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
-            if (usuarioID == 0)
-                throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró el usuario en el contexto");
-
             var existeTipoCorreo = (await _unitOfWork.DatosRepository.FindByTipoDato("TIPO_CORREO")).Any(x => x.DatoID == request.TipoCorreoID);
             if (existeTipoCorreo)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No existe el codigo de tipo correo");
 
             var entidad = _mapper.Map<PersonaCorreo>(request);
-            entidad.UsuarioRegistroID = usuarioID;
+            entidad.UsuarioRegistroID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var result = await _unitOfWork.PersonaCorreoRepository.Update(entidad);
             if (!result)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No se pudo actualizar el correo");
@@ -88,16 +79,12 @@ namespace Airsoft.Application.Services
         }
 
         public async Task<ApiResponse<bool>> ChangeState(PersonaCorreoRequest request)
-        {
-            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
-            if (usuarioID == 0)
-                throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró el usuario en el contexto");
-
+        {  
             var dato = await _unitOfWork.PersonaCorreoRepository.GetByPersonaCorreoID(request.PersonaCorreoID);
             if (dato == null)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El registro no existe");
 
-            request.UsuarioRegistroID = usuarioID;
+            request.UsuarioRegistroID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var result = await _unitOfWork.PersonaCorreoRepository.ChangeState(request.PersonaCorreoID, request.Activo);
 
             if (!result)
