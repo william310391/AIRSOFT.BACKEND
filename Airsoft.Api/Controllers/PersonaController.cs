@@ -29,6 +29,7 @@ namespace Airsoft.Api.Controllers
         /// Obtiene persona por id.
         /// </summary>
         [HttpGet("{personaID:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(PersonaResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<PersonaResponse>> GetPersonaByID(int personaID)
@@ -42,6 +43,7 @@ namespace Airsoft.Api.Controllers
         }
 
         [HttpPost("save")]
+        [Authorize]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<bool>> Save([FromBody] PersonaRequest request)
@@ -51,6 +53,7 @@ namespace Airsoft.Api.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<bool>> Update([FromBody] PersonaRequest request)

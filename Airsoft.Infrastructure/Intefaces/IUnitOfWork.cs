@@ -9,5 +9,7 @@
         IDatosRepository DatosRepository { get; }
         IPersonaCorreoRepository PersonaCorreoRepository { get; }
         IPersonaTelefonoRepository PersonaTelefonoRepository { get; }
+        IPaisRepository PaisRepository { get; }
+        IUbigeoRepository UbigeoRepository { get; }
     }
 }

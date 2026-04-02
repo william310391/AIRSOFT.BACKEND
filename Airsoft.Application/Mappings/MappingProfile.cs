@@ -2,6 +2,7 @@
 using Airsoft.Domain.Entities;
 using Airsoft.Application.DTOs.Response;
 using Airsoft.Application.DTOs.Request;
+using Airsoft.Application.Services;
 
 namespace Airsoft.Application.Mappings
 {
@@ -17,6 +18,8 @@ namespace Airsoft.Application.Mappings
             CreateMap<Datos, DatosResponse>();
             CreateMap<PersonaCorreo, PersonaCorreoResponse>();
             CreateMap<PersonaTelefono, PersonaTelefonoResponse>();
+            CreateMap<Pais, PaisResponse>();
+            CreateMap<Ubigeo, UbigeoResponse>();
 
 
             // DTO → Entity
@@ -28,6 +31,7 @@ namespace Airsoft.Application.Mappings
             CreateMap<DatosRequest, Datos>();
             CreateMap<PersonaCorreoRequest, PersonaCorreo>();
             CreateMap<PersonaTelefonoRequest, PersonaTelefono>();
+            
 
             // Si los nombres de propiedades no coinciden:
             // CreateMap<Persona, PersonaResponse>()

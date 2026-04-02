@@ -6,22 +6,23 @@ using Dapper;
 
 namespace Airsoft.Infrastructure.Repositories
 {
-    public class RolRepository : IRolRepository
+    public class PaisRepository: IPaisRepository
     {
         private readonly DapperContext _context;
-
-        public RolRepository(DapperContext context)
+        public PaisRepository(DapperContext context)
         {
             _context = context;
         }
-        public async Task<List<Rol>> GetAllRol()
+
+        public async Task<List<Pais>> GetPaisAll()
         {
-            var sql = RolQueries.GetAllRol;
-            var lista = await _context.EjecutarAsync(async conn =>
+            var sql = PaisQueries.GetPaisAll;
+
+            return await _context.EjecutarAsync(async conn =>
             {
-                return (await conn.QueryAsync<Rol>(sql, null)).ToList();
+                var result = await conn.QueryAsync<Pais>(sql);
+                return result.ToList();
             });
-            return lista;
         }
     }
 }
