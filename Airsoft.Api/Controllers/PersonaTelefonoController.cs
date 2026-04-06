@@ -20,11 +20,11 @@ namespace Airsoft.Api.Controllers
             _personaTelefonoService = personaTelefonoService;
         }
 
-        [HttpGet("getPersonaTelefonos")]
+        [HttpGet("getPersonaTelefonos/{personaID:int}")]
         [Authorize()]
         [ProducesResponseType(typeof(List<PersonaTelefonoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<PersonaCorreoResponse>>> GetPersonaTelefonos([FromQuery] int personaID)
+        public async Task<ActionResult<List<PersonaTelefonoResponse>>> GetPersonaTelefonos(int personaID)
         {
             var response = await _personaTelefonoService.GetByPersonaID(personaID);
             return StatusCode(response.StatusCode, response);
@@ -42,9 +42,9 @@ namespace Airsoft.Api.Controllers
 
         [HttpPut("update")]
         [Authorize()]
-        [ProducesResponseType(typeof(List<PersonaTelefonoResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<PersonaTelefonoResponse>>> update([FromBody] PersonaTelefonoRequest request)
+        public async Task<ActionResult<ApiResponse<bool>>> update([FromBody] PersonaTelefonoRequest request)
         {
             var response = await _personaTelefonoService.Update(request);
             return StatusCode(response.StatusCode, response);

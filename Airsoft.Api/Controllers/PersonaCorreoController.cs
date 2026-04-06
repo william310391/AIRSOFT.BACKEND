@@ -17,11 +17,11 @@ namespace Airsoft.Api.Controllers
             _personaCorreoServices = personaCorreoServices;
         }
 
-        [HttpGet("getPersonaCorreos")]
+        [HttpGet("getPersonaCorreos/{personaID:int}")]
         [Authorize()]
         [ProducesResponseType(typeof(List<PersonaCorreoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<PersonaCorreoResponse>>> GetPersonaCorreos([FromQuery] int personaID)
+        public async Task<ActionResult<List<PersonaCorreoResponse>>> GetPersonaCorreos(int personaID)
         {
             var response = await _personaCorreoServices.GetByPersonaID(personaID);
             return StatusCode(response.StatusCode, response);

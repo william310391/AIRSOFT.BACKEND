@@ -41,6 +41,10 @@
                                     ,UsuarioModeficionID=@UsuarioModeficionID
                                 WHERE PersonaCorreoID=@PersonaCorreoID";
 
-        public static readonly string ChangeState = @"UPDATE Persona_Correo SET Activo=@Activo WHERE PersonaCorreoID=@PersonaCorreoID";
+        public static readonly string ChangeState = @"UPDATE Persona_Correo 
+                                                        SET Activo=@Activo 
+                                                        ,FechaModificion=GETDATE()
+                                                        ,UsuarioModeficionID=@UsuarioModeficionID
+                                                        WHERE PersonaCorreoID=@PersonaCorreoID";
     }
 }

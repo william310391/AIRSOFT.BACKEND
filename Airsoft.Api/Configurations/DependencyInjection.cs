@@ -119,20 +119,19 @@ namespace Airsoft.Api.Configurations
                     // =========================
                     // LEER TOKEN
                     // =========================
-                    OnMessageReceived = context =>
+                    OnMessageReceived = async context =>
                     {
                         var endpoint = context.HttpContext.GetEndpoint();
 
-                        // Verificar si el endpoint tiene [Authorize]
                         var hasAuthorize = endpoint?.Metadata?.GetMetadata<IAuthorizeData>() != null;
 
                         if (!hasAuthorize)
-                        {
-                            // ❌ No leer token si no tiene [Authorize]
-                            return Task.CompletedTask;
-                        }
+                            return;
 
-                        var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+                        var request = context.HttpContext.Request;
+
+                        // Obtener token
+                        var authHeader = request.Headers["Authorization"].FirstOrDefault();
 
                         if (!string.IsNullOrEmpty(authHeader) &&
                             authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
@@ -141,16 +140,44 @@ namespace Airsoft.Api.Configurations
                         }
                         else
                         {
-                            context.Token = context.Request.Headers["X-Token"].FirstOrDefault();
+                            context.Token = request.Headers["X-Token"].FirstOrDefault();
                         }
 
-                        // Log solo si existe token
                         if (!string.IsNullOrEmpty(context.Token))
                         {
-                            Console.WriteLine($"TOKEN RECIBIDO: {context.Token}");
-                        }
+                            var url = $"{request.Scheme}://{request.Host}{request.Path}{request.QueryString}";
 
-                        return Task.CompletedTask;
+                            Console.WriteLine($"Endpoint: {url}");
+
+                            request.EnableBuffering();
+
+                            request.Body.Position = 0;
+
+                            using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: true);
+                            var body = await reader.ReadToEndAsync();
+
+                            request.Body.Position = 0;
+
+                            Console.WriteLine($"Body: {body}");
+
+
+                            // Solo leer body si aplica
+                            //if (request.ContentLength > 0 &&
+                            //    request.Body.CanRead &&
+                            //    (request.Method == "POST" || request.Method == "PUT" || request.Method == "PATCH"))
+                            //{
+                            //    request.EnableBuffering();
+
+                            //    request.Body.Position = 0;
+
+                            //    using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: true);
+                            //    var body = await reader.ReadToEndAsync();
+
+                            //    request.Body.Position = 0;
+
+                            //    Console.WriteLine($"Body: {body}");
+                            //}
+                        }
                     },
 
                     // =========================
@@ -213,11 +240,23 @@ namespace Airsoft.Api.Configurations
                     // =========================
                     // TOKEN VÁLIDO
                     // =========================
-                    OnTokenValidated = context =>
-                    {
-                        Console.WriteLine("TOKEN VÁLIDO");
-                        return Task.CompletedTask;
-                    }
+                    //OnTokenValidated = context =>
+                    //{
+
+                    //    var endpoint = context.HttpContext.GetEndpoint();
+
+                    //    // Verificar si el endpoint tiene [Authorize]
+                    //    var hasAuthorize = endpoint?.Metadata?.GetMetadata<IAuthorizeData>() != null;
+
+                    //    if (!hasAuthorize)
+                    //    {
+                    //        // 👉 Dejar comportamiento por defecto
+                    //        return Task.CompletedTask;
+                    //    }
+
+                    //    Console.WriteLine("TOKEN VÁLIDO");
+                    //    return Task.CompletedTask;
+                    //}
                 };
             });
 

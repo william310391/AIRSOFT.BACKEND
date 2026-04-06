@@ -8,6 +8,6 @@ namespace Airsoft.Infrastructure.Intefaces
         Task<PersonaCorreo> GetByPersonaCorreoID(int personaCorreoID);
         Task<bool> Save(PersonaCorreo entidad);
         Task<bool> Update(PersonaCorreo entidad);
-        Task<bool> ChangeState(int personaCorreoID, bool activo);
+        Task<bool> ChangeState(int personaCorreoID, int usuarioID, bool activo);
     }
 }

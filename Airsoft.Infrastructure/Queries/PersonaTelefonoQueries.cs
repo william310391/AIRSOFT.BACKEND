@@ -47,6 +47,10 @@
                                     WHERE PersonaTelefonoID=@PersonaTelefonoID
                                 ";
 
-        public static readonly string ChangeState = @"UPDATE Persona_Telefono SET Activo=@Activo WHERE PersonaTelefonoID=@PersonaTelefonoID";
+        public static readonly string ChangeState = @"UPDATE Persona_Telefono 
+                                                       SET Activo=@Activo
+                                                        ,FechaModificion=GETDATE()
+                                                        ,UsuarioModeficionID=@UsuarioModeficionID
+                                                        WHERE PersonaTelefonoID=@PersonaTelefonoID";
     }
 }

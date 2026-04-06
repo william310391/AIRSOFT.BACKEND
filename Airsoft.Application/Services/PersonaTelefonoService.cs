@@ -39,14 +39,12 @@ namespace Airsoft.Application.Services
 
         public async Task<ApiResponse<PersonaTelefonoResponse>> Save(PersonaTelefonoRequest request)
         {
-            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var existeTipoCorreo = (await _unitOfWork.DatosRepository.FindByTipoDato("TIPO_TELEFONO")).Any(x => x.DatoID == request.TipoTelefonoID);
             if (existeTipoCorreo)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No existe el codigo de tipo correo");
 
-            request.UsuarioRegistroID = usuarioID;
-
             var entidad = _mapper.Map<PersonaTelefono>(request);
+            entidad.UsuarioRegistroID= _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var result = await _unitOfWork.PersonaTelefonoRepository.Save(entidad);
 
             if(!result)
@@ -62,17 +60,12 @@ namespace Airsoft.Application.Services
 
         public async Task<ApiResponse<PersonaTelefonoResponse>> Update(PersonaTelefonoRequest request)
         {
-            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
-            if (usuarioID == 0)
-                throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró el usuario en el contexto");
-
             var existeTipoCorreo = (await _unitOfWork.DatosRepository.FindByTipoDato("TIPO_TELEFONO")).Any(x => x.DatoID == request.TipoTelefonoID);
             if (existeTipoCorreo)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No existe el codigo de tipo telefono");
 
-            request.UsuarioRegistroID = usuarioID;
-
             var entidad = _mapper.Map<PersonaTelefono>(request);
+            entidad.UsuarioRegistroID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var result = await _unitOfWork.PersonaTelefonoRepository.Update(entidad);
 
             if (!result)
@@ -87,16 +80,11 @@ namespace Airsoft.Application.Services
         }
         public async Task<ApiResponse<bool>> ChangeState(PersonaTelefonoRequest request)
         {
-            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
-            if (usuarioID == 0)
-                throw new ApiResponseExceptions(HttpStatusCode.Unauthorized, "No se encontró el usuario en el contexto");
-
             var dato = await _unitOfWork.PersonaTelefonoRepository.GetByPersonaTelefonoID(request.PersonaTelefonoID);
             if (dato == null)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El registro no existe");
 
-            request.UsuarioRegistroID = usuarioID;
-            var result = await _unitOfWork.PersonaTelefonoRepository.ChangeState(request.PersonaTelefonoID, request.Activo);
+            var result = await _unitOfWork.PersonaTelefonoRepository.ChangeState(request.PersonaTelefonoID, _userContextService.GetAttribute<int>(EnumClaims.UsuarioID),request.Activo);
 
             if (!result)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No se pudo cambiar el estado del telefono");

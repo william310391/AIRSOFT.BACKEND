@@ -16,10 +16,10 @@ namespace Airsoft.Api.Controllers
         /// <summary>
         /// Obtiene la lista de personas.
         /// </summary>
-        [HttpGet]
+        [HttpGet("findBuscarPersonas")]
         [Authorize]
         [ProducesResponseType(typeof(IEnumerable<PersonaResponse>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<PersonaResponse>>> GetPersonas()
+        public async Task<ActionResult<IEnumerable<PersonaResponse>>> findBuscarPersonas()
         {
             var response = await _personaService.GetPersonas();
             return StatusCode(response.StatusCode, response);
@@ -28,7 +28,7 @@ namespace Airsoft.Api.Controllers
         /// <summary>
         /// Obtiene persona por id.
         /// </summary>
-        [HttpGet("{personaID:int}")]
+        [HttpGet("GetPersonaByID/{personaID:int}")]
         [Authorize]
         [ProducesResponseType(typeof(PersonaResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

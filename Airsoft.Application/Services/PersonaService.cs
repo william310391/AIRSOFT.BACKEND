@@ -49,8 +49,8 @@ namespace Airsoft.Application.Services
         public async Task<ApiResponse<bool>> Save(PersonaRequest request)
         {
             await ValidateRequest(request);
-            request.UsuarioRegistroID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var persona = _mapper.Map<Persona>(request);
+            persona.UsuarioRegistroID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var result = await _unitOfWork.PersonaRepository.Save(persona);
             return new ApiResponse<bool>
             {
@@ -63,8 +63,8 @@ namespace Airsoft.Application.Services
         public async Task<ApiResponse<bool>> Update(PersonaRequest request)
         {
             await ValidateRequest(request);
-            request.UsuarioModeficionID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var persona = _mapper.Map<Persona>(request);
+            persona.UsuarioModeficionID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var result = await _unitOfWork.PersonaRepository.Update(persona);
             return new ApiResponse<bool>
             {
@@ -90,7 +90,11 @@ namespace Airsoft.Application.Services
             if (!existeSexo)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No existe el tipo de género");
 
-            //falta validar pais
+            //Validar Pais
+            var existePais = (await _unitOfWork.PaisRepository.GetPaisAll()).Any(x => x.PaisID == request.PaisID);
+            if (!existePais)
+                throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No existe el pais");
+
         }
     }
 }

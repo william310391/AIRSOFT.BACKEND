@@ -44,8 +44,8 @@ namespace Airsoft.Application.Services
             if (existeTipoCorreo)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No existe el codigo de tipo correo");
 
-            request.UsuarioRegistroID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var entidad = _mapper.Map<PersonaCorreo>(request);
+            entidad.UsuarioRegistroID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var result = await _unitOfWork.PersonaCorreoRepository.Save(entidad);
 
             if (!result)
@@ -84,8 +84,7 @@ namespace Airsoft.Application.Services
             if (dato == null)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "El registro no existe");
 
-            request.UsuarioRegistroID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
-            var result = await _unitOfWork.PersonaCorreoRepository.ChangeState(request.PersonaCorreoID, request.Activo);
+            var result = await _unitOfWork.PersonaCorreoRepository.ChangeState(request.PersonaCorreoID, _userContextService.GetAttribute<int>(EnumClaims.UsuarioID), request.Activo);
 
             if (!result)
                 throw new ApiResponseExceptions(HttpStatusCode.BadRequest, "No se pudo cambiar el estado del correo");

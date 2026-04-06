@@ -11,9 +11,6 @@
         public DateTime FechaNacimiento { get; set; }
         public int SexoID { get; set; }
         public int PaisID { get; set; }
-        public int UsuarioRegistroID { get; set; }
-        public DateTime? UsuarioRegistro { get; set; }
-        public int UsuarioModeficionID { get; set; }
-        public DateTime? FechaModificion { get; set; }
+        public int UsuarioID { get; set; }
     }
 }

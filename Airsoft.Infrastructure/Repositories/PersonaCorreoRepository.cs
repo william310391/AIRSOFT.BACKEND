@@ -45,10 +45,10 @@ namespace Airsoft.Infrastructure.Repositories
             return await _context.EjecutarQueryAsync(sql, entidad);
         }
 
-        public async Task<bool> ChangeState(int personaCorreoID, bool activo)
+        public async Task<bool> ChangeState(int personaCorreoID,int usuarioID, bool activo)
         {
             var sql = PersonaCorreoQueries.ChangeState;
-            return await _context.EjecutarQueryAsync(sql, new { PersonaCorreoID = personaCorreoID, Activo = activo });
+            return await _context.EjecutarQueryAsync(sql, new { PersonaCorreoID = personaCorreoID, UsuarioModeficionID= usuarioID, Activo = activo });
         }
     }
 }
