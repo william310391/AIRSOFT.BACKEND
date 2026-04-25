@@ -17,7 +17,7 @@ namespace Airsoft.Api.Controllers
         }
 
         [HttpGet("getDepartamentos")]
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(typeof(List<UbigeoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<List<UbigeoResponse>>> GetUbigeoByPersonaID()
