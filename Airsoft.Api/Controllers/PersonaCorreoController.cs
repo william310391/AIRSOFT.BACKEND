@@ -1,7 +1,6 @@
 ﻿using Airsoft.Application.DTOs.Request;
 using Airsoft.Application.DTOs.Response;
 using Airsoft.Application.Interfaces;
-using Airsoft.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

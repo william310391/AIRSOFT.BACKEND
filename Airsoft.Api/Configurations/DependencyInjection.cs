@@ -9,7 +9,6 @@ using Airsoft.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
-using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -55,7 +54,9 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IPersonaTelefonoRepository, PersonaTelefonoRepository>();
             services.AddScoped<IPaisRepository, PaisRepository>();
             services.AddScoped<IUbigeoRepository, UbigeoRepository>();
+            services.AddScoped<IContactoRepository, ContactoRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
             // =========================
             // AUTOMAPPER
@@ -81,6 +82,7 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IPaisService, PaisService>();
             services.AddScoped<IDatosService, DatosService>();
             services.AddScoped<IUbigeoService, UbigeoService>();
+            services.AddScoped<IContactoService, ContactoService>();
 
             // =========================
             // JWT CONFIG

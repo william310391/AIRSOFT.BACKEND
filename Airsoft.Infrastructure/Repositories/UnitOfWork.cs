@@ -16,6 +16,7 @@ namespace Airsoft.Infrastructure.Repositories
         public IPersonaTelefonoRepository PersonaTelefonoRepository { get; }
         public IPaisRepository PaisRepository { get; }
         public IUbigeoRepository UbigeoRepository { get; }
+        public IContactoRepository ContactoRepository { get; }
 
         public UnitOfWork(DapperContext context
             , IPersonaRepository personaRepository
@@ -26,7 +27,8 @@ namespace Airsoft.Infrastructure.Repositories
             , IPersonaCorreoRepository personaCorreoRepository
             , IPersonaTelefonoRepository personaTelefonoRepository
             , IPaisRepository paisRepository
-            , IUbigeoRepository ubigeoRepository)
+            , IUbigeoRepository ubigeoRepository
+            , IContactoRepository contactoRepository)
         {
             _context = context;
             PersonaRepository = personaRepository;
@@ -38,6 +40,7 @@ namespace Airsoft.Infrastructure.Repositories
             PersonaTelefonoRepository = personaTelefonoRepository;
             PaisRepository = paisRepository;
             UbigeoRepository = ubigeoRepository;
+            ContactoRepository = contactoRepository;
         }
     }
 }

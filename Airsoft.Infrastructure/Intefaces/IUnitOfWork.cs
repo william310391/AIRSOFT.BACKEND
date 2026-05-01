@@ -11,5 +11,6 @@
         IPersonaTelefonoRepository PersonaTelefonoRepository { get; }
         IPaisRepository PaisRepository { get; }
         IUbigeoRepository UbigeoRepository { get; }
+        IContactoRepository ContactoRepository { get; }
     }
 }
