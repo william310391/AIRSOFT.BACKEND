@@ -12,5 +12,8 @@
         IPaisRepository PaisRepository { get; }
         IUbigeoRepository UbigeoRepository { get; }
         IContactoRepository ContactoRepository { get; }
+        IContactoSolicitudRepository ContactoSolicitudRepository { get; }
+        IChatRepository ChatRepository { get; }
+        IChatMiembroRepository ChatMiembroRepository { get; }
     }
 }

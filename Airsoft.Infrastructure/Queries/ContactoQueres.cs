@@ -31,5 +31,7 @@
                                          U.UsuarioCuenta LIKE '%'+@Buscar+'%')
                                     AND U.Activo=1";
 
+        public static readonly string Save = @"INSERT INTO Contacto(UsuarioID,UsuarioContactoID,Activo,UsuarioRegistroID,FechaRegistro)
+                                               VALUES(@UsuarioID,@UsuarioContactoID,1,@UsuarioID,GETDATE())";
     }
 }

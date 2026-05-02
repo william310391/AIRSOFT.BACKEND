@@ -21,7 +21,7 @@ namespace Airsoft.Application.Mappings
             CreateMap<Pais, PaisResponse>();
             CreateMap<Ubigeo, UbigeoResponse>();
             CreateMap<Contacto, GetContactosByUsuarioIDResponse>();
-            CreateMap<Contacto, FindContactoByBuscarResponse>();
+            CreateMap<Contacto, FindContactoByBuscarResponse>();           
 
 
             // DTO → Entity
@@ -33,6 +33,8 @@ namespace Airsoft.Application.Mappings
             CreateMap<DatosRequest, Datos>();
             CreateMap<PersonaCorreoRequest, PersonaCorreo>();
             CreateMap<PersonaTelefonoRequest, PersonaTelefono>();
+            CreateMap<ContactoSolicitudSaveRequest, Contacto>();
+            CreateMap<ContactoSolicitudChangeStatusRequest, Contacto>();
             
 
             // Si los nombres de propiedades no coinciden:

@@ -6,7 +6,7 @@ using Dapper;
 
 namespace Airsoft.Infrastructure.Repositories
 {
-    public class ContactoRepository: IContactoRepository
+    public class ContactoRepository : IContactoRepository
     {
         private readonly DapperContext _context;
 
@@ -25,15 +25,21 @@ namespace Airsoft.Infrastructure.Repositories
             });
         }
 
-        public async Task<List<Contacto>> FindContactoByBuscar(int usuarioID,string buscar)
+        public async Task<List<Contacto>> FindContactoByBuscar(int usuarioID, string buscar)
         {
             var sql = ContactoQueres.FindContacto;
             return await _context.EjecutarAsync(async conn =>
             {
-                var result = await conn.QueryAsync<Contacto>(sql, new { UsuarioID = usuarioID, Buscar=buscar });
+                var result = await conn.QueryAsync<Contacto>(sql, new { UsuarioID = usuarioID, Buscar = buscar });
                 return result.ToList();
             });
         }
 
+        public async Task<bool> Save(int usuarioID, int contactoUsuarioID)
+        {
+            var sql = ContactoQueres.Save;
+            return await _context.EjecutarQueryAsync(sql, new { UsuarioID = usuarioID, ContactoUsuarioID = contactoUsuarioID });
+
+        }
     }
 }

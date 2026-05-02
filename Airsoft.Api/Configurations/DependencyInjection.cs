@@ -55,6 +55,9 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IPaisRepository, PaisRepository>();
             services.AddScoped<IUbigeoRepository, UbigeoRepository>();
             services.AddScoped<IContactoRepository, ContactoRepository>();
+            services.AddScoped<IContactoSolicitudRepository, ContactoSolicitudRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddScoped<IChatMiembroRepository, ChatMiembroRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
@@ -83,6 +86,7 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IDatosService, DatosService>();
             services.AddScoped<IUbigeoService, UbigeoService>();
             services.AddScoped<IContactoService, ContactoService>();
+            services.AddScoped<IContactoSolicitudService, ContactoSolicitudService>();
 
             // =========================
             // JWT CONFIG

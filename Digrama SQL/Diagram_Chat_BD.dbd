@@ -108,7 +108,7 @@
             </Location>
             <Size>
               <Width>274 px</Width>
-              <Height>241 px</Height>
+              <Height>259 px</Height>
             </Size>
             <DbOid>
               <Path>Prueba.dbo.Contacto_Solicitud</Path>
@@ -134,7 +134,7 @@
               <Port>
                 <Location>
                   <X>0 px</X>
-                  <Y>120.5 px</Y>
+                  <Y>129.5 px</Y>
                 </Location>
                 <Anchors>Top Bottom</Anchors>
                 <Align>Left</Align>
@@ -156,6 +156,16 @@
                 </CustomProperties>
               </Port>
             </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>-630 px</X>
+                <Y>-430.5 px</Y>
+              </PointD>
+              <PointD>
+                <X>-630 px</X>
+                <Y>-439.5 px</Y>
+              </PointD>
+            </BendPoints>
             <IsManuallyRouted>false</IsManuallyRouted>
             <DbOid>
               <Path>Prueba.dbo.Contacto_Solicitud.FK_Contacto_Solicitud_Usuario_UsuarioID</Path>
@@ -174,8 +184,8 @@
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>121.5 px</X>
-                  <Y>0 px</Y>
+                  <X>131.5 px</X>
+                  <Y>9 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Left</Align>
@@ -512,13 +522,221 @@
               <Y>2 px</Y>
             </CommentOffset>
           </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>28</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>-70 px</X>
+              <Y>-520 px</Y>
+            </Location>
+            <Size>
+              <Width>199 px</Width>
+              <Height>223 px</Height>
+            </Size>
+            <DbOid>
+              <Path>Prueba.dbo.Estado</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>29</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>-200 px</X>
+              <Y>-100 px</Y>
+            </Location>
+            <Size>
+              <Width>249 px</Width>
+              <Height>115 px</Height>
+            </Size>
+            <DbOid>
+              <Path>Prueba.dbo.TipoEstado</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>30</OID>
+              <Comment>31</Comment>
+              <OutModel>28</OutModel>
+              <InModel>29</InModel>
+              <OutPort>32</OutPort>
+              <InPort>33</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>124.5 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>32</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>74.5 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>33</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>54.5 px</X>
+                <Y>-247 px</Y>
+              </PointD>
+              <PointD>
+                <X>-125.5 px</X>
+                <Y>-247 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>Prueba.dbo.Estado.FK_Estado_TipoEstado_TipoEstadoID</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>31</OID>
+              <ForeColor>241, 241, 241</ForeColor>
+              <HolderModel>30</HolderModel>
+              <Port>34</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>90 px</X>
+                  <Y>-50 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>34</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>35</OID>
+              <Comment>36</Comment>
+              <OutModel>3</OutModel>
+              <InModel>28</InModel>
+              <OutPort>37</OutPort>
+              <InPort>38</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>0 px</X>
+                  <Y>164.5 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>37</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>0 px</X>
+                  <Y>94.5 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Left</Align>
+                <CustomProperties>
+                  <OID>38</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>-316 px</X>
+                <Y>-395.5 px</Y>
+              </PointD>
+              <PointD>
+                <X>-316 px</X>
+                <Y>-425.5 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>Prueba.dbo.Contacto_Solicitud.FK_Contacto_Solicitud_Estado_EstadoID</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>36</OID>
+              <ForeColor>241, 241, 241</ForeColor>
+              <HolderModel>35</HolderModel>
+              <Port>39</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>-143 px</X>
+                  <Y>30 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>39</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
         </Children>
         <ViewPort>
           <ScaleMode>Free</ScaleMode>
           <Scale>1</Scale>
           <Location>
-            <X>-1116.66666666667 px</X>
-            <Y>-529.33333269755 px</Y>
+            <X>-914.333353678385 px</X>
+            <Y>-849.333333333333 px</Y>
           </Location>
         </ViewPort>
       </Model>

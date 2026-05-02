@@ -6,5 +6,6 @@ namespace Airsoft.Infrastructure.Intefaces
     {
         Task<List<Contacto>> GetContactosByUsuarioID(int usuarioID);
         Task<List<Contacto>> FindContactoByBuscar(int usuarioID, string buscar);
+        Task<bool> Save(int usuarioID, int contactoUsuarioID);
     }
 }
