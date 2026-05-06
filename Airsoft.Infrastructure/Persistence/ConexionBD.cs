@@ -30,19 +30,65 @@ namespace Airsoft.Infrastructure.Persistence
             return connection;
         }
 
+        public async Task<DapperTransaction> GetDapperTransaction()
+        {
+            var connection = CrearConexion();
+            await connection.OpenAsync();
+
+            var transaction = await connection.BeginTransactionAsync();
+
+            return new DapperTransaction(connection, transaction);
+        }
+
+        // ✅ Devuelve directamente la conexión y la transacción
+        public async Task<(DbConnection Connection, DbTransaction Transaction)>
+            BeginTransactionAsync()
+        {
+            var connection = CrearConexion();
+
+            await connection.OpenAsync();
+
+            var transaction = await connection.BeginTransactionAsync();
+
+            return (connection, transaction);
+        }
+
         public async Task<T> EjecutarAsync<T>(Func<DbConnection, Task<T>> accion)
         {
             using var connection = CrearConexion();
             await connection.OpenAsync();
             return await accion(connection);
         }
-        public async Task<bool> EjecutarQueryAsync(string sql, object? parametros = null)
-        {
-            await using var connection = CrearConexion();
-            await connection.OpenAsync();
 
-            var filasAfectadas = await connection.ExecuteAsync(sql, parametros, null);
-            return filasAfectadas > 0;
+        public async Task<bool> EjecutarQueryAsync(string sql, object? parametros = null, IDbTransaction? transaction = null)
+        {
+            var connection = transaction?.Connection as DbConnection ?? CrearConexion();
+
+            var debeCerrarConexion = transaction == null;
+
+            if (connection.State != ConnectionState.Open)
+                await connection.OpenAsync();
+
+            try
+            {
+                var filasAfectadas = await connection.ExecuteAsync(sql, parametros, transaction);
+                return filasAfectadas > 0;
+            }
+            finally
+            {
+                if (debeCerrarConexion)
+                    await connection.DisposeAsync();
+            }
         }
+
+
+        //public async Task<bool> EjecutarQueryAsync(string sql, object? parametros = null, IDbTransaction? transaction = null)
+        //{
+        //    await using var connection = CrearConexion();
+        //    await connection.OpenAsync();
+
+        //    var filasAfectadas = await connection.ExecuteAsync(sql, parametros, transaction);
+        //    return filasAfectadas > 0;
+        //}
     }
 }

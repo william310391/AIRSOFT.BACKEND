@@ -2,6 +2,7 @@
 using Airsoft.Infrastructure.Intefaces;
 using Airsoft.Infrastructure.Persistence;
 using Airsoft.Infrastructure.Queries;
+using System.Data;
 
 namespace Airsoft.Infrastructure.Repositories
 {
@@ -14,10 +15,10 @@ namespace Airsoft.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<bool> Save(Chat chat)
+        public async Task<bool> Save(Chat chat, IDbTransaction transaction)
         {
             var sql = ChatQueries.Save;
-            return await _context.EjecutarQueryAsync(sql, chat);
+            return await _context.EjecutarQueryAsync(sql, chat, transaction);
         }
     }
 }

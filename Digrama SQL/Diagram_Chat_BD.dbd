@@ -235,10 +235,10 @@
             </Location>
             <Size>
               <Width>270 px</Width>
-              <Height>187 px</Height>
+              <Height>259 px</Height>
             </Size>
             <DbOid>
-              <Path>Prueba.dbo.Chat_Miembros</Path>
+              <Path>Prueba.dbo.Chat_Miembro</Path>
               <TypeName>Table</TypeName>
             </DbOid>
             <Compartments>
@@ -261,7 +261,7 @@
               <Port>
                 <Location>
                   <X>0 px</X>
-                  <Y>93.5 px</Y>
+                  <Y>129.5 px</Y>
                 </Location>
                 <Anchors>Top Bottom</Anchors>
                 <Align>Right</Align>
@@ -286,12 +286,12 @@
             <BendPoints>
               <PointD>
                 <X>-444.5 px</X>
-                <Y>153.5 px</Y>
+                <Y>189.5 px</Y>
               </PointD>
             </BendPoints>
             <IsManuallyRouted>false</IsManuallyRouted>
             <DbOid>
-              <Path>Prueba.dbo.Chat_Miembros.FK_Chat_Miembros_Chat_ChatID</Path>
+              <Path>Prueba.dbo.Chat_Miembro.FK_Chat_Miembros_Chat_ChatID</Path>
               <TypeName>ForeignKey</TypeName>
             </DbOid>
           </Model>
@@ -435,7 +435,7 @@
             </CustomProperties>
             <Location>
               <X>-1080 px</X>
-              <Y>320 px</Y>
+              <Y>410 px</Y>
             </Location>
             <Size>
               <Width>279 px</Width>
@@ -487,6 +487,16 @@
                 </CustomProperties>
               </Port>
             </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>-781 px</X>
+                <Y>485.5 px</Y>
+              </PointD>
+              <PointD>
+                <X>-781 px</X>
+                <Y>395.5 px</Y>
+              </PointD>
+            </BendPoints>
             <IsManuallyRouted>false</IsManuallyRouted>
             <DbOid>
               <Path>Prueba.dbo.Mensaje_Adjunto.FK_Mensaje_Adjunto_Mensaje_MensajeID</Path>
@@ -505,8 +515,8 @@
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>-150.5 px</X>
-                  <Y>0 px</Y>
+                  <X>-160.5 px</X>
+                  <Y>90 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Right</Align>
@@ -735,8 +745,8 @@
           <ScaleMode>Free</ScaleMode>
           <Scale>1</Scale>
           <Location>
-            <X>-914.333353678385 px</X>
-            <Y>-849.333333333333 px</Y>
+            <X>-1329.33333333333 px</X>
+            <Y>-657.33333269755 px</Y>
           </Location>
         </ViewPort>
       </Model>

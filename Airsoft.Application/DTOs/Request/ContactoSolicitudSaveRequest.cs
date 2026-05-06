@@ -2,7 +2,7 @@
 {
     public class ContactoSolicitudSaveRequest
     {
-        public int UsuarioContactoID { get; set; }
-        public string? Mensaje { get; set; }
+        public int usuarioContactoID { get; set; }
+        public string? mensaje { get; set; }
     }
 }

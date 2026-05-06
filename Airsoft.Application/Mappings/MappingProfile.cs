@@ -2,7 +2,7 @@
 using Airsoft.Domain.Entities;
 using Airsoft.Application.DTOs.Response;
 using Airsoft.Application.DTOs.Request;
-using Airsoft.Application.Services;
+using Airsoft.Application.DTOs.ContactoSolicitud;
 
 namespace Airsoft.Application.Mappings
 {
@@ -21,7 +21,8 @@ namespace Airsoft.Application.Mappings
             CreateMap<Pais, PaisResponse>();
             CreateMap<Ubigeo, UbigeoResponse>();
             CreateMap<Contacto, GetContactosByUsuarioIDResponse>();
-            CreateMap<Contacto, FindContactoByBuscarResponse>();           
+            CreateMap<Contacto, FindContactoByBuscarResponse>();
+            CreateMap<ContactoSolicitud, GetSolicitudPendientesResponse>();
 
 
             // DTO → Entity
@@ -33,8 +34,8 @@ namespace Airsoft.Application.Mappings
             CreateMap<DatosRequest, Datos>();
             CreateMap<PersonaCorreoRequest, PersonaCorreo>();
             CreateMap<PersonaTelefonoRequest, PersonaTelefono>();
-            CreateMap<ContactoSolicitudSaveRequest, Contacto>();
-            CreateMap<ContactoSolicitudChangeStatusRequest, Contacto>();
+            CreateMap<ContactoSolicitudSaveRequest, ContactoSolicitud>();
+            CreateMap<ContactoSolicitudChangeStatusRequest, ContactoSolicitud>();
             
 
             // Si los nombres de propiedades no coinciden:

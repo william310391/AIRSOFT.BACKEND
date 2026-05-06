@@ -2,7 +2,8 @@
 {
     public class ContactoSolicitudChangeStatusRequest
     {
-        public int EstadoID { get; set; }
-        public int UsuarioContactoID { get; set; }
+        public Guid ContactoSolicitudID { get; set; }
+        public int usuarioContactoID { get; set; }
+        public int estadoID { get; set; }
     }
 }

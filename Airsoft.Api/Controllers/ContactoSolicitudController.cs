@@ -1,4 +1,5 @@
-﻿using Airsoft.Application.DTOs.Request;
+﻿using Airsoft.Application.DTOs.ContactoSolicitud;
+using Airsoft.Application.DTOs.Request;
 using Airsoft.Application.DTOs.Response;
 using Airsoft.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -16,13 +17,13 @@ namespace Airsoft.Api.Controllers
             _contactoSolicitudService = contactoSolicitudService;
         }
 
-        [HttpPost("save")]
+        [HttpPost("create")]
         [Authorize()]
         [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ApiResponse<bool>>> Save([FromBody] ContactoSolicitudSaveRequest request)
+        public async Task<ActionResult<ApiResponse<bool>>> Create([FromBody] ContactoSolicitudSaveRequest request)
         {
-            var response = await _contactoSolicitudService.Save(request);
+            var response = await _contactoSolicitudService.Create(request);
             return StatusCode(response.StatusCode, response);
         }
 
@@ -35,6 +36,17 @@ namespace Airsoft.Api.Controllers
             var response = await _contactoSolicitudService.ChangeStatus(request);
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpGet("getSolicitudesPendientes")]
+        [Authorize()]
+        [ProducesResponseType(typeof(ApiResponse<List<GetSolicitudPendientesResponse>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ApiResponse<List<GetSolicitudPendientesResponse>>>> getSolicitudesPendiente()
+        {
+            var response = await _contactoSolicitudService.GetSolicitudPendientes();
+            return StatusCode(response.StatusCode, response);
+        }
+
 
     }
 }

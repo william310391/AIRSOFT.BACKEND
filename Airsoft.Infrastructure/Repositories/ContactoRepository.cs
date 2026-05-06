@@ -3,6 +3,7 @@ using Airsoft.Infrastructure.Intefaces;
 using Airsoft.Infrastructure.Persistence;
 using Airsoft.Infrastructure.Queries;
 using Dapper;
+using System.Data;
 
 namespace Airsoft.Infrastructure.Repositories
 {
@@ -35,10 +36,10 @@ namespace Airsoft.Infrastructure.Repositories
             });
         }
 
-        public async Task<bool> Save(int usuarioID, int contactoUsuarioID)
+        public async Task<bool> Save(int usuarioID, int usuarioContactoID, IDbTransaction transaction)
         {
             var sql = ContactoQueres.Save;
-            return await _context.EjecutarQueryAsync(sql, new { UsuarioID = usuarioID, ContactoUsuarioID = contactoUsuarioID });
+            return await _context.EjecutarQueryAsync(sql, new { UsuarioID = usuarioID, UsuarioContactoID = usuarioContactoID }, transaction);
 
         }
     }

@@ -3,6 +3,7 @@ using Airsoft.Infrastructure.Intefaces;
 using Airsoft.Infrastructure.Persistence;
 using Airsoft.Infrastructure.Queries;
 using Dapper;
+using System.Data;
 
 namespace Airsoft.Infrastructure.Repositories
 {
@@ -21,10 +22,20 @@ namespace Airsoft.Infrastructure.Repositories
             return await _context.EjecutarQueryAsync(sql, contactoSolicitud);
         }
 
-        public async Task<bool> ChangeStatus(ContactoSolicitud contactoSolicitud)
+        public async Task<bool> ChangeStatusByUsuarioID(ContactoSolicitud contactoSolicitud)
         {
-            var sql = ContactoSolicitudQueries.changeStatus;
+            var sql = ContactoSolicitudQueries.changeStatusByUsuarioID;
             return await _context.EjecutarQueryAsync(sql, contactoSolicitud);
+        }
+        public async Task<bool> ChangeStatusByUsuarioID(ContactoSolicitud contactoSolicitud, IDbTransaction transaction)
+        {
+            var sql = ContactoSolicitudQueries.changeStatusByUsuarioID;
+            return await _context.EjecutarQueryAsync(sql, contactoSolicitud,transaction);
+        }
+        public async Task<bool> ChangeStatusByContactoSolicitudID(ContactoSolicitud contactoSolicitud, IDbTransaction transaction)
+        {
+            var sql = ContactoSolicitudQueries.changeStatusByContactoSolicitudID;
+            return await _context.EjecutarQueryAsync(sql, contactoSolicitud, transaction);
         }
 
         public async Task<List<ContactoSolicitud>> GetSolicitudPendientesByUsuarioID(int usuarioID)

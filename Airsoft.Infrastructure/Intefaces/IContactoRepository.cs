@@ -1,4 +1,5 @@
 ﻿using Airsoft.Domain.Entities;
+using System.Data;
 
 namespace Airsoft.Infrastructure.Intefaces
 {
@@ -6,6 +7,6 @@ namespace Airsoft.Infrastructure.Intefaces
     {
         Task<List<Contacto>> GetContactosByUsuarioID(int usuarioID);
         Task<List<Contacto>> FindContactoByBuscar(int usuarioID, string buscar);
-        Task<bool> Save(int usuarioID, int contactoUsuarioID);
+        Task<bool> Save(int usuarioID, int contactoUsuarioID, IDbTransaction transaction);
     }
 }
