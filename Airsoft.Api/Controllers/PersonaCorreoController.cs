@@ -1,5 +1,5 @@
-﻿using Airsoft.Application.DTOs.Request;
-using Airsoft.Application.DTOs.Response;
+﻿using Airsoft.Application.DTOs;
+using Airsoft.Application.DTOs.PersonaCorreo;
 using Airsoft.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,6 @@
 ﻿
-using Airsoft.Application.DTOs.Request;
-using Airsoft.Application.DTOs.Response;
+using Airsoft.Application.DTOs;
+using Airsoft.Application.DTOs.PersonaTelefono;
 
 namespace Airsoft.Application.Interfaces
 {

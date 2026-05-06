@@ -1,8 +1,14 @@
 ﻿using AutoMapper;
 using Airsoft.Domain.Entities;
-using Airsoft.Application.DTOs.Response;
-using Airsoft.Application.DTOs.Request;
+using Airsoft.Application.DTOs.Persona;
+using Airsoft.Application.DTOs.PersonaCorreo;
+using Airsoft.Application.DTOs.PersonaTelefono;
+using Airsoft.Application.DTOs.Ubigeo;
+using Airsoft.Application.DTOs.Usuario;
+using Airsoft.Application.DTOs.Contacto;
 using Airsoft.Application.DTOs.ContactoSolicitud;
+using Airsoft.Application.DTOs.Datos;
+using Airsoft.Application.DTOs.Pais;
 
 namespace Airsoft.Application.Mappings
 {

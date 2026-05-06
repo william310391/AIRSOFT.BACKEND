@@ -1,5 +1,5 @@
-﻿using Airsoft.Application.DTOs.Request;
-using Airsoft.Application.DTOs.Response;
+﻿using Airsoft.Application.DTOs;
+using Airsoft.Application.DTOs.Contacto;
 using Airsoft.Application.Interfaces;
 using Airsoft.Domain.Enum;
 using Airsoft.Infrastructure.Intefaces;

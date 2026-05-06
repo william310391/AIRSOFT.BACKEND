@@ -1,5 +1,5 @@
-﻿using Airsoft.Application.DTOs.Request;
-using Airsoft.Application.DTOs.Response;
+﻿using Airsoft.Application.DTOs;
+using Airsoft.Application.DTOs.Datos;
 using Airsoft.Application.Exceptions;
 using Airsoft.Application.Interfaces;
 using Airsoft.Domain.Entities;

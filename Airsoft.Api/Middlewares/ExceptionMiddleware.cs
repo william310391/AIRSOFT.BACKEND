@@ -1,4 +1,4 @@
-﻿using Airsoft.Application.DTOs.Response;
+﻿using Airsoft.Application.DTOs;
 using Airsoft.Application.Exceptions;
 using System.Net;
 using System.Text.Json;

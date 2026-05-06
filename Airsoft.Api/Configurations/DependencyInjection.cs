@@ -1,4 +1,4 @@
-﻿using Airsoft.Application.DTOs.Response;
+﻿using Airsoft.Application.DTOs;
 using Airsoft.Application.Interfaces;
 using Airsoft.Application.Mappings;
 using Airsoft.Application.Services;

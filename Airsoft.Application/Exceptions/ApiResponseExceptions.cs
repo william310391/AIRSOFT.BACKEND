@@ -1,5 +1,5 @@
 ﻿
-using Airsoft.Application.DTOs.Response;
+using Airsoft.Application.DTOs;
 using System.Net;
 
 namespace Airsoft.Application.Exceptions

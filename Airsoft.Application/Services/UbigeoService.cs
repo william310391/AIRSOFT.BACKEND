@@ -1,4 +1,5 @@
-﻿using Airsoft.Application.DTOs.Response;
+﻿using Airsoft.Application.DTOs;
+using Airsoft.Application.DTOs.Ubigeo;
 using Airsoft.Application.Interfaces;
 using Airsoft.Infrastructure.Intefaces;
 using AutoMapper;
