@@ -3,6 +3,7 @@ using Airsoft.Application.DTOs.Auth;
 using Airsoft.Application.DTOs.Usuario;
 using Airsoft.Application.Exceptions;
 using Airsoft.Application.Interfaces;
+using Airsoft.Infrastructure.Helpers;
 using Airsoft.Infrastructure.Intefaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -15,13 +16,16 @@ namespace Airsoft.Application.Services
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly RedisCacheHelper _redisCache;
 
-        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, IJwtService jwtService, IHttpContextAccessor httpContextAccessor)
+
+        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, IJwtService jwtService, IHttpContextAccessor httpContextAccessor, RedisCacheHelper redisCache)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _jwtService = jwtService;
             _httpContextAccessor = httpContextAccessor;
+            _redisCache = redisCache;
         }        
         public async Task<ApiResponse<LoginResponse>> Login(LoginRequest request)
         {
@@ -53,6 +57,22 @@ namespace Airsoft.Application.Services
                 UsuarioNombre = entidad.UsuarioNombre,
                 Token = _jwtService.GenerarToken(entidad)
             };
+
+            //var key = "pruebna";
+
+            //// Debes usar await porque GetAsync es asíncrono
+            //var cacheData = await _redisCache.GetAsync<LoginResponse>(key);
+
+            //if (cacheData == null)
+            //{
+            //    await _redisCache.SetAsync(
+            //        key,
+            //        loginResponse
+            //    );
+
+            //    cacheData = loginResponse;
+            //}
+
 
             return new ApiResponse<LoginResponse>() { 
                 Success= true,

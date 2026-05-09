@@ -3,6 +3,7 @@ using Airsoft.Application.Interfaces;
 using Airsoft.Application.Mappings;
 using Airsoft.Application.Services;
 using Airsoft.Domain.Enum;
+using Airsoft.Infrastructure.Helpers;
 using Airsoft.Infrastructure.Intefaces;
 using Airsoft.Infrastructure.Persistence;
 using Airsoft.Infrastructure.Repositories;
@@ -44,7 +45,7 @@ namespace Airsoft.Api.Configurations
 
             // =========================
             // REPOSITORIES
-            // =========================
+            // =========================    
             services.AddScoped<IPersonaRepository, PersonaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IRolRepository, RolRepository>();
@@ -68,6 +69,19 @@ namespace Airsoft.Api.Configurations
             {
                 cfg.AddProfile<MappingProfile>();
             });
+
+
+            // =========================
+            // REDIS
+            // =========================
+            services.AddScoped(sp =>
+            {
+                var configuration = sp.GetRequiredService<IConfiguration>();
+                var redisConnection = configuration["Redis:ConnectionString"];
+
+                return new RedisCacheHelper(redisConnection!);
+            });
+
 
             services.AddHttpContextAccessor();
 
