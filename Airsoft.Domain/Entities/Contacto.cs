@@ -15,6 +15,8 @@
         public Guid? ContactoSolicitudID { get; set; }
         public int SolicitudUsuarioID { get; set; }
         public int SolicitudUsuarioContactoID { get; set; }
+        public string? SolicitudMensaje { get; set; }
+
         public Guid? ChatID { get; set; }
         public DateTime FechaRegistro { get; set; }
         public int UsuarioModificacionID { get; set; }

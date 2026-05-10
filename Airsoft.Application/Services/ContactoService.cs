@@ -1,5 +1,6 @@
 ﻿using Airsoft.Application.DTOs;
 using Airsoft.Application.DTOs.Contacto;
+using Airsoft.Application.DTOs.ContactoSolicitud;
 using Airsoft.Application.Interfaces;
 using Airsoft.Domain.Enum;
 using Airsoft.Infrastructure.Intefaces;
@@ -29,13 +30,13 @@ namespace Airsoft.Application.Services
             //if (usuario == null)
             //    throw new ApiResponseExceptions(HttpStatusCode.Conflict, "El usuario ingresado existe");
 
-            var data = await _unitOfWork.ContactoRepository.GetContactosByUsuarioID(usuarioID);
+            var dataDTO = await GetContactosByUsuarioID(usuarioID);
 
             return new ApiResponse<List<GetContactosByUsuarioIDResponse>>
             {
                 Success = true,
-                Message = data.Any() ? "hay datos" : "sin datos",
-                Data = _mapper.Map<List<GetContactosByUsuarioIDResponse>>(data),
+                Message = dataDTO.Any() ? "hay datos" : "sin datos",
+                Data = dataDTO,
             };
         }
 
@@ -67,5 +68,39 @@ namespace Airsoft.Application.Services
                 Data = res,
             };
         }
+
+        private async Task<List<GetContactosByUsuarioIDResponse>> GetContactosByUsuarioID(int usuarioID)
+        {
+            var data = await _unitOfWork.ContactoRepository.GetContactosByUsuarioID(usuarioID);
+            var dataDTO = _mapper.Map<List<GetContactosByUsuarioIDResponse>>(data);
+
+            var solicitudesPorUsuario = data
+                .Where(x => x.ContactoSolicitudID != Guid.Empty) // o x.ContactoSolicitudID != null según tipo
+                .ToDictionary(x => x.UsuarioID, x => x);
+
+            dataDTO.ForEach(y =>
+            {
+                if (solicitudesPorUsuario.TryGetValue(y.usuarioID, out var x)
+                    && !string.IsNullOrEmpty(x.ContactoSolicitudID.ToString())   // o != Guid.Empty según tipo
+                    )
+                {
+                    y.datosSolicitudPendiente = new DatoSolicitudPendiente
+                    {
+                        SolicitudPendiente = x.SolicitudPendiente,
+                        EsRemitente = x.EsRemitente,
+                        contactoSolicitudID = x.ContactoSolicitudID,
+                        solicitudUsuarioID = x.SolicitudUsuarioID,
+                        solicitudUsuarioContactoID = x.SolicitudUsuarioContactoID,
+                        solicitudMensaje = x.SolicitudMensaje,
+                    };
+                }
+                else
+                {
+                    y.datosSolicitudPendiente = null;
+                }
+            });
+            return dataDTO;
+        }
+
     }
 }
