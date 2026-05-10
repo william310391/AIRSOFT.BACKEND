@@ -58,7 +58,7 @@ namespace Airsoft.Application.Services
 
             var data = await _unitOfWork.ContactoRepository.FindContactoByBuscar(usuarioID, req.buscar);
             var res = _mapper.Map<List<FindContactoByBuscarResponse>>(data);
-            res.ForEach(x => x.noContacto = data.Find(y => y.UsuarioID == usuarioID)?.UsuarioContactoID == null ? true : false);
+            //res.ForEach(x => x.noContacto = data.Find(y => y.UsuarioID == usuarioID)?.UsuarioContactoID == null ? true : false);
 
             return new ApiResponse<List<FindContactoByBuscarResponse>>
             {
