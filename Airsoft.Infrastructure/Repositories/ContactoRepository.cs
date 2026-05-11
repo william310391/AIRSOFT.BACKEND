@@ -18,7 +18,7 @@ namespace Airsoft.Infrastructure.Repositories
 
         public async Task<List<Contacto>> GetContactosByUsuarioID(int usuarioID)
         {
-            var sql = ContactoQueres.GetContactosByUsuarioID;
+            var sql = ContactoQueres.GetContacto;
             return await _context.EjecutarAsync(async conn =>
             {
                 var result = await conn.QueryAsync<Contacto>(sql, new { UsuarioID = usuarioID });

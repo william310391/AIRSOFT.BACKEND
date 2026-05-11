@@ -5,7 +5,7 @@ namespace Airsoft.Application.Interfaces
 {
     public interface IContactoService
     {
-        Task<ApiResponse<List<GetContactosByUsuarioIDResponse>>> GetContactos();
-        Task<ApiResponse<List<FindContactoByBuscarResponse>>> FindContactoByBuscar(FindContactoByBuscarRequest req);
+        Task<ApiResponse<List<ContatoDetalleResponse>>> GetContactos();
+        Task<ApiResponse<List<ContatoDetalleResponse>>> FindContactoByBuscar(FindContactoByBuscarRequest req);
     }
 }

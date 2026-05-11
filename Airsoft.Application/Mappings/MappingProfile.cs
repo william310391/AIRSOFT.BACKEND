@@ -26,9 +26,10 @@ namespace Airsoft.Application.Mappings
             CreateMap<PersonaTelefono, PersonaTelefonoResponse>();
             CreateMap<Pais, PaisResponse>();
             CreateMap<Ubigeo, UbigeoResponse>();
-            CreateMap<Contacto, GetContactosByUsuarioIDResponse>();
-            CreateMap<Contacto, FindContactoByBuscarResponse>();
             CreateMap<ContactoSolicitud, GetSolicitudPendientesResponse>();
+            CreateMap<Contacto, ContatoDetalleResponse>();
+
+
 
 
             // DTO → Entity

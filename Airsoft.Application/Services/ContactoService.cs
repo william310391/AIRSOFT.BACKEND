@@ -2,6 +2,7 @@
 using Airsoft.Application.DTOs.Contacto;
 using Airsoft.Application.DTOs.ContactoSolicitud;
 using Airsoft.Application.Interfaces;
+using Airsoft.Domain.Entities;
 using Airsoft.Domain.Enum;
 using Airsoft.Infrastructure.Intefaces;
 using AutoMapper;
@@ -20,7 +21,7 @@ namespace Airsoft.Application.Services
             _mapper = mapper;
             _userContextService = userContextService;
         }
-        public async Task<ApiResponse<List<GetContactosByUsuarioIDResponse>>> GetContactos()
+        public async Task<ApiResponse<List<ContatoDetalleResponse>>> GetContactos()
         {
             var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             //if (usuarioID == 0)
@@ -30,9 +31,10 @@ namespace Airsoft.Application.Services
             //if (usuario == null)
             //    throw new ApiResponseExceptions(HttpStatusCode.Conflict, "El usuario ingresado existe");
 
-            var dataDTO = await GetContactosByUsuarioID(usuarioID);
+            var data = await _unitOfWork.ContactoRepository.GetContactosByUsuarioID(usuarioID);
+            var dataDTO = await CargarContactoDetalle(data);
 
-            return new ApiResponse<List<GetContactosByUsuarioIDResponse>>
+            return new ApiResponse<List<ContatoDetalleResponse>>
             {
                 Success = true,
                 Message = dataDTO.Any() ? "hay datos" : "sin datos",
@@ -40,7 +42,7 @@ namespace Airsoft.Application.Services
             };
         }
 
-        public async Task<ApiResponse<List<FindContactoByBuscarResponse>>> FindContactoByBuscar(FindContactoByBuscarRequest req)
+        public async Task<ApiResponse<List<ContatoDetalleResponse>>> FindContactoByBuscar(FindContactoByBuscarRequest req)
         {
             var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             //if (usuarioID == 0)
@@ -50,38 +52,43 @@ namespace Airsoft.Application.Services
             //    throw new ApiResponseExceptions(HttpStatusCode.Conflict, "El usuario ingresado existe");
 
             if(req.buscar.Length < 3)
-                return new ApiResponse<List<FindContactoByBuscarResponse>>
+                return new ApiResponse<List<ContatoDetalleResponse>>
                 {
                     Success = true,
                     Message = "La cadena de búsqueda debe tener al menos 3 caracteres",
-                    Data = new List<FindContactoByBuscarResponse>(),
+                    Data = new List<ContatoDetalleResponse>(),
                 };
 
             var data = await _unitOfWork.ContactoRepository.FindContactoByBuscar(usuarioID, req.buscar);
-            var res = _mapper.Map<List<FindContactoByBuscarResponse>>(data);
+            var dataDTO = await CargarContactoDetalle(data);
             //res.ForEach(x => x.noContacto = data.Find(y => y.UsuarioID == usuarioID)?.UsuarioContactoID == null ? true : false);
 
-            return new ApiResponse<List<FindContactoByBuscarResponse>>
+            return new ApiResponse<List<ContatoDetalleResponse>>
             {
                 Success = true,
-                Message = data.Any() ? "hay datos" : "sin datos",
-                Data = res,
+                Message = dataDTO.Any() ? "hay datos" : "sin datos",
+                Data = dataDTO,
             };
         }
 
-        private async Task<List<GetContactosByUsuarioIDResponse>> GetContactosByUsuarioID(int usuarioID)
+
+        private async Task<List<ContatoDetalleResponse>> CargarContactoDetalle(List<Contacto> data)
         {
-            var data = await _unitOfWork.ContactoRepository.GetContactosByUsuarioID(usuarioID);
-            var dataDTO = _mapper.Map<List<GetContactosByUsuarioIDResponse>>(data);
+            var dataDTO = _mapper.Map<List<ContatoDetalleResponse>>(data);
 
             var solicitudesPorUsuario = data
-                .Where(x => x.ContactoSolicitudID != Guid.Empty) // o x.ContactoSolicitudID != null según tipo
+                .Where(x => x.NoContacto) // o x.ContactoSolicitudID != null según tipo
                 .ToDictionary(x => x.UsuarioID, x => x);
+
+            if (!dataDTO.Any())
+            {
+                new List<ContatoDetalleResponse>();
+            }
 
             dataDTO.ForEach(y =>
             {
                 if (solicitudesPorUsuario.TryGetValue(y.usuarioID, out var x)
-                    && !string.IsNullOrEmpty(x.ContactoSolicitudID.ToString())   // o != Guid.Empty según tipo
+                    && x.NoContacto && x.SolicitudPendiente  // o != Guid.Empty según tipo
                     )
                 {
                     y.datosSolicitudPendiente = new DatoSolicitudPendiente
@@ -101,6 +108,5 @@ namespace Airsoft.Application.Services
             });
             return dataDTO;
         }
-
     }
 }

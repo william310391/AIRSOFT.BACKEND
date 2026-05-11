@@ -18,9 +18,9 @@ namespace Airsoft.Api.Controllers
 
         [HttpGet("getContactos")]
         [Authorize()]
-        [ProducesResponseType(typeof(List<GetContactosByUsuarioIDResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ContatoDetalleResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<GetContactosByUsuarioIDResponse>>> GetContactos()
+        public async Task<ActionResult<List<ContatoDetalleResponse>>> GetContactos()
         {
             var response = await _contactoService.GetContactos();
             return StatusCode(response.StatusCode, response);
@@ -28,15 +28,13 @@ namespace Airsoft.Api.Controllers
 
         [HttpPost("findContactoByBuscar")]
         [Authorize()]
-        [ProducesResponseType(typeof(List<FindContactoByBuscarResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ContatoDetalleResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<FindContactoByBuscarResponse>>> FindContactoByBuscar([FromBody] FindContactoByBuscarRequest req)
+        public async Task<ActionResult<List<ContatoDetalleResponse>>> FindContactoByBuscar([FromBody] FindContactoByBuscarRequest req)
         {
             var response = await _contactoService.FindContactoByBuscar(req);
             return StatusCode(response.StatusCode, response);
         }
-
-
 
     }
 }
