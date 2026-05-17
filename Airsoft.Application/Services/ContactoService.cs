@@ -1,4 +1,5 @@
 ﻿using Airsoft.Application.DTOs;
+using Airsoft.Application.DTOs.Chat;
 using Airsoft.Application.DTOs.Contacto;
 using Airsoft.Application.DTOs.ContactoSolicitud;
 using Airsoft.Application.Interfaces;
@@ -74,38 +75,60 @@ namespace Airsoft.Application.Services
 
         private async Task<List<ContatoDetalleResponse>> CargarContactoDetalle(List<Contacto> data)
         {
+            if (data == null || !data.Any())
+                return new List<ContatoDetalleResponse>();
+
             var dataDTO = _mapper.Map<List<ContatoDetalleResponse>>(data);
 
+            // Solicitudes pendientes
             var solicitudesPorUsuario = data
-                .Where(x => x.NoContacto) // o x.ContactoSolicitudID != null según tipo
-                .ToDictionary(x => x.UsuarioID, x => x);
+                .Where(x => x.NoContacto)
+                .GroupBy(x => x.UsuarioID)
+                .ToDictionary(g => g.Key, g => g.First());
 
-            if (!dataDTO.Any())
-            {
-                new List<ContatoDetalleResponse>();
-            }
+            // Chats disponibles
+            var chatsPorUsuario = data
+                .Where(x => x.ChatID.HasValue && x.ChatID != Guid.Empty)
+                .GroupBy(x => x.UsuarioID)
+                .ToDictionary(g => g.Key, g => g.First());
 
-            dataDTO.ForEach(y =>
+            foreach (var item in dataDTO)
             {
-                if (solicitudesPorUsuario.TryGetValue(y.usuarioID, out var x)
-                    && x.NoContacto && x.SolicitudPendiente  // o != Guid.Empty según tipo
-                    )
+                // Datos solicitud pendiente
+                if (solicitudesPorUsuario.TryGetValue(item.usuarioID, out var solicitud)
+                    && solicitud.SolicitudPendiente)
                 {
-                    y.datosSolicitudPendiente = new DatoSolicitudPendiente
+                    item.datosSolicitudPendiente = new DatoSolicitudPendiente
                     {
-                        SolicitudPendiente = x.SolicitudPendiente,
-                        EsRemitente = x.EsRemitente,
-                        contactoSolicitudID = x.ContactoSolicitudID,
-                        solicitudUsuarioID = x.SolicitudUsuarioID,
-                        solicitudUsuarioContactoID = x.SolicitudUsuarioContactoID,
-                        solicitudMensaje = x.SolicitudMensaje,
+                        SolicitudPendiente = solicitud.SolicitudPendiente,
+                        EsRemitente = solicitud.EsRemitente,
+                        contactoSolicitudID = solicitud.ContactoSolicitudID,
+                        solicitudUsuarioID = solicitud.SolicitudUsuarioID,
+                        solicitudUsuarioContactoID = solicitud.SolicitudUsuarioContactoID,
+                        solicitudMensaje = solicitud.SolicitudMensaje,
                     };
                 }
                 else
                 {
-                    y.datosSolicitudPendiente = null;
+                    item.datosSolicitudPendiente = null;
                 }
-            });
+
+                // Datos chat
+                if (chatsPorUsuario.TryGetValue(item.usuarioID, out var chat))
+                {
+                    item.datosChat = new ChatResponse
+                    {
+                        NombreChat = chat.NombreChat ?? string.Empty,
+                        ChatID = chat.ChatID ?? Guid.Empty,
+                        EsPrivado = chat.EsPrivado,
+                    };
+                }
+                else
+                {
+                    item.datosChat = null;
+                }
+            }
+
             return dataDTO;
         }
     }

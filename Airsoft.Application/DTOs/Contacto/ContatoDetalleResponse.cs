@@ -1,4 +1,5 @@
-﻿using Airsoft.Application.DTOs.ContactoSolicitud;
+﻿using Airsoft.Application.DTOs.Chat;
+using Airsoft.Application.DTOs.ContactoSolicitud;
 namespace Airsoft.Application.DTOs.Contacto
 {
     public class ContatoDetalleResponse
@@ -9,9 +10,9 @@ namespace Airsoft.Application.DTOs.Contacto
         public string? contactoNombre { get; set; }
         public string? contactoCorreo { get; set; }
         public bool noContacto { get; set; }
-        public Guid? ChatID { get; set; }
         public string? tipoRegistro { get; set; }
         public DatoSolicitudPendiente? datosSolicitudPendiente { get; set; }
+        public ChatResponse? datosChat { get; set; }
 
         private string _imagenPerfilUrl = "https://placehold.co/25x25";
         public string imagenPerfilUrl

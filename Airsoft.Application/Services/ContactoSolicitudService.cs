@@ -65,14 +65,14 @@ namespace Airsoft.Application.Services
         public async Task<ApiResponse<bool>> ChangeStatus(ContactoSolicitudChangeStatusRequest request)
         {
 
-            //await using var tx = await _dapperContext.GetDapperTransaction();
-            //var transaction = tx.Transaction;
+            await using var tx = await _dapperContext.GetDapperTransaction();
+            var transaction = tx.Transaction;
 
-            var (connection, transaction) = await _dapperContext.BeginTransactionAsync();
-            await using (connection)
-            await using (transaction)
+            //var (connection, transaction) = await _dapperContext.BeginTransactionAsync();
+            //await using (connection)
+            //await using (transaction)
 
-                try
+            try
             {
                 var entidad = _mapper.Map<ContactoSolicitud>(request);
                 entidad.UsuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
@@ -86,16 +86,19 @@ namespace Airsoft.Application.Services
                 switch (entidad.EstadoID)
                 {
                     case EnumEstados.SolicitudContacto.Aceptado: //receptor
-                                                                 //registrar contacto en la tabla de contactos 
+                                                                    //registrar contacto en la tabla de contactos 
                         await _unitOfWork.ContactoRepository.Save(entidad.UsuarioID, entidad.UsuarioContactoID, transaction);
                         await _unitOfWork.ContactoRepository.Save(entidad.UsuarioContactoID, entidad.UsuarioID, transaction);
+
+                        var datosUsuario = await _unitOfWork.UsuarioRepository.GetUsuariosByUsuarioID(entidad.UsuarioID);
+                        var datosContacto = await _unitOfWork.UsuarioRepository.GetUsuariosByUsuarioID(entidad.UsuarioContactoID);
 
                         //crear sala de chat 
                         var chartID = Guid.NewGuid();
                         var result = await _unitOfWork.ChatRepository.Save(new Chat
                         {
                             ChatID = chartID,
-                            NombreChat = $"Chat entre {entidad.UsuarioID} y {entidad.ContactoSolicitudID}",
+                            NombreChat = $"Chat entre {datosUsuario.UsuarioNombre} y {datosContacto.UsuarioNombre}",
                             EsPrivado = true,
                             UsuarioRegistroID = entidad.UsuarioID
                         }, transaction);
@@ -113,14 +116,14 @@ namespace Airsoft.Application.Services
                             UsuarioID = entidad.UsuarioID,
                             UsuarioRegistroID = entidad.UsuarioID,
                             EsAdmin = true
-                        },transaction);
+                        }, transaction);
                         await _unitOfWork.ChatMiembroRepository.Save(new ChatMiembro
                         {
                             ChatID = chartID,
                             UsuarioID = entidad.UsuarioContactoID,
                             UsuarioRegistroID = entidad.UsuarioID,
                             EsAdmin = true,
-                        },transaction);
+                        }, transaction);
                         break;
                 }
 
@@ -138,7 +141,7 @@ namespace Airsoft.Application.Services
                 await transaction.RollbackAsync();
                 throw new ApiResponseExceptions(HttpStatusCode.InternalServerError, "Error al validar la solicitud de contacto", ex);
             }
-           
+
         }
         private async Task<bool> AnularSolicitudes(int usuarioID, int usuarioContactoID)
         {

@@ -21,6 +21,8 @@ namespace Airsoft.Infrastructure.Repositories
         public IChatRepository ChatRepository { get; }
         public IChatMiembroRepository ChatMiembroRepository { get; }
 
+        public IMensajeRepository MensajeRepository { get; }
+
         public UnitOfWork(DapperContext context
             , IPersonaRepository personaRepository
             , IUsuarioRepository usuarioRepository
@@ -34,7 +36,8 @@ namespace Airsoft.Infrastructure.Repositories
             , IContactoRepository contactoRepository
             , IContactoSolicitudRepository contactoSolicitudRepository
             , IChatRepository chatRepository
-            , IChatMiembroRepository chatMiembroRepository)
+            , IChatMiembroRepository chatMiembroRepository
+            , IMensajeRepository mensajeRepository)
         {
             _context = context;
             PersonaRepository = personaRepository;
@@ -50,7 +53,7 @@ namespace Airsoft.Infrastructure.Repositories
             ContactoSolicitudRepository = contactoSolicitudRepository;
             ChatRepository = chatRepository;
             ChatMiembroRepository = chatMiembroRepository;
-
+            MensajeRepository = mensajeRepository;
         }
     }
 }

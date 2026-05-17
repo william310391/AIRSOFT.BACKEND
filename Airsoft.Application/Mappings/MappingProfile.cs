@@ -9,6 +9,7 @@ using Airsoft.Application.DTOs.Contacto;
 using Airsoft.Application.DTOs.ContactoSolicitud;
 using Airsoft.Application.DTOs.Datos;
 using Airsoft.Application.DTOs.Pais;
+using Airsoft.Application.DTOs.Mensaje;
 
 namespace Airsoft.Application.Mappings
 {
@@ -28,6 +29,7 @@ namespace Airsoft.Application.Mappings
             CreateMap<Ubigeo, UbigeoResponse>();
             CreateMap<ContactoSolicitud, GetSolicitudPendientesResponse>();
             CreateMap<Contacto, ContatoDetalleResponse>();
+            CreateMap<Mensaje,MensajeResponse>();
 
 
 
@@ -43,7 +45,10 @@ namespace Airsoft.Application.Mappings
             CreateMap<PersonaTelefonoRequest, PersonaTelefono>();
             CreateMap<ContactoSolicitudSaveRequest, ContactoSolicitud>();
             CreateMap<ContactoSolicitudChangeStatusRequest, ContactoSolicitud>();
-            
+            CreateMap<MensajeSaveRequest, Mensaje>();
+            CreateMap<MensajeUpdateRequest, Mensaje>();
+            CreateMap<MensajeDeleteRequest, Mensaje>();
+
 
             // Si los nombres de propiedades no coinciden:
             // CreateMap<Persona, PersonaResponse>()

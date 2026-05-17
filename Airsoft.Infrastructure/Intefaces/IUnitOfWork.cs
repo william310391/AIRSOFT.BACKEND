@@ -15,5 +15,6 @@
         IContactoSolicitudRepository ContactoSolicitudRepository { get; }
         IChatRepository ChatRepository { get; }
         IChatMiembroRepository ChatMiembroRepository { get; }
+        IMensajeRepository MensajeRepository { get; }
     }
 }

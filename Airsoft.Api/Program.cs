@@ -1,4 +1,5 @@
 using Airsoft.Api.Configurations;
+using Airsoft.Api.Hubs;
 using Airsoft.Application.Middlewares;
 using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
@@ -32,5 +33,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("hubs/chat");
 
 app.Run();

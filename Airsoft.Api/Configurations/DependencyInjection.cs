@@ -59,6 +59,7 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IContactoSolicitudRepository, ContactoSolicitudRepository>();
             services.AddScoped<IChatRepository, ChatRepository>();
             services.AddScoped<IChatMiembroRepository, ChatMiembroRepository>();
+            services.AddScoped<IMensajeRepository, MensajeRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
@@ -101,6 +102,13 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IUbigeoService, UbigeoService>();
             services.AddScoped<IContactoService, ContactoService>();
             services.AddScoped<IContactoSolicitudService, ContactoSolicitudService>();
+            services.AddScoped<IMensajeService, MensajeService>();
+
+
+            // =========================
+            // SignalR (para notificaciones en tiempo real)
+            // =========================
+            services.AddSignalR();
 
             // =========================
             // JWT CONFIG
