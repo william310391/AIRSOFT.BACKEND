@@ -28,7 +28,7 @@ namespace Airsoft.Application.Services
         {
             var key = $"chat_{request.chatID}";
             var dataDTO = await _redisCache.GetAsync<List<MensajeResponse>>(key);
-
+            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
             var cantidad = dataDTO?.Count ?? 0;
 
             // Consultar BD solo si:
@@ -43,9 +43,15 @@ namespace Airsoft.Application.Services
                 );
 
                 dataDTO = _mapper.Map<List<MensajeResponse>>(data)
+                    .Select(x =>
+                    {
+                        x.esRemitente = usuarioID == x.usuarioEnvioID;
+                        return x;
+                    })
                     .OrderBy(x => x.fecha)
                     .ToList();
 
+        
                 if (dataDTO.Any())
                 {
                     await _redisCache.SetAsync(key, dataDTO);
@@ -90,10 +96,12 @@ namespace Airsoft.Application.Services
                     usuarioEnvioID = mensaje.UsuarioEnvioID,
                     fecha = mensaje.Fecha,
                     contenido = mensaje.Contenido
+
                 }, EnumMensaje.Save);
             }
 
             var mensajeDTO = _mapper.Map<MensajeResponse>(mensaje);
+            mensajeDTO.esRemitente = true;
 
             return new ApiResponse<MensajeResponse>
             {
@@ -196,6 +204,7 @@ namespace Airsoft.Application.Services
                         usuarioEnvioID = request.usuarioEnvioID,
                         fecha = request.fecha,
                         contenido = request.contenido,
+                        esRemitente = true
                     });
 
                     // Mantener máximo 10 mensajes recientes

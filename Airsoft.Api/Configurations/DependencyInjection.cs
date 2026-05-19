@@ -8,7 +8,6 @@ using Airsoft.Infrastructure.Intefaces;
 using Airsoft.Infrastructure.Persistence;
 using Airsoft.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
@@ -18,7 +17,10 @@ namespace Airsoft.Api.Configurations
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddAppServices(
+     this IServiceCollection services,
+     IConfiguration config
+ )
         {
             // =========================
             // BASE DE DATOS
@@ -31,21 +33,25 @@ namespace Airsoft.Api.Configurations
             });
 
             // =========================
-            // CORS
+            // CORS (CORREGIDO)
             // =========================
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", policy =>
                 {
-                    policy.AllowAnyOrigin()
-                          .AllowAnyMethod()
-                          .AllowAnyHeader();
+                    policy.WithOrigins(
+                            "http://localhost:4200",
+                            "https://localhost:4200"
+                        )
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                 });
             });
 
             // =========================
             // REPOSITORIES
-            // =========================    
+            // =========================
             services.AddScoped<IPersonaRepository, PersonaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IRolRepository, RolRepository>();
@@ -62,7 +68,6 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IMensajeRepository, MensajeRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
             // =========================
             // AUTOMAPPER
             // =========================
@@ -70,7 +75,6 @@ namespace Airsoft.Api.Configurations
             {
                 cfg.AddProfile<MappingProfile>();
             });
-
 
             // =========================
             // REDIS
@@ -82,7 +86,6 @@ namespace Airsoft.Api.Configurations
 
                 return new RedisCacheHelper(redisConnection!);
             });
-
 
             services.AddHttpContextAccessor();
 
@@ -104,14 +107,13 @@ namespace Airsoft.Api.Configurations
             services.AddScoped<IContactoSolicitudService, ContactoSolicitudService>();
             services.AddScoped<IMensajeService, MensajeService>();
 
-
             // =========================
-            // SignalR (para notificaciones en tiempo real)
+            // SIGNALR
             // =========================
             services.AddSignalR();
 
             // =========================
-            // JWT CONFIG
+            // JWT
             // =========================
             var jwtSettings = config.GetSection("Jwt");
             var keyString = jwtSettings["Key"];
@@ -121,14 +123,19 @@ namespace Airsoft.Api.Configurations
 
             var key = Encoding.UTF8.GetBytes(keyString.Trim());
 
-            services.AddAuthentication(opt =>
+            services.AddAuthentication(options =>
             {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme =
+                    JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme =
+                    JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(opt =>
+            .AddJwtBearer(options =>
             {
-                opt.TokenValidationParameters = new TokenValidationParameters
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -139,95 +146,68 @@ namespace Airsoft.Api.Configurations
                     ValidAudience = jwtSettings["Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(key),
 
-                    RoleClaimType = EnumClaims.UsuarioRol
+                    RoleClaimType = EnumClaims.UsuarioRol,
+                    ClockSkew = TimeSpan.Zero
                 };
 
-                opt.Events = new JwtBearerEvents
+                options.Events = new JwtBearerEvents
                 {
-                    // =========================
-                    // LEER TOKEN
-                    // =========================
-                    OnMessageReceived = async context =>
+                    OnMessageReceived = context =>
                     {
-                        var endpoint = context.HttpContext.GetEndpoint();
-
-                        var hasAuthorize = endpoint?.Metadata?.GetMetadata<IAuthorizeData>() != null;
-
-                        if (!hasAuthorize)
-                            return;
-
                         var request = context.HttpContext.Request;
+                        var path = request.Path;
 
-                        // Obtener token
-                        var authHeader = request.Headers["Authorization"].FirstOrDefault();
+                        /**
+                         * =========================
+                         * SIGNALR TOKEN
+                         * =========================
+                         */
+                        var accessToken = request.Query["access_token"];
+
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            path.StartsWithSegments("/hub/chat"))
+                        {
+                            context.Token = accessToken;
+                            return Task.CompletedTask;
+                        }
+
+                        /**
+                         * =========================
+                         * API NORMAL
+                         * =========================
+                         */
+                        var authHeader =
+                            request.Headers["Authorization"].FirstOrDefault();
 
                         if (!string.IsNullOrEmpty(authHeader) &&
-                            authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                            authHeader.StartsWith(
+                                "Bearer ",
+                                StringComparison.OrdinalIgnoreCase
+                            ))
                         {
-                            context.Token = authHeader.Substring("Bearer ".Length).Trim();
+                            context.Token =
+                                authHeader["Bearer ".Length..].Trim();
                         }
                         else
                         {
-                            context.Token = request.Headers["X-Token"].FirstOrDefault();
+                            context.Token =
+                                request.Headers["X-Token"].FirstOrDefault();
                         }
 
-                        if (!string.IsNullOrEmpty(context.Token))
-                        {
-                            var url = $"{request.Scheme}://{request.Host}{request.Path}{request.QueryString}";
-
-                            Console.WriteLine($"Endpoint: {url}");
-
-                            request.EnableBuffering();
-
-                            request.Body.Position = 0;
-
-                            using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: true);
-                            var body = await reader.ReadToEndAsync();
-
-                            request.Body.Position = 0;
-
-                            Console.WriteLine($"Body: {body}");
-
-
-                            // Solo leer body si aplica
-                            //if (request.ContentLength > 0 &&
-                            //    request.Body.CanRead &&
-                            //    (request.Method == "POST" || request.Method == "PUT" || request.Method == "PATCH"))
-                            //{
-                            //    request.EnableBuffering();
-
-                            //    request.Body.Position = 0;
-
-                            //    using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: true);
-                            //    var body = await reader.ReadToEndAsync();
-
-                            //    request.Body.Position = 0;
-
-                            //    Console.WriteLine($"Body: {body}");
-                            //}
-                        }
+                        return Task.CompletedTask;
                     },
 
-                    // =========================
-                    // TOKEN INVÁLIDO (401)
-                    // =========================
+                    /**
+                     * =========================
+                     * TOKEN INVÁLIDO
+                     * =========================
+                     */
                     OnChallenge = async context =>
                     {
-
-                        var endpoint = context.HttpContext.GetEndpoint();
-
-                        // Verificar si el endpoint tiene [Authorize]
-                        var hasAuthorize = endpoint?.Metadata?.GetMetadata<IAuthorizeData>() != null;
-
-                        if (!hasAuthorize)
-                        {
-                            // 👉 Dejar comportamiento por defecto
-                            return;
-                        }
-
                         context.HandleResponse();
 
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.StatusCode =
+                            StatusCodes.Status401Unauthorized;
                         context.Response.ContentType = "application/json";
 
                         var response = new ApiResponse<string>
@@ -236,15 +216,20 @@ namespace Airsoft.Api.Configurations
                             Message = "Token inválido o no proporcionado"
                         };
 
-                        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+                        await context.Response.WriteAsync(
+                            JsonSerializer.Serialize(response)
+                        );
                     },
 
-                    // =========================
-                    // SIN PERMISOS (403)
-                    // =========================
+                    /**
+                     * =========================
+                     * SIN PERMISOS
+                     * =========================
+                     */
                     OnForbidden = async context =>
                     {
-                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        context.Response.StatusCode =
+                            StatusCodes.Status403Forbidden;
                         context.Response.ContentType = "application/json";
 
                         var response = new ApiResponse<string>
@@ -253,206 +238,33 @@ namespace Airsoft.Api.Configurations
                             Message = "Acceso denegado: Rol insuficiente"
                         };
 
-                        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+                        await context.Response.WriteAsync(
+                            JsonSerializer.Serialize(response)
+                        );
                     },
 
-                    // =========================
-                    // ERROR DE AUTENTICACIÓN
-                    // =========================
+                    /**
+                     * =========================
+                     * ERROR JWT
+                     * =========================
+                     */
                     OnAuthenticationFailed = context =>
                     {
-                        Console.WriteLine($"JWT ERROR: {context.Exception.Message}");
+                        Console.WriteLine(
+                            $"JWT ERROR: {context.Exception.Message}"
+                        );
+
                         return Task.CompletedTask;
-                    },
-
-                    // =========================
-                    // TOKEN VÁLIDO
-                    // =========================
-                    //OnTokenValidated = context =>
-                    //{
-
-                    //    var endpoint = context.HttpContext.GetEndpoint();
-
-                    //    // Verificar si el endpoint tiene [Authorize]
-                    //    var hasAuthorize = endpoint?.Metadata?.GetMetadata<IAuthorizeData>() != null;
-
-                    //    if (!hasAuthorize)
-                    //    {
-                    //        // 👉 Dejar comportamiento por defecto
-                    //        return Task.CompletedTask;
-                    //    }
-
-                    //    Console.WriteLine("TOKEN VÁLIDO");
-                    //    return Task.CompletedTask;
-                    //}
+                    }
                 };
             });
 
             // =========================
-            // AUTHORIZATION (IMPORTANTE)
+            // AUTHORIZATION
             // =========================
-            services.AddAuthorization(); // 👈 SIN FallbackPolicy
+            services.AddAuthorization();
 
             return services;
         }
     }
-    //public static class DependencyInjection
-    //{
-    //    public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration config)
-    //    {
-    //        //BD
-    //        services.AddSingleton<DapperContext>(sp =>
-    //        {
-    //            var configuration = sp.GetRequiredService<IConfiguration>();
-    //            var connectionString = configuration.GetConnectionString("AirsoftBD");
-    //            return new DapperContext(connectionString);
-    //        });
-
-
-    //        services.AddCors(options =>
-    //         {
-    //             options.AddPolicy("AllowAll", policy =>
-    //             {
-    //                 policy.AllowAnyOrigin()   // Permite cualquier origen
-    //                       .AllowAnyMethod()   // Permite cualquier método (GET, POST, etc.)
-    //                       .AllowAnyHeader();  // Permite cualquier header
-    //             });
-    //         });
-
-
-    //        // Repositories
-    //        services.AddScoped<IPersonaRepository, PersonaRepository>();
-    //        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-    //        services.AddScoped<IRolRepository, RolRepository>();
-    //        services.AddScoped<IMenuPaginaRepository, MenuPaginaRepository>();
-    //        services.AddScoped<IDatosRepository, DatosRepository>();
-    //        services.AddScoped<IPersonaCorreoRepository, PersonaCorreoRepository>();
-    //        services.AddScoped<IPersonaTelefonoRepository, PersonaTelefonoRepository>();
-    //        services.AddScoped<IPaisRepository, PaisRepository>();
-    //        services.AddScoped<IUnitOfWork, UnitOfWork>();  
-
-    //        // Automapper
-    //        services.AddAutoMapper(cfg =>
-    //        {
-    //            cfg.AddProfile<MappingProfile>();
-    //        });
-
-    //        services.AddHttpContextAccessor();
-
-    //        // Services
-    //        services.AddScoped<IPersonaService, PersonaService>();
-    //        services.AddScoped<IUsuarioService, UsuarioService>();
-    //        services.AddScoped<IJwtService, JwtService>();
-    //        services.AddScoped<IAuthService, AuthService>();
-    //        services.AddScoped<IUserContextService, UserContextService>();
-    //        services.AddScoped<IMenuPaginaService, MenuPaginaService>();
-    //        services.AddScoped<IPersonaCorreoServices, PersonaCorreoServices>();
-    //        services.AddScoped<IPersonaTelefonoService, PersonaTelefonoService>();
-    //        services.AddScoped<IDatosService, DatosService>();
-
-
-
-    //        // JWT
-    //        var jwtSettings = config.GetSection("Jwt");
-    //        var keyString = jwtSettings["Key"];
-    //        if (string.IsNullOrEmpty(keyString))
-    //        {
-    //            throw new InvalidOperationException("La clave JWT no está configurada correctamente en la configuración.");
-    //        }
-    //        var key = Encoding.UTF8.GetBytes(keyString.Trim());
-    //        services.AddAuthentication(opt =>
-    //        {
-    //            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    //            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    //        })
-    //        .AddJwtBearer(opt =>
-    //        {
-    //            opt.TokenValidationParameters = new TokenValidationParameters
-    //            {
-    //                ValidateIssuer = true,
-    //                ValidateAudience = true,
-    //                ValidateLifetime = true,
-    //                ValidateIssuerSigningKey = true,
-    //                ValidIssuer = jwtSettings["Issuer"],
-    //                ValidAudience = jwtSettings["Audience"],
-    //                IssuerSigningKey = new SymmetricSecurityKey(key),
-
-    //                RoleClaimType = EnumClaims.UsuarioRol // 👈 ahora sí [Authorize(Roles="Admin")] funciona
-
-    //            };
-
-    //            // Para depurar errores de JWT
-    //            opt.Events = new JwtBearerEvents
-    //            {
-    //                OnMessageReceived = context =>
-    //                {
-    //                    // Intentar leer del header estándar
-    //                    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
-
-    //                    if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
-    //                    {
-    //                        context.Token = authHeader.Substring("Bearer ".Length).Trim();
-    //                    }
-    //                    else
-    //                    {
-    //                        // Si viene en un header personalizado
-    //                        context.Token = context.Request.Headers["X-Token"].FirstOrDefault();
-    //                    }
-
-    //                    Console.WriteLine($"TOKEN RECIBIDO: {context.Token}");
-    //                    return Task.CompletedTask;
-    //                },
-
-    //                OnChallenge = async context =>
-    //                {
-    //                    context.HandleResponse();
-
-    //                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-    //                    context.Response.ContentType = "application/json";
-
-    //                    var response = new ApiResponse<string>
-    //                    {
-    //                        Success = false,
-    //                        Message = "Token inválido o no proporcionado"
-    //                    };
-
-    //                    var result = JsonSerializer.Serialize(response);
-    //                    await context.Response.WriteAsync(result);
-    //                },
-    //                OnForbidden = async context =>
-    //                {
-    //                    context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-    //                    context.Response.ContentType = "application/json";
-
-    //                    var response = new ApiResponse<string>
-    //                    {
-    //                        Success = false,
-    //                        Message = "Acceso denegado: Rol insuficiente"
-    //                    };
-
-    //                    var result = JsonSerializer.Serialize(response);
-    //                    await context.Response.WriteAsync(result);
-    //                },
-
-
-    //                //OnMessageReceived = context =>
-    //                //{
-    //                //    Console.WriteLine($"TOKEN RECIBIDO: {context.Token}");
-    //                //    return Task.CompletedTask;
-    //                //},
-    //                OnAuthenticationFailed = context =>
-    //                {
-    //                    Console.WriteLine($"JWT error: {context.Exception}");
-    //                    return Task.CompletedTask;
-    //                }
-    //            };
-    //        });
-
-    //        services.AddAuthorization();
-
-
-
-    //        return services;
-    //    }
-    //}
 }

@@ -2,6 +2,7 @@
 {
     public class Mensaje
     {
+        public Guid ChatID { get; set; }
         public Guid MensajeID { get; set; }       
         public required string Contenido { get; set; }
         public int UsuarioEnvioID { get; set; }

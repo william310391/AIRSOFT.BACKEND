@@ -8,5 +8,6 @@ namespace Airsoft.Application.DTOs.Mensaje
         public required string contenido { get; set; }
         public int usuarioEnvioID { get; set; }
         public DateTime fecha { get; set; }
+        public bool esRemitente { get; set; }
     }
 }

@@ -439,7 +439,7 @@
             </Location>
             <Size>
               <Width>279 px</Width>
-              <Height>151 px</Height>
+              <Height>169 px</Height>
             </Size>
             <DbOid>
               <Path>Prueba.dbo.Mensaje_Adjunto</Path>
@@ -465,7 +465,7 @@
               <Port>
                 <Location>
                   <X>0 px</X>
-                  <Y>75.5 px</Y>
+                  <Y>84.5 px</Y>
                 </Location>
                 <Anchors>Top Bottom</Anchors>
                 <Align>Right</Align>
@@ -490,7 +490,7 @@
             <BendPoints>
               <PointD>
                 <X>-781 px</X>
-                <Y>485.5 px</Y>
+                <Y>494.5 px</Y>
               </PointD>
               <PointD>
                 <X>-781 px</X>
@@ -516,7 +516,7 @@
               <Port xsi:type="LinkPort">
                 <Location>
                   <X>-160.5 px</X>
-                  <Y>90 px</Y>
+                  <Y>99 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Right</Align>
@@ -746,7 +746,7 @@
           <Scale>1</Scale>
           <Location>
             <X>-1329.33333333333 px</X>
-            <Y>-657.33333269755 px</Y>
+            <Y>-443.999999364217 px</Y>
           </Location>
         </ViewPort>
       </Model>

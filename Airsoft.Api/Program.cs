@@ -2,37 +2,71 @@ using Airsoft.Api.Configurations;
 using Airsoft.Api.Hubs;
 using Airsoft.Application.Middlewares;
 using Scalar.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// =========================
+// SERVICES
+// =========================
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddAppServices(builder.Configuration);
 
 var app = builder.Build();
+
+// =========================
+// SCALAR
+// =========================
 app.MapScalarApiReference(option =>
 {
     option.Title = "Airsoft API Reference";
-    option.DarkMode= true;
+    option.DarkMode = true;
 });
+
+// =========================
+// MIDDLEWARE GLOBAL
+// =========================
 app.UseMiddleware<ExceptionMiddleware>();
+
+// =========================
+// HTTPS
+// =========================
+app.UseHttpsRedirection();
+
+// =========================
+// ROUTING
+// =========================
+app.UseRouting();
+
+// =========================
+// CORS
+// =========================
 app.UseCors("AllowAll");
+
+// =========================
+// AUTH
+// =========================
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Configure the HTTP request pipeline.
+// =========================
+// OPENAPI DEV
+// =========================
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
+// =========================
+// ENDPOINTS
+// =========================
 app.MapControllers();
-app.MapHub<ChatHub>("hubs/chat");
+
+/**
+ * IMPORTANTE:
+ * Ruta final:
+ * https://localhost:xxxx/hubs/chat
+ */
+app.MapHub<ChatHub>("/hub/chat");
 
 app.Run();

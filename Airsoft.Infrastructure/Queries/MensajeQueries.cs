@@ -15,8 +15,8 @@
                                     FETCH NEXT @PageSize ROWS ONLY;";
 
         public static readonly string Save = @"
-                                    INSERT INTO Mensaje(MensajeID,ChatID,UsuarioEnvioID,FechaCreacion,Activo)
-                                    VALUES(@MensajeID,@ChatID,@UsuarioEnvioID,@Fecha,1)";
+                                    INSERT INTO Mensaje(MensajeID,ChatID,Contenido,UsuarioEnvioID,FechaCreacion,Activo)
+                                    VALUES(@MensajeID,@ChatID,@Contenido,@UsuarioEnvioID,@Fecha,1)";
 
         public static readonly string Update = @"
                                     UPDATE Mensaje 
