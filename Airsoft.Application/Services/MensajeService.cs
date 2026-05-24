@@ -170,6 +170,17 @@ namespace Airsoft.Application.Services
             };
         }
 
+        public async Task<ApiResponse<bool>> UpdateUnread(Guid chatID, int usuarioID)
+        {
+            var res = await _unitOfWork.ChatRepository.UpdateUnread(chatID, usuarioID);
+
+            return new ApiResponse<bool>
+            {
+                Success = res,
+                Message = res ? "Mensajes eliminados exitosamente" : "Error al eliminar los mensajes",
+                Data = res
+            };
+        }
 
         public async Task<bool> ActualizarMensajesRedis(MensajeRequest request, int enumMensaje)
         {

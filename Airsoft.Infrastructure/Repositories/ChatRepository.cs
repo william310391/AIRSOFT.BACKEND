@@ -20,5 +20,17 @@ namespace Airsoft.Infrastructure.Repositories
             var sql = ChatQueries.Save;
             return await _context.EjecutarQueryAsync(sql, chat, transaction);
         }
+
+        public async Task<bool> UpdateUnread(Guid ChatID, int usuarioID)
+        {
+            var sql = ChatQueries.UpdateUnread;
+            return await _context.EjecutarQueryAsync(sql, new { ChatID = ChatID, UsuarioID = usuarioID});
+        }
+
+        public async Task<bool> AddUnread(Guid ChatID, int usuarioID)
+        {
+            var sql = ChatQueries.AddUnread;
+            return await _context.EjecutarQueryAsync(sql, new { ChatID = ChatID, UsuarioID = usuarioID });
+        }
     }
 }

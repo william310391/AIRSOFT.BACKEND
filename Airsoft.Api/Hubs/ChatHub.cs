@@ -1,4 +1,5 @@
-﻿using Airsoft.Application.DTOs.Mensaje;
+﻿using Airsoft.Application.DTOs.Chat;
+using Airsoft.Application.DTOs.Mensaje;
 using Airsoft.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -15,12 +16,13 @@ namespace Airsoft.Api.Hubs
 
 
         [Authorize()]
-        public async Task JoinGroup(string groupName, string userName)
+        public async Task JoinGroup(JoinGroupRequest request)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+            await Groups.AddToGroupAsync(Context.ConnectionId, request.chatID.ToString());
+            await _service.UpdateUnread(request.chatID,request.usuarioID);
 
-            await Clients.Group(groupName)
-                .SendAsync("UserJoined", $"{userName} se unió al grupo {groupName}");
+            await Clients.Group(request.chatID.ToString())
+                .SendAsync("UserJoined", $" {request.userName} se unió al grupo {request.chatID}");
         }
         [Authorize()]
         public async Task SendMessageToGroup(MensajeSaveRequest request)

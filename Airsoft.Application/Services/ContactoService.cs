@@ -121,6 +121,8 @@ namespace Airsoft.Application.Services
                         NombreChat = chat.NombreChat ?? string.Empty,
                         ChatID = chat.ChatID ?? Guid.Empty,
                         EsPrivado = chat.EsPrivado,
+                        MensajeNoleidos = chat.MensajeNoleidos,
+                        UsuarioID = chat.UsuarioID,
                     };
                 }
                 else

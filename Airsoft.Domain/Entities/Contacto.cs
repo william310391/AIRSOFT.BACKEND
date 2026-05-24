@@ -21,6 +21,7 @@
         public Guid? ChatID { get; set; }
         public string? NombreChat { get; set; }
         public bool EsPrivado { get; set; }
+        public int MensajeNoleidos { get; set; }
         public DateTime FechaRegistro { get; set; }
         public int UsuarioModificacionID { get; set; }
         public DateTime FechaModificacion { get; set; }

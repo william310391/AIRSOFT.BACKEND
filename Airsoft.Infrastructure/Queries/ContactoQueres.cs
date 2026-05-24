@@ -15,6 +15,7 @@
                                  ,CS.UsuarioID AS SolicitudUsuarioID
                                  ,CS.UsuarioContactoID AS SolicitudUsuarioContactoID
                                  ,CM.ChatID
+                                 ,ISNULL(CM.MensajeNoleidos,0) AS MensajeNoleidos
                                  ,IIF(CH.EsPrivado=1,U.UsuarioNombre,CH.nombreChat) AS nombreChat
                                  ,CH.EsPrivado
                                  ,CS.Mensaje AS SolicitudMensaje
@@ -63,6 +64,7 @@
                                 ,CS.UsuarioContactoID AS SolicitudUsuarioContactoID
                                 ,CS.Mensaje AS SolicitudMensaje
                                 ,CM.ChatID
+                                ,ISNULL(CM.MensajeNoleidos,0) AS MensajeNoleidos
                                 ,IIF(CH.EsPrivado=1,U.UsuarioNombre,CH.nombreChat) AS nombreChat
                                 ,CH.EsPrivado
                                 ,CASE 
