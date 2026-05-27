@@ -170,9 +170,10 @@ namespace Airsoft.Application.Services
             };
         }
 
-        public async Task<ApiResponse<bool>> UpdateUnread(Guid chatID, int usuarioID)
+        public async Task<ApiResponse<bool>> UpdateUnread(Guid chatID, int usuarioContactoID)
         {
-            var res = await _unitOfWork.ChatRepository.UpdateUnread(chatID, usuarioID);
+            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
+            var res = await _unitOfWork.ChatRepository.UpdateUnread(chatID, usuarioID, usuarioContactoID);
 
             return new ApiResponse<bool>
             {
@@ -180,6 +181,19 @@ namespace Airsoft.Application.Services
                 Message = res ? "Mensajes eliminados exitosamente" : "Error al eliminar los mensajes",
                 Data = res
             };
+        }
+
+        public async Task<ApiResponse<bool>> AddUnread(Guid chatID)
+        {
+            var usuarioID = _userContextService.GetAttribute<int>(EnumClaims.UsuarioID);
+            var res = await _unitOfWork.ChatRepository.AddUnread(chatID, usuarioID);
+            return new ApiResponse<bool>
+            {
+                Success = res,
+                Message = res ? "Mensaje agregado exitosamente" : "Error al agregar mensajes",
+                Data = res
+            };
+
         }
 
         public async Task<bool> ActualizarMensajesRedis(MensajeRequest request, int enumMensaje)

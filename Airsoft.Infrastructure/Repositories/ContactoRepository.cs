@@ -36,11 +36,10 @@ namespace Airsoft.Infrastructure.Repositories
             });
         }
 
-        public async Task<bool> Save(int usuarioID, int usuarioContactoID, IDbTransaction transaction)
+        public async Task<bool> Save(int usuarioID, int usuarioContactoID, Guid chatID, IDbTransaction transaction)
         {
             var sql = ContactoQueres.Save;
-            return await _context.EjecutarQueryAsync(sql, new { UsuarioID = usuarioID, UsuarioContactoID = usuarioContactoID }, transaction);
-
+            return await _context.EjecutarQueryAsync(sql, new { UsuarioID = usuarioID, UsuarioContactoID = usuarioContactoID, ChatID= chatID }, transaction);
         }
     }
 }

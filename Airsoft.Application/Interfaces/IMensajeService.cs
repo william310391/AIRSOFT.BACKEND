@@ -10,5 +10,6 @@ namespace Airsoft.Application.Interfaces
         Task<ApiResponse<bool>> Update(MensajeUpdateRequest request);
         Task<ApiResponse<bool>> Delete(MensajeDeleteRequest request);
         Task<ApiResponse<bool>> UpdateUnread(Guid chatID, int usuarioID);
+        Task<ApiResponse<bool>> AddUnread(Guid chatID);
     }
 }

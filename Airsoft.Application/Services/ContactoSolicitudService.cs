@@ -86,15 +86,13 @@ namespace Airsoft.Application.Services
                 switch (entidad.EstadoID)
                 {
                     case EnumEstados.SolicitudContacto.Aceptado: //receptor
-                                                                    //registrar contacto en la tabla de contactos 
-                        await _unitOfWork.ContactoRepository.Save(entidad.UsuarioID, entidad.UsuarioContactoID, transaction);
-                        await _unitOfWork.ContactoRepository.Save(entidad.UsuarioContactoID, entidad.UsuarioID, transaction);
+                        //crear sala de chat 
+                        var chartID = Guid.NewGuid();
 
                         var datosUsuario = await _unitOfWork.UsuarioRepository.GetUsuariosByUsuarioID(entidad.UsuarioID);
                         var datosContacto = await _unitOfWork.UsuarioRepository.GetUsuariosByUsuarioID(entidad.UsuarioContactoID);
 
-                        //crear sala de chat 
-                        var chartID = Guid.NewGuid();
+ 
                         var result = await _unitOfWork.ChatRepository.Save(new Chat
                         {
                             ChatID = chartID,
@@ -102,6 +100,10 @@ namespace Airsoft.Application.Services
                             EsPrivado = true,
                             UsuarioRegistroID = entidad.UsuarioID
                         }, transaction);
+
+                        //registrar contacto en la tabla de contactos 
+                        await _unitOfWork.ContactoRepository.Save(entidad.UsuarioID, entidad.UsuarioContactoID, chartID, transaction);
+                        await _unitOfWork.ContactoRepository.Save(entidad.UsuarioContactoID, entidad.UsuarioID, chartID, transaction);
 
                         if (!result)
                         {

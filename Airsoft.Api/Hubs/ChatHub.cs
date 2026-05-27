@@ -27,11 +27,13 @@ namespace Airsoft.Api.Hubs
         [Authorize()]
         public async Task SendMessageToGroup(MensajeSaveRequest request)
         {
-            var result = await _service.Save(request);
+            var result = await _service.Save(request);      
             if (result?.Data != null)
             {
                 await Clients.Group(request.chatID.ToString())
                     .SendAsync("ReceiveGroupMessage", result.Data);
+
+                await _service.AddUnread(request.chatID);
             }
         }
 

@@ -8,12 +8,13 @@
 
 
         public static readonly string UpdateUnread = @"
-                UPDATE Chat_Miembro SET MensajeNoleidos=0
+                UPDATE Contacto SET MensajeNoleidos=0
                 WHERE ChatID=@ChatID
-                AND UsuarioID=@UsuarioID";
+                AND UsuarioID=@UsuarioID
+                AND UsuarioContactoID=@UsuarioContactoID";
 
         public static readonly string AddUnread = @"
-                UPDATE Chat_Miembro SET MensajeNoleidos+=1
+                UPDATE Contacto SET MensajeNoleidos+=1
                 WHERE ChatID=@ChatID 
                 AND UsuarioID<>@UsuarioID";
     }

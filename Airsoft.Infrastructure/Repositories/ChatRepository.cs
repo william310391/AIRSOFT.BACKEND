@@ -21,10 +21,10 @@ namespace Airsoft.Infrastructure.Repositories
             return await _context.EjecutarQueryAsync(sql, chat, transaction);
         }
 
-        public async Task<bool> UpdateUnread(Guid ChatID, int usuarioID)
+        public async Task<bool> UpdateUnread(Guid ChatID, int usuarioID, int usuarioContactoID)
         {
             var sql = ChatQueries.UpdateUnread;
-            return await _context.EjecutarQueryAsync(sql, new { ChatID = ChatID, UsuarioID = usuarioID});
+            return await _context.EjecutarQueryAsync(sql, new { ChatID = ChatID, UsuarioID = usuarioID, UsuarioContactoID = usuarioContactoID });
         }
 
         public async Task<bool> AddUnread(Guid ChatID, int usuarioID)
