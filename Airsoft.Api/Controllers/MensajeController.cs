@@ -26,6 +26,17 @@ namespace Airsoft.Api.Controllers
             var response = await _service.GetMensajesByChatID(request);
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpPost("updateUnread")]
+        [Authorize()]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ApiResponse<bool>>> UpdateUnread([FromBody] UpdateUnreadRequest request)
+        {
+            var response = await _service.UpdateUnread(request.chatID, request.usuarioID);
+            return StatusCode(response.StatusCode, response);
+        }
+
     }
 }
 

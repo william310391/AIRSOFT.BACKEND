@@ -19,7 +19,6 @@ namespace Airsoft.Api.Hubs
         public async Task JoinGroup(JoinGroupRequest request)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, request.chatID.ToString());
-            await _service.UpdateUnread(request.chatID, request.usuarioID);
 
             await Clients.Group(request.chatID.ToString())
                 .SendAsync("UserJoined", $" {request.userName} se unió al grupo {request.chatID}");
