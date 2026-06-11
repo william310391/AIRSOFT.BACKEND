@@ -41,7 +41,8 @@ namespace Airsoft.Api.Configurations
                 {
                     policy.WithOrigins(
                             "http://localhost:4200",
-                            "https://localhost:4200"
+                            "https://localhost:4200",
+                            "https://wf8b81cc-4200.brs.devtunnels.ms"
                         )
                         .AllowAnyMethod()
                         .AllowAnyHeader()

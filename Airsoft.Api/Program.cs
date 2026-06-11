@@ -29,9 +29,10 @@ app.MapScalarApiReference(option =>
 app.UseMiddleware<ExceptionMiddleware>();
 
 // =========================
-// HTTPS
+// HTTPS - RETIRAR SOLO PARA PUBLICAR CON NGROK 
+// /*https://localhorse.net/article/que-es-ngrok-y-para-que-sirve*/
 // =========================
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 // =========================
 // ROUTING
